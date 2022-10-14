@@ -1,18 +1,12 @@
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareFacebook, faInstagram, faTwitter, faYoutube, faEmpire } from '@fortawesome/free-brands-svg-icons';
-import { faCameraRetro, faVideo, faWrench, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faSquareFacebook, faInstagram, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 import styles from './header.module.scss';
 const cx = classNames.bind(styles);
 function Header() {
-    const mystyle = {
-        color: "yellow",
-    };
-    const mystylehover = {
-        color: "yellow",
-    };
     return (
-        <header className={cx('header')}>
+        <div>
             <div className={cx('header-topbar')}>
 
                 <div className={cx('header-topbar-leftitems')}>
@@ -32,20 +26,23 @@ function Header() {
                         <img src={require('~/assets/images/search.png')} alt='Hello Duck' />
                     </a>
                 </div>
+
+
+                <div className={cx('header-DKDN')}>
+                    <a href='#' className={cx('shop-card')}>
+                        <FontAwesomeIcon icon={faBasketShopping} className={cx('fa-icon')} style={{ fontSize: '22px', color: '#999999' }} />
+                        <span className={cx('cart-count')}>0</span>
+                    </a>
+
+                    <button type='button' className={cx('Dkdn')}>Sign In</button>
+                    {/* 
+                    <a href='#' id='profile' onclick='trangcanhan()' style='display: none;'><i class='fa fa-user-circle-o' aria-hidden='true'></i></a>
+                    <button type='button' id='logout' class='Dkdn2' onclick='logOut()' > Log Out </button>
+                    */}
+
+                </div>
             </div>
-            <div className={cx('header-menu')}>
-                <a className={cx('logo')} href='#'>
-                    <img src={require('~/assets/images/logo.jpg')} alt='Gold Duck Camera' />
-                </a>
-                <ul className={cx('ulcss')}>
-                    <li><a href='#'><FontAwesomeIcon icon={faCameraRetro} className={cx('fa-icon')} />Camera</a></li>
-                    <li><a href='#'><FontAwesomeIcon icon={faVideo} className={cx('fa-icon')} />Video Cam</a></li>
-                    <li><a href='#'><FontAwesomeIcon icon={faEmpire} className={cx('fa-icon')} />Accessories</a></li>
-                    <li><a href='#'><FontAwesomeIcon icon={faWrench} className={cx('fa-icon')} />Guarantee</a></li>
-                    <li><a href='#'><FontAwesomeIcon icon={faPhone} className={cx('fa-icon')} />Contact</a></li>
-                </ul>
-            </div>
-        </header >
+        </div>
     )
 
 }

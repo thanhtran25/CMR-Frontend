@@ -2,14 +2,22 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 
 function DefaultLayout({ children }) {
+    const mystyle = {
+        border: "0px",
+        width: "100%",
+        position: "fixed",
+        display: "block",
+        zIndex: "15",
+    }
     return (
         <div>
-            <Header />
-            <div className="container">
+            <header style={mystyle}>
+                <Header />
                 <Sidebar />
-                <div className="content">
-                    {children}
-                </div>
+
+            </header>
+            <div className="content">
+                {children}
             </div>
         </div>
     )
