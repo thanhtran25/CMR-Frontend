@@ -6,14 +6,6 @@
     text-decoration: none;
 }
 
-.header {
-    border: 0px;
-    width: 100%;
-    position: fixed;
-    display: block;
-    z-index: 15;
-}
-
 .header-topbar {
     width: 100%;
     background-color: black;
@@ -132,110 +124,6 @@
     font-size: 16px;
 }
 
-.header-menu .fa-icon {
-    color: yellow;
-}
-
-.header-menu {
-    background-color: rgba(0, 0, 0, 80%);
-    width: 100%;
-}
-
-.header-menu ul {
-    list-style-type: none;
-    text-align: center;
-}
-
-.header-menu li {
-    display: inline-block;
-    text-align: center;
-    line-height: 40px;
-    margin-left: -5px;
-    position: relative;
-}
-
-.header-menu li a {
-    text-decoration: none;
-    position: relative;
-    color: #999999;
-    font-size: 17px;
-    font-weight: 700;
-    font-family: sans-serif;
-    display: block;
-    overflow: hidden;
-    transition: 0.7s all;
-    padding: 13px 30px;
-    text-transform: uppercase;
-}
-
-.header-menu li a:before {
-    content: '';
-    width: 100%;
-    position: absolute;
-    border-bottom: 3px solid #efefef;
-    bottom: 0;
-    right: 350px;
-    transition: 0.7s all;
-}
-
-.header-menu li a:hover {
-    color: white;
-}
-
-.header-menu li a:hover:before {
-    right: 0;
-}
-
-.ChildMenu {
-    display: none;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 80%);
-    left: 0;
-    right: 0;
-    margin: auto;
-    top: 100%;
-    min-width: 180px;
-}
-
-.header-menu ul li:hover .ChildMenu {
-    display: block;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 80%);
-}
-
-.header-menu ul li:hover .ChildMenu ul li {
-    display: block;
-    margin: 5px;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.header-menu ul li .ChildMenu ul li a {
-    font-size: 13px;
-    line-height: normal;
-    padding: 13px;
-}
-
-.logo {
-    display: block;
-    position: absolute;
-    left: 15%;
-    top: 50%;
-    margin-left: 4%;
-}
-
-.logo img {
-    border-radius: 100%;
-}
-
-.ulcss {
-    margin-left: 9%;
-}
-
-.fa-icon {
-    margin-right: 8px;
-}
-
 .header-topbar-leftitems a:nth-child(1):hover {
     color: rgb(115, 151, 248);
     text-decoration: none;
@@ -264,4 +152,66 @@
 .header-topbar-leftitems a:nth-child(4):hover {
     color: rgb(105, 221, 241);
     text-decoration: none;
+}
+
+.header-DKDN {
+    position: absolute;
+    top: 13px;
+    right: 0.5%;
+    display: flex;
+    width: 160px;
+    justify-content: space-evenly;
+}
+
+.header-DKDN a i {
+    margin-left: 7%;
+    margin-right: 22%;
+    margin-top: -1px;
+    font-size: 24px;
+    color: #999999;
+    border-radius: 100%;
+}
+
+.header-DKDN a i:hover {
+    color: white;
+}
+
+.shop-card {
+    margin-top: 2px;
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    background: yellow;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 50%;
+    color: #000;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.Dkdn {
+    text-decoration: none;
+    position: relative;
+    color: #999999;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: sans-serif;
+    display: block;
+    overflow: hidden;
+    transition: 0.7s all;
+    padding: 6px 15px;
+    text-transform: uppercase;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.Dkdn:hover {
+    background-color: white;
 }
