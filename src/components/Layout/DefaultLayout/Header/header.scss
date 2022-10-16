@@ -7,24 +7,9 @@
 }
 
 .header-topbar {
-    width: 100%;
     background-color: black;
-    height: 50px;
-    position: relative;
-    top: 0;
-    text-align: left;
 }
 
-.header-topbar-leftitems {
-    padding-left: 3%;
-    padding-top: 5px;
-}
-
-.header-topbar-leftitems {
-    left: 5%;
-    position: absolute;
-    top: 20%;
-}
 
 .header-topbar-leftitems a {
     text-decoration: none;
@@ -35,40 +20,18 @@
 
 .header-topbar-content pre {
     color: yellow;
-    font-family: futura-pt, -apple-system, blinkmacsystemfont, Segoe UI, roboto, Helvetica Neue, arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-family: futura-pt, -apple-system, blinkmacsystemfont, roboto, Helvetica Neue, arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     font-size: 20px;
     font-weight: 500;
-    line-height: 22px;
-    position: absolute;
-    left: 41%;
-    top: 12px;
+    text-align: center;
 }
 
-.search-bar {
-    position: absolute;
-    top: 11px;
-    right: 11%;
-    background-color: rgba(116, 112, 112, 0.3);
-    height: 27px;
-    border-radius: 27px;
-    font-family: consolas;
-    z-index: 2;
+.search-btn {
+    background-color: yellow;
 }
 
-.search-txt {
-    border: none;
-    background: none;
-    outline: none;
-    float: left;
-    padding: 0;
-    color: #fcfcfc;
-    font-size: 13px;
-    font-family: Arial, Helvetica, sans-serif;
-    transition: 0.4s;
-    line-height: 25px;
-    width: 0px;
-    font-weight: bold;
-    align-items: center;
+.logo img {
+    border-radius: 100%;
 }
 
 .search-bar a img {
@@ -76,8 +39,7 @@
     border-radius: 35%;
 }
 
-.search-bar:hover>.Search-txt {
-    width: 300px;
+.search-bar:hover .search-txt {
     padding-left: 20px;
 }
 
