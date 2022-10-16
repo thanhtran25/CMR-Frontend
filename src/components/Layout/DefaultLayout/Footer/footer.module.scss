@@ -1,0 +1,83 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+    list-style-type: none;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: #999999;
+}
+
+.end h6 {
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+.end {
+    display: inline-table;
+    margin-left: 10%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.end ul li a,
+h6,
+span {
+    color: rgb(211, 207, 207);
+    font-family: futura-pt, -apple-system, blinkmacsystemfont, Segoe UI, roboto, Helvetica Neue, arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    font-size: 15px;
+}
+
+.end ul li a:hover {
+    color: yellow;
+}
+
+.f-left-1 {
+    margin-left: 35%;
+    color: rgb(189, 187, 187);
+    text-decoration: none;
+}
+
+.f-left-2 {
+    color: rgb(189, 187, 187);
+    margin-left: 5px;
+}
+
+.copyright {
+    width: 100%;
+    height: 20px;
+    background-color: #161C27;
+    color: #A2A4A9;
+}
+
+.fa-icon,
+.fa-icon1,
+.fa-icon2,
+.fa-icon3,
+.fa-icon4 {
+    margin-right: 8px;
+}
+
+.fa-icon1:hover {
+    color: rgb(115, 151, 248);
+    text-decoration: none;
+}
+
+.fa-icon2:hover {
+    border-radius: 30%;
+    background: linear-gradient(150deg, rgb(28, 28, 236), rgb(218, 115, 31), red);
+    text-decoration: none;
+}
+
+.fa-icon3:hover {
+    color: red;
+    text-decoration: none;
+}
+
+.fa-icon4:hover {
+    color: rgb(105, 221, 241);
+    text-decoration: none;
+}
