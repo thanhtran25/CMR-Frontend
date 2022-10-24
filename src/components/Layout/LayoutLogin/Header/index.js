@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
-import { Link, NavLink } from 'react-router-dom'
 import './header.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function Header() {
@@ -32,10 +31,10 @@ function Header() {
                 <div className='col-4 col-xl-3'>
                     <div className='row'>
                         <div className='col-xl-6'></div>
-                        <Link className='shop-card col-1 col-xl-1'>
+                        <a href='#' className='shop-card col-1 col-xl-1'>
                             <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
                             <span className='cart-count'>0</span>
-                        </Link>
+                        </a>
                         <div className='col-1 col-xl-1'></div>
                         <Button variant='warning' className='col-7 col-xl-3'>Sign In</Button>
                     </div>

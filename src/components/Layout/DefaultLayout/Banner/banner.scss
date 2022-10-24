@@ -1,6 +1,6 @@
 @media only screen and (max-width: 600px) {
     .slide {
-        height: 300px;
+        height: 200px;
     }
 
     .carouselMain {
@@ -9,18 +9,22 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-        height: 450px;
+        height: 350px;
+    }
+
+    .carousel-indicators {
+        bottom: -62px !important;
     }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 900px) {
     .slide {
-        height: 500px;
+        height: 270px;
     }
 }
 
 @media only screen and (min-width: 900px) {
     .slide {
-        height: 760px;
+        height: 450px;
     }
 }
