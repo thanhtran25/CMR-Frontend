@@ -1,9 +1,8 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
-import Banner from "./Banner"
 
-function DefaultLayout({ children }) {
+function LayoutLogin({ children }) {
     const mystyle = {
         border: '0px',
         width: '100%',
@@ -18,7 +17,6 @@ function DefaultLayout({ children }) {
                 <Sidebar />
 
             </header>
-            <Banner />
             <div className="content">
                 {children}
             </div>
@@ -28,4 +26,4 @@ function DefaultLayout({ children }) {
     )
 }
 
-export default DefaultLayout;
+export default LayoutLogin;
