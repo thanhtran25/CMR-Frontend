@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './signup.scss'
 import { useState } from 'react'
 import { signupService } from '~/service/signupService'
-import { Roles, Gender } from '~/core/constant'
+import { Gender } from '~/core/constant'
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
 const Signup = () => {
