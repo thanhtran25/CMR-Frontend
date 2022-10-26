@@ -5,16 +5,23 @@ import Forgotpassword from '~/pages/auth/forgotaccount/forgotPassword';
 import rqotb from '~/pages/auth/forgotaccount/rqOtb'
 import changePassword from '~/pages/auth/forgotaccount/changePassowrd'
 import productDetail from '~/pages/product/productDetail';
+import loginAdmin from '~/admin/Login';
+import homeAdmin from '~/admin/Home';
+import userAdmin from '~/admin/UserAdmin';
+import { LayoutLogin, AdminLayout } from '~/components/Layout';
 
 
 const publicRoutes = [
     { path: '/', component: Home },
-    { path: '/login', component: Login, layout: null },
-    { path: '/signup', component: Signup, layout: null },
-    { path: '/forgotpassword', component: Forgotpassword, layout: null },
-    { path: '/request-OTP', component: rqotb, layout: null },
-    { path: '/changePassword', component: changePassword, layout: null },
-    { path: 'productdetail', component: productDetail, layout: null },
+    { path: '/login', component: Login, layout: LayoutLogin },
+    { path: '/signup', component: Signup, layout: LayoutLogin },
+    { path: '/forgotpassword', component: Forgotpassword, layout: LayoutLogin },
+    { path: '/request-OTP', component: rqotb, layout: LayoutLogin },
+    { path: '/changePassword', component: changePassword, layout: LayoutLogin },
+    { path: '/productdetail', component: productDetail, layout: null },
+    { path: '/LoginAdmin', component: loginAdmin, layout: null },
+    { path: '/HomeAdmin', component: homeAdmin, layout: AdminLayout },
+    { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
 ]
 
 const privateRoutes = [
