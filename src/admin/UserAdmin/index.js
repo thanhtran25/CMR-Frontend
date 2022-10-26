@@ -6,11 +6,13 @@ import './userAdmin.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faSearch, faShoppingBasket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import Header from '~/components/Layout/AdminLayout/Header';
+
 function userAdmin() {
     return (
         <>
             <div id="main" className="layout-navbar">
-
+                <Header />
                 <div id="main-content">
                     <div className="page-heading">
                         <div className="col-sm-6">

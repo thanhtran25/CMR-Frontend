@@ -6,6 +6,8 @@ import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faSearch, faShoppingBasket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
+import Banner from '~/components/Layout/DefaultLayout/Banner';
+import Header from '~/components/Layout/AdminLayout/Header';
 function homeAdmin() {
     return (
         <>
@@ -44,37 +46,16 @@ function homeAdmin() {
                 </div>
             </div>
             <div id="main" className="layout-navbar" style={{ backgroundColor: '#f2f7ff' }}>
+                <Header />
                 <div id="main-content">
                     <div className="page-heading">
                         <section id="content-types">
                             <div className="row">
                                 <div className="col-xl-12 col-md-12 col-sm-12">
-                                    <div className="card">
-                                        <div className="card-content">
-                                            <div id="carouselExampleControls" className="carousel slide1" data-bs-ride="carousel">
-                                                <div className="carousel-inner">
-                                                    <div className="carousel-item active">
-                                                        <img src={require('~/assets/images/banner-1.jpg')} className="d-block w-100" />
-                                                    </div>
-                                                    <div className="carousel-item">
-                                                        <img src={require('~/assets/images/banner-2.jpg')} className="d-block w-100" />
-                                                    </div>
-
-                                                    <a className="carousel-control-prev" href="#carouselExampleControls" role="button"
-                                                        data-bs-slide="prev">
-                                                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                    </a>
-                                                    <a className="carousel-control-next" href="#carouselExampleControls" role="button"
-                                                        data-bs-slide="next">
-                                                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Banner />
                                 </div>
                             </div>
-                            <div className="row">
+                            <div className="row mt-5 bannerAdmin">
                                 <div className="col-xl-4 col-md-4 col-sm-12">
                                     <div className="card">
                                         <div className="card-content">

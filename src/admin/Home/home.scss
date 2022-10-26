@@ -1527,3 +1527,9 @@ a {
 .icon-mid:before {
     vertical-align: middle;
 }
+
+@media only screen and (max-width: 600px) {
+    .bannerAdmin {
+        margin-top: 5rem !important;
+    }
+}
