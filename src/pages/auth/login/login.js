@@ -26,7 +26,7 @@ const Login = () => {
             [e.target.name]: value
         });
     };
-    const handleChangeOnclik = async () => {
+    const handleOnclick = async () => {
         const isValid = validateAll()
         if (!isValid) return
         try {
@@ -103,12 +103,12 @@ const Login = () => {
                                         </label>
                                     </div>
                                     <div className="d-grid">
-                                        <button className="btn btn-primary btn-login text-uppercase fw-bold" onClick={handleChangeOnclik} type="button">Sign
+                                        <button className="btn btn-primary btn-login text-uppercase fw-bold" onClick={handleOnclick} type="button">Sign
                                             in</button>
                                     </div>
                                     <hr className="my-4" />
                                     <div className="d-grid mb-2">
-                                        <button className="btn btn-google btn-login text-uppercase fw-bold" onClick={handleChangeOnclik} type="button">
+                                        <button className="btn btn-google btn-login text-uppercase fw-bold" onClick={handleOnclick} type="button">
                                             <FontAwesomeIcon icon={faGooglePlusG} className='fa-icon' />
                                             Sign in With Google account
                                         </button>

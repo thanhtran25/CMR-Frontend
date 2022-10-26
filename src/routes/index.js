@@ -8,6 +8,7 @@ import productDetail from '~/pages/product/productDetail';
 import loginAdmin from '~/admin/Login';
 import homeAdmin from '~/admin/Home';
 import userAdmin from '~/admin/UserAdmin';
+import cart from '~/pages/cart/cart';
 import { LayoutLogin, AdminLayout } from '~/components/Layout';
 
 
@@ -17,11 +18,12 @@ const publicRoutes = [
     { path: '/signup', component: Signup, layout: LayoutLogin },
     { path: '/forgotpassword', component: Forgotpassword, layout: LayoutLogin },
     { path: '/request-OTP', component: rqotb, layout: LayoutLogin },
-    { path: '/changePassword', component: changePassword, layout: LayoutLogin },
+    { path: '/password-reset/:uid/:token', component: changePassword, layout: LayoutLogin },
     { path: '/productdetail', component: productDetail, layout: null },
     { path: '/LoginAdmin', component: loginAdmin, layout: null },
     { path: '/HomeAdmin', component: homeAdmin, layout: AdminLayout },
     { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
+    { path: '/Cart', component: cart, layout: null },
 ]
 
 const privateRoutes = [
