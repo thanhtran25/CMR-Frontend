@@ -6,7 +6,34 @@ import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 import { Link, NavLink } from 'react-router-dom'
 import './header.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"
 function Header() {
+    let user = useSelector(state => state.user.user);
+    const navigate = useNavigate();
+    const handleOnclickLogin = () => {
+        navigate('/Login');
+    }
+    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Sign In</Button>;
+    if (user !== undefined && user !== null) {
+        let name = "";
+        let arrName = user.fullname.split(' ');
+        if (arrName.length < 1) {
+            name = user.fullname
+        } else {
+            name += arrName[arrName.length - 1];
+        }
+        path = (<NavDropdown style={{ color: '#fff' }} title={name} id="basic-nav-dropdown" className='col-7 col-xl-3 navNav'>
+            <NavDropdown.Item as={Link} to={'/Profile'}>Thông tin tài khoản</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.2">
+                Đổi mật khẩu
+            </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="#action/3.3">Đăng xuất</NavDropdown.Item>
+        </NavDropdown>)
+
+    }
     return (
         <div>
             <div className='header-topbar row pt-3 gx-0' >
@@ -37,7 +64,7 @@ function Header() {
                             <span className='cart-count'>0</span>
                         </Link>
                         <div className='col-1 col-xl-1'></div>
-                        <Button variant='warning' className='col-7 col-xl-3'>Sign In</Button>
+                        {path}
                     </div>
                 </div>
             </div>

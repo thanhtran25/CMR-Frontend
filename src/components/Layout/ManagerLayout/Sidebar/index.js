@@ -12,7 +12,7 @@ function Sidebar() {
                 <div className="sidebar-header">
                     <div className="d-flex justify-content-center">
                         <div className="logo">
-                            <Link to="/homeAdmin"><img style={{ borderRadius: '100%' }} src={require('~/assets/images/logo.jpg')} alt="Logo" />
+                            <Link to="/homeManager"><img style={{ borderRadius: '100%' }} src={require('~/assets/images/logo.jpg')} alt="Logo" />
                             </Link>
                         </div>
                         <div className="toggler">
@@ -22,7 +22,7 @@ function Sidebar() {
                 </div>
                 <div className="sidebar-menu">
                     <ul className="menu">
-                        <NavLink to="/homeAdmin" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                        <NavLink to="/homeManager" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
                             <span className="sidebar-link" >
                                 <FontAwesomeIcon icon={faHouse} />
                                 <span>Trang chủ</span>

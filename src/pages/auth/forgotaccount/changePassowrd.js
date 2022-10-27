@@ -1,14 +1,10 @@
 import { render } from '@testing-library/react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import className from 'className/bind';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faSquareFacebook, faInstagram, faTwitter, faYoutube, faEmpire } from '@fortawesome/free-brands-svg-icons';
-// import { faCameraRetro, faVideo, faWrench, faPhone } from '@fortawesome/free-solid-svg-icons';
 import './changePassword.scss'
 import { Routes, Route, useParams } from 'react-router-dom';
 import { ChangePasswordService } from '~/service/changePasswordService';
 import { useState } from 'react';
-// const cx = className.bind(styles);
+import validator from 'validator';
 const Login = () => {
 
     const { uid, token } = useParams();
@@ -18,24 +14,28 @@ const Login = () => {
         token: token
     });
     const [pass, setPass] = useState({
-        password: "",
         repassword: ""
     });
-    const handleChange = e => {
+    const [validate, setValidate] = useState('')
+    const handleChangeRepassword = e => {
         const value = e.target.value;
 
         setPass({
             ...pass,
             [e.target.name]: value
         });
-        console.log(pass)
     }
-    const handleOnclick = async () => {
+    const handleChangePassword = e => {
+        const value = e.target.value;
+
         setChange({
             ...change,
-            password: pass.password
-        })
-        console.log(change)
+            [e.target.name]: value
+        });
+    }
+    const handleOnclick = async () => {
+        const isValid = validateAll()
+        if (!isValid) return
         try {
             let response = await ChangePasswordService(change);
             console.log(response);
@@ -43,21 +43,40 @@ const Login = () => {
 
         }
     }
+    const validateAll = () => {
+        const msg = {}
+        if (validator.isEmpty(change.password)) {
+            msg.password = "Please input your Password"
+        }
+        if (validator.isEmpty(pass.repassword)) {
+            msg.repassword = "Please input your Comfirm Password"
+        }
+        else {
+            if (change.password !== pass.repassword) {
+                msg.repassword = "Confirm password is not valid"
+            }
+        }
+        setValidate(msg)
+        if (Object.keys(msg).length > 0) return false
+        return true
+    }
     return (
         <div className="container-fluid bodyLogin">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card border-0 shadow rounded-3 my-5">
                         <div className="card-body p-4 p-sm-5">
-                            <h5 className="card-title text-center mb-5 fw-light fs-5">{uid}   {token}</h5>
+                            <h5 className="card-title text-center mb-5 fw-light fs-5">Cập nhật lại mật khẩu</h5>
                             <form>
                                 <div className="form-floating mb-3">
-                                    <input type="password" name="password" className="form-control" id="floatingInput" onChange={handleChange} placeholder="name@example.com" />
-                                    <label for="floatingInput">Enter Password:</label>
+                                    <input type="password" name="password" className="form-control" id="floatingInput" onChange={handleChangePassword} placeholder="name@example.com" />
+                                    <label htmlFor="floatingInput">Enter Password:</label>
+                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
                                 </div>
                                 <div className="form-floating mb-3">
-                                    <input type="password" name="repassword" className="form-control" id="floatingPassword" onChange={handleChange} placeholder="Password" />
-                                    <label for="floatingPassword">Re-enter Password:</label>
+                                    <input type="password" name="repassword" className="form-control" id="floatingPassword" onChange={handleChangeRepassword} placeholder="Password" />
+                                    <label htmlFor="floatingPassword">Re-enter Password:</label>
+                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.repassword}</p>
                                 </div>
                                 <div className="forgotbutton">
                                     <div>
