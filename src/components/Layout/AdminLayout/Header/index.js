@@ -54,7 +54,7 @@ function Header() {
                             </a>
                             <ul className={(!showNav ? 'show' : '') + " dropdown-menu dropdown-menu-end"} aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <h6 className="dropdown-header">duy56vn@gmail</h6>
+                                    <h6 className="dropdown-header">duy56vn@gmail.com </h6>
                                 </li>
                                 <li stye={{ backgroundColor: '#fff !important' }}>
                                     <button className="btn-changepass" style={{ background: '#fff' }}><a id='open-change-pass-btn' className="dropdown-item" ><i className="icon-mid bi bi-key me-2"></i> Đổi mật khẩu</a></button>

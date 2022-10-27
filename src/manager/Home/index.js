@@ -1,14 +1,9 @@
 import React from 'react'
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { Link, NavLink } from 'react-router-dom'
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faSearch, faShoppingBasket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import Banner from '~/components/Layout/DefaultLayout/Banner';
 import Header from '~/components/Layout/AdminLayout/Header';
-function homeAdmin() {
+function homeManager() {
     return (
         <>
 
@@ -28,7 +23,7 @@ function homeAdmin() {
                                         <div className="card-content">
                                             <div className="card-body">
                                                 <h4 className="card-title">Hướng tới tương lai</h4>
-                                                <img className="img-fluid w-100" src={require('~/assets/images/mayquay-gioithieu.jpg')} />
+                                                <img className="img-fluid w-100" src={require('~/assets/images/mayanh-gioithieu.jpg')} />
                                                 <p className="card-text">
 
                                                     Là một hãng hàng không quốc tế năng động, hiện đại và mang đậm dấu ấn bản sắc văn hóa truyền thống Việt Nam, trong suốt hơn 20 năm phát triển với tốc độ tăng trưởng ở mức hai con số, Vietnam Airlines đã và đang dẫn đầu thị trường hàng không Việt Nam - một trong những thị trường nội địa có sức tăng trưởng nhanh nhất thế giới. Là hãng hàng không hiện đại với thương hiệu được biết đến rộng rãi nhờ bản sắc văn hóa riêng biệt, TDPQ Air đang hướng tới trở thành hãng hàng không quốc tế chất lượng 5 sao dẫn đầu khu vực châu Á.
@@ -50,7 +45,7 @@ function homeAdmin() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <img className="img-fluid w-80" src={require('~/assets/images/mayquay-gioithieu.jpg')} />
+                                        <img className="img-fluid w-80" src={require('~/assets/images/mayanh-gioithieu.jpg')} />
                                     </div>
                                 </div>
                                 <div className="col-xl-4 col-md-4 col-sm-12">
@@ -97,4 +92,4 @@ function homeAdmin() {
     )
 }
 
-export default homeAdmin;
+export default homeManager;
