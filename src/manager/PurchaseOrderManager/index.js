@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './purchaseorderManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function PurchaseorderManager() {
+    const [showAdd, setShowAdd] = useState(false);
+    const [showRepair, setShowRepair] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -40,7 +46,7 @@ function PurchaseorderManager() {
                                         <button id='btn-delete-purchaseorder' className="btn btn-danger">
                                             <i className="bi bi-trash-fill"></i> Xóa đơn nhập hàng
                                         </button>
-                                        <button id='btn-createpurchaseorder' className="btn btn-primary">
+                                        <button id='btn-createpurchaseorder' className="btn btn-primary" onClick={() => setShowAdd(true)}>
                                             <i className="bi bi-plus"></i> Thêm đơn nhập hàng
                                         </button>
                                     </div>
@@ -55,9 +61,10 @@ function PurchaseorderManager() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
-                                                    <th>Tên đơn nhập hàng</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th>ID phiếu nhập</th>
+                                                    <th>Tên nhân viên</th>
+                                                    <th>Tên nhà cung cấp</th>
+                                                    <th>Tác vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -71,6 +78,174 @@ function PurchaseorderManager() {
                                 </div>
                             </div>
                         </section>
+                    </div>
+                    <div>
+                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thêm phiếu nhập hàng</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhân viên:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowAdd(false)}>
+                                    Thêm
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sửa thông tin phiếu nhập hàng</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhân viên:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày thêm:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                    Sửa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showDetail} onHide={() => setShowDetail(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thông tin chi tiết phiếu nhập hàng</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>ID phiếu nhập hàng:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhân viên:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên sản phẩm:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Giá:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Số lượng:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày thêm:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowDetail(false)}>
+                                    Đóng
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
             </div >
