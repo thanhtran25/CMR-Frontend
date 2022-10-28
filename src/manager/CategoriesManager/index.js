@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './categoriesManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
-function categoriesManager() {
+function CategoriesManager() {
+    const [showAdd, setShowAdd] = useState(false);
+    const [showRepair, setShowRepair] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -40,7 +46,7 @@ function categoriesManager() {
                                         <button id='btn-delete-categories' className="btn btn-danger">
                                             <i className="bi bi-trash-fill"></i> Xóa danh mục
                                         </button>
-                                        <button id='btn-createcategories' className="btn btn-primary">
+                                        <button id='btn-createcategories' className="btn btn-primary" onClick={() => setShowAdd(true)}>
                                             <i className="bi bi-plus"></i> Thêm danh mục
                                         </button>
                                     </div>
@@ -55,9 +61,9 @@ function categoriesManager() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
+                                                    <th>ID</th>
                                                     <th>Tên danh mục</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th>Tác vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -72,10 +78,65 @@ function categoriesManager() {
                             </div>
                         </section>
                     </div>
+                    <div>
+                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thêm danh mục</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên danh mục:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowAdd(false)}>
+                                    Thêm
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sửa thông tin danh mục</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên danh mục:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                    Sửa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
                 </div>
             </div >
         </>
     )
 }
 
-export default categoriesManager;
+export default CategoriesManager;

@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './inventoriesManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
-function inventoriesManager() {
+function InventoriesManager() {
+    const [showAdd, setShowAdd] = useState(false);
+    const [showRepair, setShowRepair] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -25,7 +31,7 @@ function inventoriesManager() {
                             <div className="row">
                                 <div className="col-12 col-md-7 order-md-1 order-last">
                                     <label>
-                                        <h3>Danh sách tồn kho</h3>
+                                        <h3>Danh sách kho</h3>
                                     </label>
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
@@ -38,10 +44,10 @@ function inventoriesManager() {
 
                                     <div className=" loat-start float-lg-end mb-3">
                                         <button id='btn-delete-inventories' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa tồn kho
+                                            <i className="bi bi-trash-fill"></i> Xóa kho
                                         </button>
-                                        <button id='btn-createinventories' className="btn btn-primary">
-                                            <i className="bi bi-plus"></i> Thêm tồn kho
+                                        <button id='btn-createinventories' className="btn btn-primary" onClick={() => setShowAdd(true)}>
+                                            <i className="bi bi-plus"></i> Thêm kho
                                         </button>
                                     </div>
                                 </div>
@@ -55,9 +61,10 @@ function inventoriesManager() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
-                                                    <th>Số lượng đã bán</th>
-                                                    <th>Số lượng còn lại</th>
-                                                    <th></th>
+                                                    <th>ID</th>
+                                                    <th>Tên kho</th>
+                                                    <th>Địa chỉ</th>
+                                                    <th>Tác vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -72,10 +79,143 @@ function inventoriesManager() {
                             </div>
                         </section>
                     </div>
+                    <div>
+                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thêm kho</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên kho:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Địa chỉ:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowAdd(false)}>
+                                    Thêm
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sửa thông tin kho</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên kho:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Địa chỉ:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                    Sửa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showDetail} onHide={() => setShowDetail(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thông tin chi tiết kho</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên kho:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            disabled
+                                            readOnly
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Địa chỉ:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            disabled
+                                            readOnly
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên sản phẩm:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            disabled
+                                            readOnly
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Số lượng đã bán:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            disabled
+                                            readOnly
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Số còn lại:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            disabled
+                                            readOnly
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowDetail(false)}>
+                                    Đóng
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
                 </div>
             </div >
         </>
     )
 }
 
-export default inventoriesManager;
+export default InventoriesManager;

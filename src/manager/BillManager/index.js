@@ -3,7 +3,7 @@ import './billManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
 
-function billManager() {
+function BillManager() {
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -68,4 +68,4 @@ function billManager() {
     )
 }
 
-export default billManager;
+export default BillManager;

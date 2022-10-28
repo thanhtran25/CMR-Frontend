@@ -3,7 +3,7 @@ import './salecodeManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
 
-function salecodeManager() {
+function SalecodeManager() {
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -78,4 +78,4 @@ function salecodeManager() {
     )
 }
 
-export default salecodeManager;
+export default SalecodeManager;
