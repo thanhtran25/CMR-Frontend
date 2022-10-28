@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './supplierManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function SupplierManager() {
+    const [showAdd, setShowAdd] = useState(false);
+    const [showRepair, setShowRepair] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -40,7 +46,7 @@ function SupplierManager() {
                                         <button id='btn-delete-supplier' className="btn btn-danger">
                                             <i className="bi bi-trash-fill"></i> Xóa nhà cung cấp
                                         </button>
-                                        <button id='btn-createsupplier' className="btn btn-primary">
+                                        <button id='btn-createsupplier' className="btn btn-primary" onClick={() => setShowAdd(true)}>
                                             <i className="bi bi-plus"></i> Thêm nhà cung cấp
                                         </button>
                                     </div>
@@ -56,8 +62,11 @@ function SupplierManager() {
                                                 <tr>
                                                     <th>Chọn</th>
                                                     <th>Tên nhà cung cấp</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th>Địa chỉ</th>
+                                                    <th>Số điện thoại</th>
+                                                    <th>Ngày thêm</th>
+                                                    <th>Ngày sửa gần nhất</th>
+                                                    <th>Tác vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -71,6 +80,117 @@ function SupplierManager() {
                                 </div>
                             </div>
                         </section>
+                    </div>
+                    <div>
+                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thêm nhà cung cấp</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Địa chỉ:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Số điện thoai:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowAdd(false)}>
+                                    Thêm
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sửa thông tin nhà cung cấp</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>ID nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Địa chỉ:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Số điện thoai:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày thêm:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                    Sửa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
             </div >
