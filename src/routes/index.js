@@ -11,17 +11,16 @@ import userAdmin from '~/admin/UserAdmin';
 import cart from '~/pages/cart/cart';
 import UserProfile from '~/pages/userprofile/userprofile';
 import { LayoutLogin, AdminLayout, ManagerLayout } from '~/components/Layout';
-import billManager from '~/manager/BillManager';
-import brandManager from '~/manager/BrandManager';
-import categoriesManager from '~/manager/CategoriesManager';
-import homeManager from '~/manager/Home';
-import insurancesManager from '~/manager/InsurancesManager';
-import inventoriesManager from '~/manager/InventoriesManager';
-import loginManager from '~/manager/Login';
-import productManager from '~/manager/ProductManager';
-import purchaseorderManager from '~/manager/PurchaseOrderManager';
-import salecodeManager from '~/manager/SaleCodeManager';
-import supplierManager from '~/manager/SupplierManager';
+import BillManager from '~/manager/BillManager';
+import BrandManager from '~/manager/BrandManager';
+import CategoriesManager from '~/manager/CategoriesManager';
+import HomeManager from '~/manager/Home';
+import InventoriesManager from '~/manager/InventoriesManager';
+import LoginManager from '~/manager/Login';
+import ProductManager from '~/manager/ProductManager';
+import PurchaseorderManager from '~/manager/PurchaseOrderManager';
+import SalecodeManager from '~/manager/SaleCodeManager';
+import SupplierManager from '~/manager/SupplierManager';
 
 
 const publicRoutes = [
@@ -37,17 +36,16 @@ const publicRoutes = [
     { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
     { path: '/Cart', component: cart, layout: null },
     { path: '/Profile', component: UserProfile, layout: null },
-    { path: '/BillManager', component: billManager, layout: ManagerLayout },
-    { path: '/BrandManager', component: brandManager, layout: ManagerLayout },
-    { path: '/CategoriesManager', component: categoriesManager, layout: ManagerLayout },
-    { path: '/HomeManager', component: homeManager, layout: ManagerLayout },
-    { path: '/InsurancesManager', component: insurancesManager, layout: ManagerLayout },
-    { path: '/InventoriesManager', component: inventoriesManager, layout: ManagerLayout },
-    { path: '/Login', component: loginManager, layout: ManagerLayout },
-    { path: '/ProductManager', component: productManager, layout: ManagerLayout },
-    { path: '/PurchaseOrderManager', component: purchaseorderManager, layout: ManagerLayout },
-    { path: '/SaleCodeManager', component: salecodeManager, layout: ManagerLayout },
-    { path: '/SupplierManager', component: supplierManager, layout: ManagerLayout },
+    { path: '/BillManager', component: BillManager, layout: ManagerLayout },
+    { path: '/BrandManager', component: BrandManager, layout: ManagerLayout },
+    { path: '/CategoriesManager', component: CategoriesManager, layout: ManagerLayout },
+    { path: '/HomeManager', component: HomeManager, layout: ManagerLayout },
+    { path: '/InventoriesManager', component: InventoriesManager, layout: ManagerLayout },
+    { path: '/LoginManager', component: LoginManager, layout: null },
+    { path: '/ProductManager', component: ProductManager, layout: ManagerLayout },
+    { path: '/PurchaseOrderManager', component: PurchaseorderManager, layout: ManagerLayout },
+    { path: '/SaleCodeManager', component: SalecodeManager, layout: ManagerLayout },
+    { path: '/SupplierManager', component: SupplierManager, layout: ManagerLayout },
 ]
 
 const privateRoutes = [

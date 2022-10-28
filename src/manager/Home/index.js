@@ -3,7 +3,7 @@ import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Banner from '~/components/Layout/DefaultLayout/Banner';
 import Header from '~/components/Layout/AdminLayout/Header';
-function homeManager() {
+function HomeManager() {
     return (
         <>
 
@@ -92,4 +92,4 @@ function homeManager() {
     )
 }
 
-export default homeManager;
+export default HomeManager;

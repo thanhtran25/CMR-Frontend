@@ -3,7 +3,7 @@ import './supplierManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
 
-function supplierManager() {
+function SupplierManager() {
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -78,4 +78,4 @@ function supplierManager() {
     )
 }
 
-export default supplierManager;
+export default SupplierManager;

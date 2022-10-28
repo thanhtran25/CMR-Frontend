@@ -29,7 +29,7 @@ function LoginManager() {
                     </div>
                     <div className="col-lg-6 d-none d-lg-block">
                         <div className="auth-right">
-                            <img src={require('~/assets/images/mayanh-tieubieu.jpg')} className=" d-block" />
+                            <img src={require('~/assets/images/mayquay-gioithieu.jpg')} className=" d-block" />
                         </div>
                     </div>
                 </div>
