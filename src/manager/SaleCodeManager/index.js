@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './salecodeManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 
 function SalecodeManager() {
+    const [showAdd, setShowAdd] = useState(false);
+    const [showRepair, setShowRepair] = useState(false);
+    const [showDetail, setShowDetail] = useState(false);
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -25,7 +31,7 @@ function SalecodeManager() {
                             <div className="row">
                                 <div className="col-12 col-md-7 order-md-1 order-last">
                                     <label>
-                                        <h3>Danh sách mã giảm giá</h3>
+                                        <h3>Danh sách khuyến mãi</h3>
                                     </label>
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
@@ -38,10 +44,10 @@ function SalecodeManager() {
 
                                     <div className=" loat-start float-lg-end mb-3">
                                         <button id='btn-delete-salecode' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa mã giảm giá
+                                            <i className="bi bi-trash-fill"></i> Xóa khuyến mãi
                                         </button>
-                                        <button id='btn-createsalecode' className="btn btn-primary">
-                                            <i className="bi bi-plus"></i> Thêm mã giảm giá
+                                        <button id='btn-createsalecode' className="btn btn-primary" onClick={() => setShowAdd(true)}>
+                                            <i className="bi bi-plus"></i> Thêm khuyến mãi
                                         </button>
                                     </div>
                                 </div>
@@ -55,9 +61,13 @@ function SalecodeManager() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
-                                                    <th>Tên mã giảm giá</th>
-                                                    <th></th>
-                                                    <th></th>
+                                                    <th>Tên chương trình</th>
+                                                    <th>% giảm giá</th>
+                                                    <th>Ngày bắt đầu</th>
+                                                    <th>Ngày kết thúc</th>
+                                                    <th>Ngày thêm</th>
+                                                    <th>Ngày sửa gần nhất</th>
+                                                    <th>Tác vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -72,6 +82,127 @@ function SalecodeManager() {
                             </div>
                         </section>
                     </div>
+                    <div>
+                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Thêm khuyến mãi</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên chương trình:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>% giảm giá:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày bắt đầu:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày kết thúc:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowAdd(false)}>
+                                    Thêm
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+                    <div>
+                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sửa thông tin khuyến mãi</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Tên chương trình:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>% giảm giá:</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày bắt đầu:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày kết thúc:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày thêm:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" >
+                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            placeholder=""
+                                            autoFocus
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
+                                    Đóng
+                                </Button>
+                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                    Sửa
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+
+
                 </div>
             </div >
         </>
