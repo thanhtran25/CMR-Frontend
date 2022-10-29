@@ -4,5 +4,13 @@ const userLogin = (payload) => {
         payload: payload
     }
 }
-
-export { userLogin }
+const userLogout = (payload = null) => {
+    return {
+        type: "USER_LOGOUT",
+        payload: payload
+    }
+}
+export {
+    userLogin,
+    userLogout
+}

@@ -9,12 +9,30 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux"
+import Modal from 'react-bootstrap/Modal';
+import { useState } from 'react';
+import cookies from 'react-cookies';
+import { useDispatch } from 'react-redux';
+import { userLogout } from '~/store/action/userAction';
+import validator from 'validator';
+import { ChangePasswordUserService } from '~/service/userService';
+
 function Header() {
     let user = useSelector(state => state.user.user);
     const navigate = useNavigate();
+    const dispatch = useDispatch()
     const handleOnclickLogin = () => {
         navigate('/Login');
     }
+    const handleOnclickLogout = () => {
+        cookies.remove("accessToken")
+        cookies.remove("user")
+        dispatch(userLogout());
+    }
+    const [show, setShow] = useState(false);
+    const [validate, setValidate] = useState('')
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Sign In</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
@@ -26,49 +44,165 @@ function Header() {
         }
         path = (<NavDropdown style={{ color: '#fff' }} title={name} id="basic-nav-dropdown" className='col-7 col-xl-3 navNav'>
             <NavDropdown.Item as={Link} to={'/Profile'}>Thông tin tài khoản</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
+            <NavDropdown.Item onClick={handleShow}>
                 Đổi mật khẩu
             </NavDropdown.Item>
             <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.3">Đăng xuất</NavDropdown.Item>
+            <NavDropdown.Item onClick={handleOnclickLogout}>Đăng xuất</NavDropdown.Item>
         </NavDropdown>)
+    }
+    const [change, setChange] = useState({
+        currentPassword: "",
+        newPassword: ""
+    });
+    const [confirmPass, setConfirmPass] = useState({
+        repass: "",
+    })
+    const handleChangePassword = e => {
+        const value = e.target.value;
+        setChange({
+            ...change,
+            [e.target.name]: value
+        });
+        console.log(change)
+    }
+    const RePassword = e => {
+        const value = e.target.value;
+        setConfirmPass({
+            ...confirmPass,
+            [e.target.name]: value
+        });
+        console.log(confirmPass)
+    }
+    const handeClickChangePassword = async (e) => {
+        e.preventDefault();
+        const isValid = validateAll()
+        if (!isValid) return
+        try {
+            let token = cookies.load('Token');
+            let response = await ChangePasswordUserService(change, token);
+            console.log(response);
+        } catch (e) {
+            console.log(e);
+        }
 
     }
+    const validateAll = () => {
+        const msg = {}
+        if (validator.isEmpty(change.currentPassword)) {
+            msg.passwordcCurrent = "Please input your Current Password"
+        } else {
+            if (change.currentPassword < 8) {
+                msg.passwordcCurrent = '"password" length must be at least 8 characters'
+            }
+        }
+
+        if (validator.isEmpty(change.newPassword)) {
+            msg.passwordNew = "Please input your New Password"
+        }
+        else {
+            if (change.newPassword < 8) {
+                msg.passwordNew = '"password" length must be at least 8 characters'
+            }
+        }
+
+        setValidate(msg)
+        if (Object.keys(msg).length > 0) return false
+        return true
+    }
     return (
-        <div>
-            <div className='header-topbar row pt-3 gx-0' >
-                <div className='header-topbar-content col-12 col-xl-4'>
-                    <pre> G O L D    D U C K    C A M E R A </pre>
-                </div>
-
-                <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
-                    <div className='search-bar '>
-                        <Form className="d-flex">
+        <>
+            <Modal className='ModalResetpass' show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Cập nhật lại mật khẩu</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form method='PUT'>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Mật khẩu cũ:</Form.Label>
                             <Form.Control
-                                type="search"
-                                placeholder="...Search"
-                                className="me-2"
-                                aria-label="Search"
+                                type="password"
+                                placeholder="PassWord"
+                                name="currentPassword"
+                                defaultValue={change.currentPassword}
+                                onChange={handleChangePassword}
+                                autoFocus
                             />
-                            <Button variant="warning">Search</Button>
-                        </Form>
+                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.passwordcCurrent}</p>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Mật khẩu mới:</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="PassWord"
+                                name="newPassword"
+                                onChange={handleChangePassword}
+                                defaultValue={change.newPassword}
+                                autoFocus
+                            />
+                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.passwordNew}</p>
+                        </Form.Group>
+                        <Form.Group
+                            className="mb-3"
+                            controlId="exampleForm.ControlTextarea1"
+                        >
+                            <Form.Label>Nhập lại mật khẩu:</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="PassWord"
+                                name="repass"
+                                defaultValue={confirmPass.repass}
+                                onChange={RePassword}
+                                autoFocus
+                            />
+                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.passwordConfirm}</p>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Đóng
+                    </Button>
+                    <Button variant="primary" type="submit" onClick={handeClickChangePassword}>
+                        Lưu
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            <div>
+                <div className='header-topbar row pt-3 gx-0' >
+                    <div className='header-topbar-content col-12 col-xl-4'>
+                        <pre> G O L D    D U C K    C A M E R A </pre>
                     </div>
-                </div>
+
+                    <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
+                        <div className='search-bar '>
+                            <Form className="d-flex">
+                                <Form.Control
+                                    type="search"
+                                    placeholder="...Search"
+                                    className="me-2"
+                                    aria-label="Search"
+                                />
+                                <Button variant="warning">Search</Button>
+                            </Form>
+                        </div>
+                    </div>
 
 
-                <div className='col-4 col-xl-3'>
-                    <div className='row'>
-                        <div className='col-xl-6'></div>
-                        <Link className='shop-card col-1 col-xl-1'>
-                            <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
-                            <span className='cart-count'>0</span>
-                        </Link>
-                        <div className='col-1 col-xl-1'></div>
-                        {path}
+                    <div className='col-4 col-xl-3'>
+                        <div className='row'>
+                            <div className='col-xl-6'></div>
+                            <Link className='shop-card col-1 col-xl-1'>
+                                <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
+                                <span className='cart-count'>0</span>
+                            </Link>
+                            <div className='col-1 col-xl-1'></div>
+                            {path}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 
 }
