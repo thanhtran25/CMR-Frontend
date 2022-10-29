@@ -1,10 +1,14 @@
 import { render } from '@testing-library/react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './forgotPassword.scss'
+import validator from 'validator';
 import { useState } from 'react';
-import { forgotPasswordService } from '~/service/forgotPasswordService';
+import { forgotPasswordService } from '~/service/authService';
 const Forgotpassword = () => {
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState({
+        email: ""
+    });
+    const [validate, setValidate] = useState('')
     const handleChange = e => {
         const value = e.target.value;
         setEmail({
@@ -13,12 +17,27 @@ const Forgotpassword = () => {
         });
     };
     const requireOnclick = async () => {
+        const isValid = validateAll()
+        if (!isValid) return
         try {
-            let response = await forgotPasswordService(email);
+            let response = await forgotPasswordService(email.email);
             console.log(response);
         } catch (e) {
 
         }
+    }
+    const validateAll = () => {
+        const msg = {}
+        if (validator.isEmpty(email.email)) {
+            msg.email = "Please input your Email"
+        } else {
+            if (!validator.isEmail(email.email)) {
+                msg.email = "Incorrect data in email"
+            }
+        }
+        setValidate(msg)
+        if (Object.keys(msg).length > 0) return false
+        return true
     }
     return (
         <div className="body-forgot">
@@ -37,6 +56,7 @@ const Forgotpassword = () => {
                                     <div className="form-floating mb-3 mt-2">
                                         <input onChange={handleChange} type="email" name='email' className="form-control" id="floatingInput" placeholder="name@example.com" />
                                         <label htmlFor="floatingInput">Email address:</label>
+                                        <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
                                     </div>
                                     <div className="forgotbutton">
                                         <div>

@@ -2,12 +2,19 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './productDetail.scss'
 import { useState } from 'react'
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 const ProductDetail = () => {
-    const [detail, setDetail] = useState({
+    const [images, setImages] = useState({
         img1: 'https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg',
         img2: 'https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_2.jpg'
     });
+    const [showImg, setShowImg] = useState('')
+    const handleOnclickImg = e => {
+        const value = e;
+        console.log(e.target.value)
+    }
     return (
         <div className="container bodyDetail">
             <div className="card1">
@@ -19,10 +26,9 @@ const ProductDetail = () => {
                                 <div className="tab-pane active" id="pic-1"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" /></div>
                             </div>
                             <ul className="preview-thumbnail nav nav-tabs">
-                                <li className="active"><a data-target="#pic-1" data-toggle="tab"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" /></a></li>
-                                <li><a data-target="#pic-2" data-toggle="tab"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_2.jpg" /></a></li>
+                                <li><a data-target="#pic-1" data-toggle="tab"><img src={images.img1} /></a></li>
+                                <li><a data-target="#pic-2" data-toggle="tab"><img src={images.img2} /></a></li>
                             </ul>
-
                         </div>
                         <div className="details col-md-6">
                             <h3 className="product-title">Máy Quay Canon XF 405</h3>
@@ -44,7 +50,10 @@ const ProductDetail = () => {
                             <p className="product-description">Máy ảnh siêu siêu siêu siêu siêu siêu siêu siêu xịn</p>
 
                             <div className="action">
-                                <button className="add-to-cart btn btn-default" type="button">add to cart</button>
+                                <button className="add-to-cart btn btn-default" type="button">
+                                    <FontAwesomeIcon icon={faCartShopping} className='fa-icon' />
+                                    <span>       </span>Thêm giỏ hàng
+                                </button>
                             </div>
                         </div>
                     </div>

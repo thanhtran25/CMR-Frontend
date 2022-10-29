@@ -3,7 +3,7 @@ import './login.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG } from '@fortawesome/free-brands-svg-icons';
 import { useState } from 'react'
-import { loginService } from '../../../service/loginService'
+import { loginService } from '../../../service/authService'
 import validator from 'validator';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ const Login = () => {
             const data = response.data;
             console.log(data)
 
-            cookies.save("accessToken", data.accessToken)
+            cookies.save("Token", data.accessToken)
             cookies.save("user", data.information)
             dispatch(userLogin(data.information))
             navigate('/');
@@ -90,16 +90,9 @@ const Login = () => {
                                         <label htmlFor="floatingPassword">Password:</label>
                                         <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
                                     </div>
-
-                                    <div className="form-check mb-3">
-                                        <input className="form-check-input" type="checkbox" value="" id="rememberPasswordCheck" />
-                                        <label className="form-check-label" htmlFor="rememberPasswordCheck">
-                                            Remember password
-                                        </label>
-                                    </div>
                                     <div className='d-grid'>
                                         <label>
-                                            Forgot password
+                                            Quên mật khẩu
                                         </label>
                                     </div>
                                     <div className="d-grid">

@@ -1,8 +1,6 @@
-import { render } from '@testing-library/react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './changePassword.scss'
 import { Routes, Route, useParams } from 'react-router-dom';
-import { ChangePasswordService } from '~/service/changePasswordService';
+import { ChangePasswordService } from '~/service/authService';
 import { useState } from 'react';
 import validator from 'validator';
 const Login = () => {
@@ -61,7 +59,7 @@ const Login = () => {
         return true
     }
     return (
-        <div className="container-fluid bodyLogin">
+        <div className="container">
             <div className="row">
                 <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div className="card border-0 shadow rounded-3 my-5">

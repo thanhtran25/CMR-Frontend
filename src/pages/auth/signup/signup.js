@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './signup.scss'
 import { useState } from 'react'
-import { signupService } from '~/service/signupService'
+import { signupService } from '~/service/authService'
 import { Gender } from '~/core/constant'
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
@@ -158,30 +158,28 @@ const Signup = () => {
                                         <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.numberPhone}</p>
                                     </div>
                                     <div className="row">
-                                        <div className="col-12">
-                                            <div className="row">
-                                                <div className="col-7 form-floating mb-2">
-                                                    <input type="date" className="form-control" name="birthday" value={user.birthday} onChange={handleChange} id="floatingInputBirthday" placeholder="myusername" required autofocus />
-                                                    <label htmlFor="floatingInputUsername">Birthday</label>
-                                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.birthday}</p>
-                                                </div>
-                                                <div className="col-5">
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="gender" id="inlineRadio1" onChange={handleChange} value={Gender.MALE} />
-                                                        <label className="form-check-label" htmlFor="inlineRadio1">{Gender.MALE}</label>
-                                                    </div>
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="gender" id="inlineRadio2" onChange={handleChange} value={Gender.FEMALE} />
-                                                        <label className="form-check-label" htmlFor="inlineRadio2">{Gender.FEMALE}</label>
-                                                    </div>
-                                                    <div className="form-check form-check-inline">
-                                                        <input className="form-check-input" type="radio" name="gender" id="inlineRadio3" onChange={handleChange} value={Gender.OTHER} />
-                                                        <label className="form-check-label" htmlFor="inlineRadio3">{Gender.OTHER}</label>
-                                                    </div>
-                                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.gender}</p>
-                                                </div>
-                                            </div>
+
+                                        <div className="col-7 form-floating mb-2">
+                                            <input type="date" className="form-control" name="birthday" value={user.birthday} onChange={handleChange} id="floatingInputBirthday" placeholder="myusername" required autofocus />
+                                            <label htmlFor="floatingInputUsername">Birthday</label>
+                                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.birthday}</p>
                                         </div>
+                                        <div className="col-5">
+                                            <div className="form-check form-check-inline">
+                                                <input className="form-check-input" type="radio" name="gender" id="inlineRadio1" onChange={handleChange} value={Gender.MALE} />
+                                                <label className="form-check-label" htmlFor="inlineRadio1">{Gender.MALE}</label>
+                                            </div>
+                                            <div className="form-check form-check-inline">
+                                                <input className="form-check-input" type="radio" name="gender" id="inlineRadio2" onChange={handleChange} value={Gender.FEMALE} />
+                                                <label className="form-check-label" htmlFor="inlineRadio2">{Gender.FEMALE}</label>
+                                            </div>
+                                            <div className="form-check form-check-inline">
+                                                <input className="form-check-input" type="radio" name="gender" id="inlineRadio3" onChange={handleChange} value={Gender.OTHER} />
+                                                <label className="form-check-label" htmlFor="inlineRadio3">{Gender.OTHER}</label>
+                                            </div>
+                                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.gender}</p>
+                                        </div>
+
                                     </div>
                                     <div className="d-grid mb-2">
                                         <button className="btn btn-lg btn-primary btn-login fw-bold text-uppercase" onClick={handleChangeOnclik} type="button">Register</button>
