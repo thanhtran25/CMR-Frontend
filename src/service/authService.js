@@ -42,8 +42,19 @@ const forgotPasswordService = (user) => {
         bodyParameters
     )
 }
+const ChangePasswordService = (user) => {
+    const bodyParameters = {
+        ...user
+    };
+
+    return axios.post(
+        'http://localhost:1912/auth/password-reset',
+        bodyParameters
+    )
+}
 export {
     loginService,
     signupService,
-    forgotPasswordService
+    forgotPasswordService,
+    ChangePasswordService
 };

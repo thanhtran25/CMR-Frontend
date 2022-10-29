@@ -21,6 +21,7 @@ import ProductManager from '~/manager/ProductManager';
 import PurchaseorderManager from '~/manager/PurchaseOrderManager';
 import SalecodeManager from '~/manager/SaleCodeManager';
 import SupplierManager from '~/manager/SupplierManager';
+import RolesAdmin from '~/admin/RolesAdmin'
 
 
 const publicRoutes = [
@@ -34,6 +35,7 @@ const publicRoutes = [
     { path: '/LoginAdmin', component: loginAdmin, layout: null },
     { path: '/HomeAdmin', component: homeAdmin, layout: AdminLayout },
     { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
+    { path: '/RolesAdmin', component: RolesAdmin, layout: AdminLayout },
     { path: '/Cart', component: cart, layout: null },
     { path: '/Profile', component: UserProfile, layout: null },
     { path: '/BillManager', component: BillManager, layout: ManagerLayout },

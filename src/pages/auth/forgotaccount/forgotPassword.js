@@ -17,10 +17,11 @@ const Forgotpassword = () => {
         });
     };
     const requireOnclick = async () => {
+        console.log(email)
         const isValid = validateAll()
         if (!isValid) return
         try {
-            let response = await forgotPasswordService(email.email);
+            let response = await forgotPasswordService(email);
             console.log(response);
         } catch (e) {
 
@@ -54,7 +55,7 @@ const Forgotpassword = () => {
                                         </label>
                                     </div>
                                     <div className="form-floating mb-3 mt-2">
-                                        <input onChange={handleChange} type="email" name='email' className="form-control" id="floatingInput" placeholder="name@example.com" />
+                                        <input onChange={handleChange} type="email" name='email' value={email.email} className="form-control" id="floatingInput" placeholder="name@example.com" />
                                         <label htmlFor="floatingInput">Email address:</label>
                                         <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
                                     </div>

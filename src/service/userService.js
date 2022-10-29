@@ -13,7 +13,7 @@ const ChangePasswordUserService = (user, token) => {
         'http://localhost:1912/users/me/password',
         bodyParameters,
         config,
-    ).then(console.log).catch(console.log);
+    )
 }
 
 export {
