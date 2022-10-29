@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faUser, faGears } from '@fortawesome/free-solid-svg-icons';
 import './sidebar.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -32,6 +32,12 @@ function Sidebar() {
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faUser} />
                                 <span>Quản lý tài khoản</span>
+                            </span>
+                        </NavLink>
+                        <NavLink to="/rolesAdmin" id="CN13" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                            <span className="sidebar-link">
+                                <FontAwesomeIcon icon={faGears} />
+                                <span>Quản lý phân quyền</span>
                             </span>
                         </NavLink>
                     </ul>
