@@ -25,7 +25,7 @@ function Header() {
         navigate('/Login');
     }
     const handleOnclickLogout = () => {
-        cookies.remove("accessToken")
+        cookies.remove("Token")
         cookies.remove("user")
         dispatch(userLogout());
     }
@@ -105,7 +105,13 @@ function Header() {
                 msg.passwordNew = '"password" length must be at least 8 characters'
             }
         }
-
+        if (validator.isEmpty(confirmPass.repass)) {
+            msg.passwordConfirm = "Please input your Confirm Password"
+        } else {
+            if (confirmPass.repass !== change.newPassword) {
+                msg.passwordConfirm = "Confirm password is incorect"
+            }
+        }
         setValidate(msg)
         if (Object.keys(msg).length > 0) return false
         return true

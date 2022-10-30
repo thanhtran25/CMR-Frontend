@@ -19,7 +19,6 @@ const UserProfile = () => {
     const [repair, setRepair] = useState(true)
     const handleChange = e => {
         const value = e.target.value;
-
         setUserProfile({
             ...userProfile,
             [e.target.name]: value
@@ -45,19 +44,19 @@ const UserProfile = () => {
         pathAddress = <input type="text" name="address" onChange={handleChange} class="form-control inputProfile" value={userProfile.address} />
         pathGender = (<div className='row' style={{ padding: '0 12px' }}>
             <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} value={Gender.MALE} name="gender" id="flexRadioDefault1" />
+                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'male'} value={Gender.MALE} name="gender" id="flexRadioDefault1" />
                 <label class="form-check-label" for="flexRadioDefault1">
                     Nam
                 </label>
             </div>
             <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} value={Gender.FEMALE} name="gender" id="flexRadioDefault2" />
+                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'female'} value={Gender.FEMALE} name="gender" id="flexRadioDefault2" />
                 <label class="form-check-label" for="flexRadioDefault2">
                     Nữ
                 </label>
             </div>
             <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} value={Gender.OTHER} name="gender" id="flexRadioDefault2" />
+                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'other'} value={Gender.OTHER} name="gender" id="flexRadioDefault2" />
                 <label class="form-check-label" for="flexRadioDefault2">
                     Khác
                 </label>

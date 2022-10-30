@@ -22,6 +22,7 @@ import PurchaseorderManager from '~/manager/PurchaseOrderManager';
 import SalecodeManager from '~/manager/SaleCodeManager';
 import SupplierManager from '~/manager/SupplierManager';
 import RolesAdmin from '~/admin/RolesAdmin'
+import Payment from '~/pages/payment/payment';
 
 
 const publicRoutes = [
@@ -32,6 +33,7 @@ const publicRoutes = [
     { path: '/request-OTP', component: rqotb, layout: LayoutLogin },
     { path: '/password-reset/:uid/:token', component: changePassword, layout: LayoutLogin },
     { path: '/productdetail', component: productDetail, layout: null },
+    { path: '/Payment', component: Payment, layout: null },
     { path: '/LoginAdmin', component: loginAdmin, layout: null },
     { path: '/HomeAdmin', component: homeAdmin, layout: AdminLayout },
     { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
