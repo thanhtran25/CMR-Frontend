@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './productDetail.scss'
 import { useState } from 'react'
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 

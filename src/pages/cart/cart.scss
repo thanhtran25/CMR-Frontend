@@ -1,202 +1,15 @@
-// @media (min-width: 1025px) {
-//     .h-custom {
-//         height: 100vh !important;
-//     }
-// }
-
-// .card-registration .select-input.form-control[readonly]:not([disabled]) {
-//     font-size: 1rem;
-//     line-height: 2.15;
-//     padding-left: .75em;
-//     padding-right: .75em;
-// }
-
-// .card-registration .select-arrow {
-//     top: 13px;
-// }
-
-// .bg-grey {
-//     background-color: #eae8e8;
-// }
-
-// @media (min-width: 992px) {
-//     .card-registration-2 .bg-grey {
-//         border-top-right-radius: 16px;
-//         border-bottom-right-radius: 16px;
-//     }
-// }
-
-// @media (max-width: 991px) {
-//     .card-registration-2 .bg-grey {
-//         border-bottom-left-radius: 16px;
-//         border-bottom-right-radius: 16px;
-//     }
-// }
-
-//=========================================
-// body {
-//     color: #000;
-//     overflow-x: hidden;
-//     height: 100%;
-//     background-color: #fff;
-//     background-repeat: no-repeat;
-// }
-
-// .plus-minus {
-//     position: relative;
-// }
-
-// .plus {
-//     position: absolute;
-//     top: -4px;
-//     left: 2px;
-//     cursor: pointer;
-// }
-
-// .minus {
-//     position: absolute;
-//     top: 8px;
-//     left: 5px;
-//     cursor: pointer;
-// }
-
-// .vsm-text:hover {
-//     color: #FF5252;
-// }
-
-// .book,
-// .book-img {
-//     width: 120px;
-//     height: 180px;
-//     border-radius: 5px;
-// }
-
-// .book {
-//     margin: 20px 15px 5px 15px;
-// }
-
-// .border-top {
-//     border-top: 1px solid #EEEEEE !important;
-//     margin-top: 20px;
-//     padding-top: 15px;
-// }
-
-// .card {
-//     margin: 40px 0px;
-//     padding: 40px 50px;
-//     border-radius: 20px;
-//     border: none;
-//     box-shadow: 1px 5px 10px 1px rgba(0, 0, 0, 0.2);
-// }
-
-// input,
-// textarea {
-//     background-color: #F3E5F5;
-//     padding: 8px 15px 8px 15px;
-//     width: 100%;
-//     border-radius: 5px !important;
-//     box-sizing: border-box;
-//     border: 1px solid #F3E5F5;
-//     font-size: 15px !important;
-//     color: #000 !important;
-//     font-weight: 300;
-// }
-
-// input:focus,
-// textarea:focus {
-//     -moz-box-shadow: none !important;
-//     -webkit-box-shadow: none !important;
-//     box-shadow: none !important;
-//     border: 1px solid #9FA8DA;
-//     outline-width: 0;
-//     font-weight: 400;
-// }
-
-// button:focus {
-//     -moz-box-shadow: none !important;
-//     -webkit-box-shadow: none !important;
-//     box-shadow: none !important;
-//     outline-width: 0;
-// }
-
-// .pay {
-//     width: 80px;
-//     height: 40px;
-//     border-radius: 5px;
-//     border: 1px solid #673AB7;
-//     margin: 10px 20px 10px 0px;
-//     cursor: pointer;
-//     box-shadow: 1px 5px 10px 1px rgba(0, 0, 0, 0.2);
-// }
-
-// .gray {
-//     -webkit-filter: grayscale(100%);
-//     -moz-filter: grayscale(100%);
-//     -o-filter: grayscale(100%);
-//     -ms-filter: grayscale(100%);
-//     filter: grayscale(100%);
-//     color: #E0E0E0;
-// }
-
-// .gray .pay {
-//     box-shadow: none;
-// }
-
-// #tax {
-//     border-top: 1px lightgray solid;
-//     margin-top: 10px;
-//     padding-top: 10px;
-// }
-
-// .btn-blue {
-//     border: none;
-//     border-radius: 10px;
-//     background-color: #673AB7;
-//     color: #fff;
-//     padding: 8px 15px;
-//     margin: 20px 0px;
-//     cursor: pointer;
-// }
-
-// .btn-blue:hover {
-//     background-color: #311B92;
-//     color: #fff;
-// }
-
-// #checkout {
-//     float: left;
-// }
-
-// #check-amt {
-//     float: right;
-// }
-
-// @media screen and (max-width: 768px) {
-
-//     .book,
-//     .book-img {
-//         width: 100px;
-//         height: 150px;
-//     }
-
-//     .card {
-//         padding-left: 15px;
-//         padding-right: 15px;
-//     }
-
-//     .mob-text {
-//         font-size: 13px;
-//     }
-
-//     .pad-left {
-//         padding-left: 20px;
-//     }
-//}
-//===========================
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
+* {
+    padding: 0;
+    margin: 0;
+    border: none;
+    list-style-type: none;
+    text-decoration: none;
+}
+
 .cartbody {
-    margin-top: 70px;
+    margin-top: 40px;
     font-family: 'Open Sans', serif;
 
     .card-body {
@@ -353,4 +166,19 @@
         line-height: 20px;
         font-size: 16px;
     }
+}
+
+.titleGiohang {
+    justify-content: center;
+    display: flex;
+    color: cadetblue;
+    font-size: 30px;
+    margin-top: 35px;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.cartText {
+    color: cadetblue;
+    font-weight: bold;
 }
