@@ -12,8 +12,7 @@ function Sidebar() {
                 <div className="sidebar-header">
                     <div className="d-flex justify-content-center">
                         <div className="logo">
-                            <Link to="/homeAdmin"><img style={{ borderRadius: '100%' }} src={require('~/assets/images/logo.jpg')} alt="Logo" />
-                            </Link>
+                            <img style={{ borderRadius: '100%' }} src={require('~/assets/images/logo.jpg')} alt="Logo" />
                         </div>
                         <div className="toggler">
                             <a href="#" className="sidebar-hide d-xl-none d-block"><i className="bi bi-x bi-middle"></i></a>
@@ -22,19 +21,13 @@ function Sidebar() {
                 </div>
                 <div className="sidebar-menu">
                     <ul className="menu">
-                        <NavLink to="/homeAdmin" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
-                            <span className="sidebar-link" >
-                                <FontAwesomeIcon icon={faHouse} />
-                                <span>Trang chủ</span>
-                            </span>
-                        </NavLink>
-                        <NavLink to="/userAdmin" id="CN13" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                        <NavLink to="/admin/user" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faUser} />
                                 <span>Quản lý tài khoản</span>
                             </span>
                         </NavLink>
-                        <NavLink to="/rolesAdmin" id="CN13" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                        <NavLink to="/admin/role" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faGears} />
                                 <span>Quản lý phân quyền</span>

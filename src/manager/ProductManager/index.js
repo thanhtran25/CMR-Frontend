@@ -143,7 +143,7 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3">
                                         <Form.Label>Chọn 2 ảnh sản phẩm:</Form.Label>
-                                        <Form.Control type="file" />
+                                        <Form.Control type="file" multiple />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>
@@ -235,7 +235,7 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3">
                                         <Form.Label>Chọn 2 ảnh sản phẩm:</Form.Label>
-                                        <Form.Control type="file" />
+                                        <Form.Control type="file" multiple />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>
