@@ -2,7 +2,6 @@ import Home from '~/pages/Home';
 import Login from '~/pages/auth/login/login';
 import Signup from '~/pages/auth/signup/signup';
 import Forgotpassword from '~/pages/auth/forgotaccount/forgotPassword';
-import rqotb from '~/pages/auth/forgotaccount/rqOtb'
 import changePassword from '~/pages/auth/forgotaccount/changePassowrd'
 import productDetail from '~/pages/product/productDetail';
 import loginAdmin from '~/admin/Login';
@@ -30,15 +29,14 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: LayoutLogin },
     { path: '/signup', component: Signup, layout: LayoutLogin },
     { path: '/forgotpassword', component: Forgotpassword, layout: LayoutLogin },
-    { path: '/request-OTP', component: rqotb, layout: LayoutLogin },
     { path: '/password-reset/:uid/:token', component: changePassword, layout: LayoutLogin },
     { path: '/productdetail', component: productDetail, layout: null },
-    { path: '/Payment', component: Payment, layout: null },
+    { path: '/Payment', component: Payment, layout: LayoutLogin },
     { path: '/LoginAdmin', component: loginAdmin, layout: null },
     { path: '/HomeAdmin', component: homeAdmin, layout: AdminLayout },
     { path: '/UserAdmin', component: userAdmin, layout: AdminLayout },
     { path: '/RolesAdmin', component: RolesAdmin, layout: AdminLayout },
-    { path: '/Cart', component: cart, layout: null },
+    { path: '/Cart', component: cart, layout: LayoutLogin },
     { path: '/Profile', component: UserProfile, layout: null },
     { path: '/BillManager', component: BillManager, layout: ManagerLayout },
     { path: '/BrandManager', component: BrandManager, layout: ManagerLayout },

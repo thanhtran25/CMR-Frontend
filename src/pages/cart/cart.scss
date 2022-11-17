@@ -9,7 +9,6 @@
 }
 
 .cartbody {
-    margin-top: 40px;
     font-family: 'Open Sans', serif;
 
     .card-body {
@@ -173,7 +172,7 @@
     display: flex;
     color: cadetblue;
     font-size: 30px;
-    margin-top: 35px;
+    margin-top: 25px;
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
@@ -181,4 +180,14 @@
 .cartText {
     color: cadetblue;
     font-weight: bold;
+}
+
+.iconHistory {
+    justify-content: right;
+    display: flex;
+    font-size: 30px;
+}
+
+.switchPage {
+    margin-top: 150px;
 }

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from '~/core/utils/axios';
 
 const loginService = (user) => {
     // const config = {
@@ -9,8 +9,8 @@ const loginService = (user) => {
         ...user
     };
 
-    return axios.post(
-        'http://localhost:1912/auth/signin',
+    return request.post(
+        'auth/signin',
         bodyParameters
     )
 }
@@ -23,8 +23,8 @@ const signupService = (user) => {
         ...user
     };
 
-    return axios.post(
-        'http://localhost:1912/auth/signup',
+    return request.post(
+        'auth/signup',
         bodyParameters
     )
 }
@@ -37,8 +37,8 @@ const forgotPasswordService = (user) => {
         ...user
     };
 
-    return axios.post(
-        'http://localhost:1912/auth/password-forgot',
+    return request.post(
+        'auth/password-forgot',
         bodyParameters
     )
 }
@@ -47,8 +47,8 @@ const ChangePasswordService = (user) => {
         ...user
     };
 
-    return axios.post(
-        'http://localhost:1912/auth/password-reset',
+    return request.post(
+        'auth/password-reset',
         bodyParameters
     )
 }

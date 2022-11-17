@@ -6,15 +6,35 @@ import { Link, NavLink } from 'react-router-dom'
 import './rolesAdmin.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faSearch, faShoppingBasket, faShoppingCart, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '~/components/Layout/AdminLayout/Header';
 import Modal from 'react-bootstrap/Modal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Gender, Roles } from '~/core/constant';
+import {
+    getUsersService,
+    getUserbyIdService,
+} from '~/service/userService'
+import cookies from 'react-cookies';
+import { faEye, faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
 function RolesAdmin() {
+    let token = cookies.load('Token');
+    const limit = 4;
     const [show, setShow] = useState(false);
-
+    const [users, setUsers] = useState();
+    const [showRepair, setShowRepair] = useState(false);
+    const getListUser = async () => {
+        let search = { limit: limit }
+        try {
+            const res = await getUsersService(token, search)
+            const data = (res && res.data) ? res.data : [];
+            setUsers(data.users)
+            console.log(data)
+            let pages = Math.ceil(data.length / limit)
+            console.log(pages)
+        } catch (error) {
+        }
+    }
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const optionsRoles = [
@@ -23,67 +43,24 @@ function RolesAdmin() {
         { value: Roles.STAFF, label: Roles.STAFF },
         { value: Roles.CUSTOMER, label: Roles.CUSTOMER }
     ]
+    const [repairuser, setRepairuser] = useState({
+        role: ''
+    });
+    const handleShowRepair = async (e) => {
+        try {
+            let data = await getUserbyIdService(e, token)
+            setRepairuser(data.data)
+        } catch (error) {
+
+        }
+        console.log(repairuser)
+        setShow(true)
+    };
+    useEffect(() => {
+        getListUser()
+    }, [])
     return (
         <>
-            <Modal className='ModalThem' show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                            <Form.Label>Địa chỉ Email:</Form.Label>
-                            <Form.Control
-                                readonly="readonly"
-                                placeholder="name@example.com"
-                            />
-                        </Form.Group>
-                        <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlTextarea1"
-                        >
-                            <Form.Label>Họ Tên:</Form.Label>
-                            <Form.Control
-                                readonly="readonly"
-                                placeholder="Họ tên"
-                            />
-                        </Form.Group>
-                        <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlTextarea1"
-                        >
-                            <Form.Label>Địa chỉ:</Form.Label>
-                            <Form.Control
-                                readonly="readonly"
-                                placeholder="Địa chỉ"
-                            />
-                        </Form.Group>
-                        <Form.Group
-                            className="mb-3"
-                            controlId="exampleForm.ControlTextarea1"
-                        >
-                            <Form.Label>Số điện thoại:</Form.Label>
-                            <Form.Control
-                                readonly="readonly"
-                                placeholder="Số điện thoại" />
-                        </Form.Group>
-                        <div className='row'>
-                            <div className='col-6'>
-                                <Form.Label>Quyền:</Form.Label>
-                                <Select defaultValue={optionsRoles[0]} options={optionsRoles} />
-                            </div>
-                        </div>
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
@@ -133,12 +110,38 @@ function RolesAdmin() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
-                                                    <th>Tên Đăng Nhập</th>
+                                                    <th>Tài khoản email</th>
+                                                    <th>Họ và tên</th>
+                                                    <th>Số điện thoại</th>
                                                     <th>Chức vụ</th>
                                                     <th>Tác Vụ</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {
+                                                    users && users.length > 0 &&
+                                                    users.map(item => {
+                                                        let s = 'table-info';
+                                                        if ((users.indexOf(item) + 1) % 2 !== 0) {
+                                                            s = 'table-light';
+                                                        } return (
+                                                            <tr className={s}>
+                                                                <td>{item.id}</td>
+                                                                <td className='text-break'>{item.email}</td>
+                                                                <td className='text-break'>{item.fullname}</td>
+                                                                <td className='text-break'>{item.numberPhone}</td>
+                                                                <td className='text-break'>{item.role}</td>
+                                                                <td className='text-break'>
+                                                                    <pre>
+                                                                        <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faEye} className='fa-icon' /></button><span>  </span>
+                                                                        <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button>
+                                                                    </pre>
+                                                                </td>
+                                                            </tr>
+                                                        )
+
+                                                    })
+                                                }
                                             </tbody>
                                         </table>
                                         <nav className="mt-5">
@@ -152,6 +155,122 @@ function RolesAdmin() {
                     </div>
                 </div>
             </div >
+            <Modal className='ModalChitiet' show={show} onHide={handleClose}>
+                <Modal.Header className='ModalChitietHeader' closeButton>
+                    <Modal.Title>Chi tiết người dùng</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Địa chỉ Email:</Form.Label>
+                            <Form.Control
+                                readonly="readonly"
+                                placeholder="name@example.com"
+                                defaultValue={repairuser.email}
+                            />
+                        </Form.Group>
+                        <Form.Group
+                            className="mb-2"
+                            controlId="exampleForm.ControlTextarea1"
+                        >
+                            <Form.Label>Họ Tên:</Form.Label>
+                            <Form.Control
+                                readonly="readonly"
+                                placeholder="Họ tên"
+                                defaultValue={repairuser.fullname}
+                            />
+                        </Form.Group>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="exampleForm.ControlTextarea1"
+                                >
+                                    <Form.Label>Ngày sinh:</Form.Label>
+                                    <Form.Control
+                                        readonly="readonly"
+                                        defaultValue={repairuser.birthday}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className='col-6'>
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="exampleForm.ControlTextarea1"
+                                >
+                                    <Form.Label>Số điện thoại:</Form.Label>
+                                    <Form.Control
+                                        readonly="readonly"
+                                        placeholder="Số điện thoại"
+                                        defaultValue={repairuser.numberPhone}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </div>
+                        <Form.Group
+                            className="mb-2"
+                            controlId="exampleForm.ControlTextarea1"
+                        >
+                            <Form.Label>Địa chỉ:</Form.Label>
+                            <Form.Control
+                                readonly="readonly"
+                                placeholder="Địa chỉ"
+                                defaultValue={repairuser.address}
+                            />
+                        </Form.Group>
+                        <div className='row'>
+                            <div className='col-6 mb-2'>
+                                <Form.Label>Quyền:</Form.Label>
+                                <Form.Control
+                                    readonly="readonly"
+                                    placeholder="Quyền"
+                                    defaultValue={repairuser.role}
+                                />
+                            </div>
+                            <div className='col-6 mb-2'>
+                                <Form.Label>Giới tính:</Form.Label>
+                                <Form.Control
+                                    readonly="readonly"
+                                    placeholder="Giới tính"
+                                    defaultValue={repairuser.gender}
+                                />
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="exampleForm.ControlTextarea1"
+                                >
+                                    <Form.Label>Ngày tạo:</Form.Label>
+                                    <Form.Control
+                                        readonly="readonly"
+                                        defaultValue={repairuser.createdAt}
+                                    />
+                                </Form.Group>
+                            </div>
+                            <div className='col-6'>
+                                <Form.Group
+                                    className="mb-2"
+                                    controlId="exampleForm.ControlTextarea1"
+                                >
+                                    <Form.Label>Ngày cập nhật gần nhất:</Form.Label>
+                                    <Form.Control
+                                        readonly="readonly"
+                                        placeholder="Số điện thoại"
+                                        defaultValue={repairuser.updatedAt}
+                                    />
+                                </Form.Group>
+                            </div>
+                        </div>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }

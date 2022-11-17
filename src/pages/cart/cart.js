@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './cart.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react'
 
 const cart = () => {
@@ -9,12 +9,16 @@ const cart = () => {
     return (
         <div class="container cartbody">
             <div className='row'>
-                <h4><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span class='cartText'>Giỏ Hàng</span></h4>
+                <h4 className='switchPage'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span class='cartText'>Giỏ Hàng</span></h4>
             </div>
             <div className='row'>
                 <h3 className='titleGiohang'>Chi tiết đơn hàng</h3>
             </div>
-            <div class="row mt-3">
+            {/* <div className='row'></div>
+            <div className='col-lg-9'>
+                <FontAwesomeIcon icon={faHistory} className='fa-icon iconHistory' />
+            </div> */}
+            <div class="row mt-2">
                 <aside class="col-lg-9">
                     <div class="card">
                         <div class="table-responsive">
@@ -33,10 +37,10 @@ const cart = () => {
                                     <tr>
                                         <td>
 
-                                            <div class="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
+                                            <div className="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
 
                                         </td>
-                                        <td><p class="text-break">Máy Ảnh Canon Powershot SX620</p></td>
+                                        <td><p className="text-break">Máy Ảnh Canon Powershot SX620</p></td>
                                         <td>
                                             <div className='product-amount'>
                                                 <input type='number' step="1" min="1" max="999" />
@@ -49,19 +53,19 @@ const cart = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="price-wrap"><p class="text-break">6,500,000 ₫</p></div>
+                                            <div className="price-wrap"><p className="text-break">6,500,000 ₫</p></div>
 
                                         </td>
-                                        <td><div class="price-wrap"><p class="text-break">65,000,000 ₫</p></div></td>
+                                        <td><div className="price-wrap"><p className="text-break">65,000,000 ₫</p></div></td>
                                         <td><FontAwesomeIcon icon={faTrash} className='fa-icon' /></td>
                                     </tr>
                                     <tr>
                                         <td>
 
-                                            <div class="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
+                                            <div className="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
 
                                         </td>
-                                        <td><p class="text-break">Máy Ảnh Canon Powershot SX620</p></td>
+                                        <td><p className="text-break">Máy Ảnh Canon Powershot SX620</p></td>
                                         <td>
                                             <div className='product-amount'>
                                                 <input type='number' step="1" min="1" max="999" />
@@ -74,19 +78,19 @@ const cart = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="price-wrap"><p class="text-break">6,500,000 ₫</p></div>
+                                            <div className="price-wrap"><p className="text-break">6,500,000 ₫</p></div>
 
                                         </td>
-                                        <td><div class="price-wrap"><p class="text-break">65,000,000 ₫</p></div></td>
+                                        <td><div className="price-wrap"><p className="text-break">65,000,000 ₫</p></div></td>
                                         <td><FontAwesomeIcon icon={faTrash} className='fa-icon' /></td>
                                     </tr>
                                     <tr>
                                         <td>
 
-                                            <div class="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
+                                            <div className="aside"><img src="https://natcam-production.s3.amazonaws.com/product-103241471-images/103241471_1.jpg" class="img-thumbnail" /></div>
 
                                         </td>
-                                        <td><p class="text-break">Máy Ảnh Canon Powershot SX620</p></td>
+                                        <td><p className="text-break">Máy Ảnh Canon Powershot SX620</p></td>
                                         <td>
                                             <div className='product-amount'>
                                                 <input type='number' step="1" min="1" max="999" />
@@ -99,10 +103,10 @@ const cart = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="price-wrap"><p class="text-break">6,500,000 ₫</p></div>
+                                            <div class="price-wrap"><p className="text-break">6,500,000 ₫</p></div>
 
                                         </td>
-                                        <td><div class="price-wrap"><p class="text-break">65,000,000 ₫</p></div></td>
+                                        <td><div class="price-wrap"><p className="text-break">65,000,000 ₫</p></div></td>
                                         <td><FontAwesomeIcon icon={faTrash} className='fa-icon' /></td>
 
                                     </tr>
@@ -124,10 +128,10 @@ const cart = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="price-wrap"><p class="text-break">6,500,000 ₫</p></div>
+                                            <div className="price-wrap"><p className="text-break">6,500,000 ₫</p></div>
 
                                         </td>
-                                        <td><div class="price-wrap"><p class="text-break">65,000,000 ₫</p></div></td>
+                                        <td><div className="price-wrap"><p className="text-break">65,000,000 ₫</p></div></td>
                                         <td><FontAwesomeIcon icon={faTrash} className='fa-icon' /></td>
                                     </tr>
                                 </tbody>
