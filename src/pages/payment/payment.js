@@ -7,9 +7,9 @@ import { useState } from 'react'
 const Payment = () => {
 
     return (
-        <div className="container cartbody">
+        <div className="container">
             <div className='row'>
-                <h4><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span>Giỏ Hàng / </span><span className='paymentText'>Thanh Toán</span></h4>
+                <h4 className='switchpage'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span>Giỏ Hàng / </span><span className='paymentText'>Thanh Toán</span></h4>
             </div>
             <div className='row'>
                 <h3 className='titleGiohang'>Chi tiết thanh toán</h3>

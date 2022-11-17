@@ -5,6 +5,8 @@ import { signupService } from '~/service/authService'
 import { Gender } from '~/core/constant'
 import { useNavigate } from "react-router-dom";
 import validator from 'validator';
+import { validateFull } from '~/core/utils/validate';
+
 const Signup = () => {
     const [user, setUser] = useState({
         email: "",
@@ -13,17 +15,11 @@ const Signup = () => {
         birthday: "",
         address: "",
         gender: "",
-        numberPhone: ""
+        numberPhone: "",
+        confirmPassword: ""
     });
-    const [confirmPassword, setCfPassword] = useState('')
     const [validate, setValidate] = useState('')
     const navigate = useNavigate();
-    const confirmOnchange = e => {
-        setCfPassword(
-            e.target.value
-        )
-        console.log(confirmPassword)
-    }
     const handleChange = e => {
         const value = e.target.value;
 
@@ -34,8 +30,9 @@ const Signup = () => {
         console.log(user)
     };
     const handleChangeOnclik = async () => {
-        const isValid = validateAll()
-        if (!isValid) return
+        const isValid = validateFull(user)
+        setValidate(isValid)
+        if (Object.keys(isValid).length > 0) return
         try {
             await signupService(user);
             alert("Signup Success")
@@ -74,11 +71,11 @@ const Signup = () => {
                 msg.password = '"password" length must be at least 8 characters'
             }
         }
-        if (validator.isEmpty(confirmPassword)) {
+        if (validator.isEmpty(user.confirmPassword)) {
             msg.confirmPassword = "Please input your Confirm password"
         }
         else {
-            if (user.password !== confirmPassword) {
+            if (user.password !== user.confirmPassword) {
                 msg.confirmPassword = "Confirm password is not valid"
             }
         }
@@ -143,7 +140,7 @@ const Signup = () => {
                                     </div>
 
                                     <div className="form-floating mb-2">
-                                        <input type="password" className="form-control" name="confirmPassword" value={confirmPassword} onChange={confirmOnchange} id="floatingPasswordConfirm" placeholder="Confirm Password" />
+                                        <input type="password" className="form-control" name="confirmPassword" value={user.confirmPassword} onChange={handleChange} id="floatingPasswordConfirm" placeholder="Confirm Password" />
                                         <label htmlFor="floatingPasswordConfirm">Confirm Password</label>
                                         <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.confirmPassword}</p>
                                     </div>
