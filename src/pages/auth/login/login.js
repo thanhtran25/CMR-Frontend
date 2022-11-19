@@ -70,6 +70,15 @@ const Login = () => {
         if (Object.keys(msg).length > 0) return false
         return true
     }
+    const handleOnclickGg = () => {
+        window.location = "http://localhost:1912/auth/google/login";
+    }
+    const handleOnclickSignup = () => {
+        navigate('/signup');
+    }
+    const handleOnclickForgot = () => {
+        navigate('/forgotpassword');
+    }
     return (
 
         <div>
@@ -90,22 +99,21 @@ const Login = () => {
                                         <label htmlFor="floatingPassword">Password:</label>
                                         <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
                                     </div>
-                                    <div className='d-grid'>
-                                        <label>
-                                            Quên mật khẩu
-                                        </label>
+                                    <div className='mb-3'>
+                                        <a onClick={handleOnclickForgot} className="d-block text-left mt-2 small" href="#">Forgot Password?</a>
                                     </div>
-                                    <div className="d-grid">
+                                    <div className="d-grid mb-3">
                                         <button className="btn btn-primary btn-login text-uppercase fw-bold" onClick={handleOnclick} type="button">Sign
                                             in</button>
                                     </div>
-                                    <hr className="my-4" />
+                                    <hr className="mt-3" />
                                     <div className="d-grid mb-2">
-                                        <button className="btn btn-google btn-login text-uppercase fw-bold" onClick={handleOnclick} type="button">
-                                            <FontAwesomeIcon icon={faGooglePlusG} className='fa-icon' />
-                                            Sign in With Google account
+                                        <button className="btn btn-danger" onClick={handleOnclickGg} type="button">
+                                            <FontAwesomeIcon icon={faGooglePlusG} />
+
                                         </button>
                                     </div>
+                                    <a onClick={handleOnclickSignup} className="d-block text-center mt-2 small" href="#">Don't have an account? Sign Up</a>
 
                                 </form>
                             </div>

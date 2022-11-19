@@ -8,17 +8,17 @@ import './header.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux"
 import Modal from 'react-bootstrap/Modal';
 import { useState } from 'react';
 import cookies from 'react-cookies';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '~/store/action/userAction';
 import validator from 'validator';
 import { ChangePasswordUserService } from '~/service/userService';
+import { choseCategories } from '~/store/action/productAction';
 
 function Header() {
-    let user = useSelector(state => state.user.user);
+    const user = useSelector(state => state.user.user);
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const handleOnclickLogin = () => {
@@ -27,12 +27,16 @@ function Header() {
     const handleOnclickLogout = () => {
         cookies.remove("Token")
         cookies.remove("user")
+        cookies.remove("hasPassword")
         dispatch(userLogout());
     }
     const [show, setShow] = useState(false);
     const [validate, setValidate] = useState('')
+    const [searchPdt, setSearchPdt] = useState('')
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Sign In</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
@@ -58,13 +62,29 @@ function Header() {
     const [confirmPass, setConfirmPass] = useState({
         repass: "",
     })
+    const handleChangeSearchPdt = e => {
+        const value = e.target.value;
+        setSearchPdt(value);
+    }
+    const handeClickSearch = () => {
+        const name = {
+            limit: 12,
+            page: 1,
+            name: searchPdt,
+            brandId: '',
+            categoryId: '',
+            description: '',
+            sortBy: '',
+            sort: '',
+        }
+        dispatch(choseCategories(name))
+    }
     const handleChangePassword = e => {
         const value = e.target.value;
         setChange({
             ...change,
             [e.target.name]: value
         });
-        console.log(change)
     }
     const RePassword = e => {
         const value = e.target.value;
@@ -81,7 +101,6 @@ function Header() {
         try {
             let token = cookies.load('Token');
             let response = await ChangePasswordUserService(change, token);
-            console.log(response);
         } catch (e) {
             console.log(e);
         }
@@ -116,6 +135,7 @@ function Header() {
         if (Object.keys(msg).length > 0) return false
         return true
     }
+
     return (
         <>
             <Modal className='ModalResetpass' show={show} onHide={handleClose}>
@@ -188,8 +208,9 @@ function Header() {
                                     placeholder="...Search"
                                     className="me-2"
                                     aria-label="Search"
+                                    onChange={handleChangeSearchPdt}
                                 />
-                                <Button variant="warning">Search</Button>
+                                <Button onClick={handeClickSearch} variant="warning">Search</Button>
                             </Form>
                         </div>
                     </div>
