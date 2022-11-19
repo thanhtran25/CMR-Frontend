@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import './userAdmin.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faScrewdriverWrench, faCalendar, faSearch, faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import Header from '~/components/Layout/AdminLayout/Header';
 import Modal from 'react-bootstrap/Modal';
 import { useState, useEffect } from 'react';
@@ -13,19 +13,20 @@ import { Notify, Gender, Roles } from '~/core/constant';
 import cookies from 'react-cookies';
 import { handleError, handelNotify } from '~/core/utils/req';
 import { validateFull } from '~/core/utils/validate';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
     getUsersService,
     createUserService,
     getUserbyIdService,
     updateUserService,
-    deleteUserService
+    deleteUserService,
+    unLockUserService
 } from '~/service/userService'
 
 function UserAdmin() {
-    let token = cookies.load('Token');
-    const limit = 4;
+    const token = cookies.load('Token');
+    const limit = 8;
     const [showAdd, setshowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setshowDetail] = useState(false);
@@ -45,6 +46,12 @@ function UserAdmin() {
         { value: Roles.STAFF, label: Roles.STAFF },
         { value: Roles.CUSTOMER, label: Roles.CUSTOMER }
     ]
+    const optionsSearch = [
+        { value: '', label: 'Tất cả' },
+        { value: 'fullname', label: 'Tên' },
+        { value: 'address', label: 'Địa chỉ' },
+        { value: 'gender', label: 'Giới tính' }
+    ]
     const [users, setUsers] = useState();
     const [adduser, setAdduser] = useState({
         email: '',
@@ -60,39 +67,57 @@ function UserAdmin() {
     const [repairValidate, SetRepairValidate] = useState('');
     const [repairuser, setRepairuser] = useState('');
     const [searchUser, setSearchUser] = useState({
-        limit: 4,
+        limit: limit,
         page: 1,
         fullname: '',
         gender: '',
         address: '',
         sort: '',
-        sortBy: ''
+        sortBy: '',
+        locked: ''
     });
+    const [searchInput, setSearchInput] = useState({
+        fullname: '',
+        gender: '',
+        address: '',
+        sort: '',
+        sortBy: ''
+    })
     const [pagination, SetPagination] = useState('')
-    const getListUser = async () => {
-        console.log(searchUser)
+    const getListUser = async (list) => {
         try {
-            const res = await getUsersService(token, searchUser)
+            const res = await getUsersService(token, list)
             const data = (res && res.data) ? res.data : [];
             SetPagination(selectPagination(data.totalPage))
             setUsers(data.users)
-            console.log(pagination)
         } catch (error) {
         }
     }
     const selectPagination = (page) => {
         let content = [];
-        for (let i = 1; i <= Math.ceil(page / limit); i++) {
+        for (let i = 1; i <= page; i++) {
             content.push({
-                pageNumber: i
+                pageNumber: i,
             });
         }
 
         return content
     }
     const handelChange = (i) => {
-        setSearchUser({ ...searchUser, page: i })
-        getListUser()
+        setSearchUser({
+            ...searchUser,
+            page: i
+        })
+    }
+
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        console.log(e)
+        setSearchInput({
+            ...searchInput,
+            role: e.value
+        });
+        console.log(adduser)
     }
 
     const handleChangeRole = (e) => {
@@ -204,6 +229,9 @@ function UserAdmin() {
             });
         } catch (e) {
             const req = handleError(e.request);
+            setShowAlertCf({
+                open: false
+            })
             handelNotify('error', req)
         }
     }
@@ -218,40 +246,86 @@ function UserAdmin() {
     const handleshowDetail = async (e) => {
         try {
             let data = await getUserbyIdService(e, token)
-            console.log(data)
+            // console.log(data)
             setRepairuser(data.data)
         } catch (error) {
 
         }
         setshowDetail(true)
+        console.log(repairuser)
     }
     const handelShowCfDelete = (e) => {
         setShowAlertCf({
             open: true,
             variant: Notify.WARNING,
-            text: 'Bạn có chắc chắn muốn xóa tài khoản này không?',
+            text: 'Bạn có chắc chắn muốn khóa tài khoản này không?',
             title: 'Xác nhận',
             backdrop: 'static',
             onClick: () => handelDelete(e)
         })
     }
+    const handelShowUnDelete = (e) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có chắc chắn muốn mở khóa tài khoản này không?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handelUnDelete(e)
+        })
+    }
     const handelDelete = async (user) => {
         try {
             const data = await deleteUserService(user, token)
-            console.log(user)
             setShowAlertCf({
                 open: false
             })
+            setSearchUser({
+                ...searchUser,
+                fullname: '',
+                gender: '',
+                address: '',
+                sort: '',
+                sortBy: '',
+            })
             const req = handleError(data.request)
-            handelNotify('success', 'Xóa tài khoản ' + req)
+            handelNotify('success', 'Khóa tài khoản ' + req)
         } catch (error) {
             const req = handleError(error.request)
+            setShowAlertCf({
+                open: false
+            })
+            handelNotify('error', req)
+        }
+    }
+    const handelUnDelete = async (user) => {
+        try {
+            const data = await unLockUserService(user, token)
+            setShowAlertCf({
+                open: false
+            })
+            setSearchUser({
+                ...searchUser,
+                fullname: '',
+                gender: '',
+                address: '',
+                sort: '',
+                sortBy: '',
+            })
+            const req = handleError(data.request)
+            handelNotify('success', 'Mở khóa tài khoản thành công')
+        } catch (error) {
+            const req = handleError(error.request)
+            console.log(error)
+            setShowAlertCf({
+                open: false
+            })
             handelNotify('error', req)
         }
     }
     useEffect(() => {
-        getListUser()
-    }, [])
+        getListUser(searchUser)
+    }, [searchUser])
     return (
         <>
             {/* Modal Thông báo */}
@@ -271,7 +345,7 @@ function UserAdmin() {
             <Modal
                 show={showAlertCf.open}
                 onHide={() => setShowAlertCf({ open: false })}
-                backdrop="static"
+                backdrop={showAlertCf.backdrop}
                 keyboard={false}
             >
                 <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
@@ -298,7 +372,7 @@ function UserAdmin() {
                                 <div className="form-group position-relative has-icon-right">
                                     <input id="serch-user-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
+                                        <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSearch} className='fa-icon' />
                                     </div>
                                 </div>
                             </div>
@@ -307,14 +381,46 @@ function UserAdmin() {
                             <div className="row">
                                 <div className="col-12 col-md-7 order-md-1 order-last">
                                     <label>
-                                        <h3>Danh sách người dùng</h3>
+                                        <h6 style={{ marginLeft: '20px', marginRight: '10px' }}> Lọc Theo:</h6>
                                     </label>
-                                    <label>
-                                        <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
-                                    </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select options={optionsSearch} defaultValue={optionsSearch[0]} onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+
                                     </select>
+                                    <div className='row'>
+                                        <label>
+                                            <h3>Danh sách người dùng</h3>
+                                        </label>
+                                    </div>
+                                    <div className='row ml-4 mb-2'>
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a onClick={() => setSearchUser({
+                                                    limit: limit,
+                                                    page: 1,
+                                                    fullname: '',
+                                                    gender: '',
+                                                    address: '',
+                                                    sort: '',
+                                                    sortBy: '',
+                                                    locked: ''
+                                                })} class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile"
+                                                    role="tab" aria-controls="profile" aria-selected="false">Đang hoạt động</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a onClick={() => setSearchUser({
+                                                    limit: limit,
+                                                    page: 1,
+                                                    fullname: '',
+                                                    gender: '',
+                                                    address: '',
+                                                    sort: '',
+                                                    sortBy: '',
+                                                    locked: 'locked'
+                                                })} class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact"
+                                                    role="tab" aria-controls="contact" aria-selected="false">Đã khóa</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
@@ -359,9 +465,12 @@ function UserAdmin() {
                                                                 <td className='text-break'>{item.numberPhone}</td>
                                                                 <td className='text-break'>{item.address}</td>
                                                                 <td className='text-break'>
-                                                                    <pre><button onClick={e => handleshowDetail(item.id)}><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
+                                                                    <pre><button onClick={e => handleshowDetail(item.id)}><FontAwesomeIcon icon={faEye} className='fa-icon pr-2' /></button><span>  </span>
                                                                         <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button><span>  </span>
-                                                                        <button onClick={e => handelShowCfDelete(item.id)}><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
+                                                                        {searchUser.locked && searchUser.locked == 'locked'
+                                                                            ? <button onClick={e => handelShowUnDelete(item.id)}><FontAwesomeIcon icon={faUnlock} className='fa-icon' /></button>
+                                                                            : <button onClick={e => handelShowCfDelete(item.id)}><FontAwesomeIcon icon={faLock} className='fa-icon' /></button>
+                                                                        }
                                                                     </pre>
                                                                 </td>
                                                             </tr>
@@ -377,7 +486,7 @@ function UserAdmin() {
                                                 {
                                                     pagination && pagination.length > 0 &&
                                                     pagination.map(item => {
-                                                        return (<li class="page-item"><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
+                                                        return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
                                                     })
                                                 }
 

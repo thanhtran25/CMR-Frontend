@@ -18,7 +18,7 @@ const signupService = (user) => {
     // const config = {
     //     headers: { Authorization: `Bearer ${token}` }
     // };
-
+    delete user.confirmPassword
     const bodyParameters = {
         ...user
     };
@@ -52,9 +52,30 @@ const ChangePasswordService = (user) => {
         bodyParameters
     )
 }
+const requestOtpService = (email) => {
+    const bodyParameters = {
+        ...email
+    };
+    request.post(
+        'auth/signup/resend-otp',
+        bodyParameters
+    )
+}
+const OtpComfirmService = (req) => {
+    console.log(req)
+    const bodyParameters = {
+        ...req
+    };
+    request.post(
+        'auth/signup/confirm',
+        bodyParameters
+    )
+}
 export {
     loginService,
     signupService,
     forgotPasswordService,
-    ChangePasswordService
+    ChangePasswordService,
+    requestOtpService,
+    OtpComfirmService
 };

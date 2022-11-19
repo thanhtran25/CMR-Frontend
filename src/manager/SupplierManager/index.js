@@ -10,6 +10,14 @@ function SupplierManager() {
     const [showAdd, setShowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
+    const [state, setState] = useState('');
+    const handelOnclick = () => {
+        setState({
+            id: 1,
+            text: 'hello'
+        })
+        console.log(state)
+    }
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -46,7 +54,7 @@ function SupplierManager() {
                                         <button id='btn-delete-supplier' className="btn btn-danger">
                                             <i className="bi bi-trash-fill"></i> Xóa nhà cung cấp
                                         </button>
-                                        <button id='btn-createsupplier' className="btn btn-primary" onClick={() => setShowAdd(true)}>
+                                        <button id='btn-createsupplier' className="btn btn-primary" onClick={handelOnclick}>
                                             <i className="bi bi-plus"></i> Thêm nhà cung cấp
                                         </button>
                                     </div>

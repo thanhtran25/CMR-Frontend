@@ -1,9 +1,11 @@
 import request from '~/core/utils/axios';
-
+import cookies from 'react-cookies';
+const token = cookies.load('Token')
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
 const ChangePasswordUserService = (user, token) => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
 
     const bodyParameters = {
         ...user
@@ -17,9 +19,10 @@ const ChangePasswordUserService = (user, token) => {
 }
 
 const getUsersService = (token, users) => {
-
+    console.log(users)
     let s = '';
-    delete users.totalpage
+    const locked = users.locked
+    delete users.lock
     if (users.limit) {
         s += '?limit=' + users.limit + '';
     } else {
@@ -43,19 +46,15 @@ const getUsersService = (token, users) => {
     if (users.sortBy) {
         s += '&sortBy=' + users.sortBy + '';
     }
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
 
     return request.get(
-        'users' + s + '',
+        'users/' + locked + '' + s + '',
         config
     )
 }
 const getUserbyIdService = (id, token) => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
 
 
     return request.get(
@@ -64,9 +63,7 @@ const getUserbyIdService = (id, token) => {
     )
 }
 const createUserService = (user, token) => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
 
     const bodyParameters = {
         ...user
@@ -88,9 +85,7 @@ const updateUserService = (user, token) => {
     delete user.updatedAt
     delete user.deletedAt
 
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+
     const bodyParameters = {
         ...user
     };
@@ -101,12 +96,27 @@ const updateUserService = (user, token) => {
     )
 }
 const deleteUserService = (id, token) => {
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
+    console.log(config)
     return request.delete(
         'users/' + id + '',
         config,
+    )
+}
+const unLockUserService = (id, token) => {
+    console.log(config)
+    return request.put(
+        'users/locked/' + id, {},
+        config,
+    )
+}
+const changePositionService = (user, id, token) => {
+    const bodyParameters = {
+        ...user
+    };
+    return request.put(
+        'users/position/' + id + '',
+        bodyParameters,
+        config
     )
 }
 
@@ -116,5 +126,7 @@ export {
     createUserService,
     getUserbyIdService,
     updateUserService,
-    deleteUserService
+    deleteUserService,
+    changePositionService,
+    unLockUserService
 };

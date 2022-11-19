@@ -1,10 +1,11 @@
-import { render } from '@testing-library/react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './forgotPassword.scss'
 import validator from 'validator';
 import { useState } from 'react';
 import { forgotPasswordService } from '~/service/authService';
+import { useNavigate } from "react-router-dom";
 const Forgotpassword = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState({
         email: ""
     });
@@ -40,6 +41,9 @@ const Forgotpassword = () => {
         if (Object.keys(msg).length > 0) return false
         return true
     }
+    const handleOnclickLogin = () => {
+        navigate('/login');
+    }
     return (
         <div className="body-forgot">
             <div className="container">
@@ -64,7 +68,7 @@ const Forgotpassword = () => {
                                             <button className="mt-2 btn btn-primary" type="button" onClick={requireOnclick}>Yêu cầu</button>
                                         </div>
                                         <div>
-                                            <button className="m-2 btn btn-secondary" type="submit">Hủy</button>
+                                            <button onClick={handleOnclickLogin} className="m-2 btn btn-secondary" type="button">Hủy</button>
                                         </div>
                                     </div>
                                 </form>

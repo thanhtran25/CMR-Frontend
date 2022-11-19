@@ -1,11 +1,91 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button';
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faShoppingBasket, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import cookies from 'react-cookies'
+import { useState, useEffect } from 'react';
+import { handelNotify } from '~/core/utils/req';
+import Modal from 'react-bootstrap/Modal';
+import { ToastContainer } from 'react-toastify';
+import { Notify } from '~/core/constant';
+import { forgotPasswordService } from '~/service/authService';
 function Home() {
+    const [showAlertCf, setShowAlertCf] = useState(false);
+    const hadelCheckHasPw = () => {
+        if (cookies.load('hasPassword')) {
+            if (cookies.load('hasPassword') === 'false') {
+                setShowAlertCf({
+                    open: true,
+                    variant: Notify.WARNING,
+                    text: 'Bạn muốn đặt lại mật khẩu cho tài khoản này không?',
+                    title: 'Đặt lại mật khẩu',
+                    backdrop: 'static',
+                    onClick: () => handelChangePass()
+                })
+            }
+        }
+    }
+    const handelChangePass = async () => {
+        try {
+            const email = {
+                email: cookies.load('user').email
+            }
+
+            const data = await forgotPasswordService(email)
+            cookies.save('hasPassword', 'true')
+            console.log(data)
+            setShowAlertCf({
+                open: false
+            })
+            handelNotify('success', 'Thông tin đặt lại mật khẩu đã được gửi vào email của bạn')
+        } catch (error) {
+
+        }
+    }
+    const handelCloseCheck = async () => {
+        cookies.save('hasPassword', 'true')
+        setShowAlertCf({
+            open: false
+        })
+    }
+    useEffect(() => {
+        hadelCheckHasPw()
+    }, [])
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <Modal
+                show={showAlertCf.open}
+                onHide={() => setShowAlertCf({ open: false })}
+                backdrop={showAlertCf.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
+                    <Modal.Title>{showAlertCf.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handelCloseCheck}>
+                        Hủy
+                    </Button>
+                    <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
             <div className="container homeContain" style={{ marginTop: '5rem', color: '#3A4048' }}>
                 <h2 className="title"> SẢN PHẨM NỔI TRỘI </h2>
                 <div className="row" style={{ paddingTop: '2%', alignItems: 'center' }}>
@@ -14,7 +94,7 @@ function Home() {
                         <h2> Máy Ảnh </h2>
                         <p> Lựa chọn máy ảnh phù hợp với bạn. Nếu các bạn chưa biết sản phẩm nào phù hợp thì chúng tôi sẽ
                             giúp bạn.</p>
-                        <div className="section-intro-button" ><a href="#"> Xem Thêm
+                        <div className="section-intro-button" onClick={hadelCheckHasPw} ><a href="#"> Xem Thêm
                             &raquo;</a></div>
                     </div>
                     <div className="col-12 col-xl-4 section-clo" style={{ textAlign: 'center' }}>
