@@ -18,6 +18,9 @@ import ProductManager from '~/manager/ProductManager';
 import PurchaseorderManager from '~/manager/PurchaseOrderManager';
 import SalecodeManager from '~/manager/SaleCodeManager';
 import SupplierManager from '~/manager/SupplierManager';
+import StatisticManager from '~/manager/StatisticManager';
+import Shipper from '~/manager/Shipper';
+import ShipperNew from '~/manager/ShipperNew';
 import RolesAdmin from '~/admin/RolesAdmin'
 import Payment from '~/pages/payment/payment';
 import cookies from 'react-cookies';
@@ -51,6 +54,9 @@ const privateRoutesM = [
     { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
     { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
     { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
+    { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
+    { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
+    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
     { path: '*', component: Home },
 ]
 

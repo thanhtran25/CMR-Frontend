@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faCamera, faCartFlatbed, faCheck, faDollar, faDollarSign, faHouse, faList, faMoneyBill, faMoneyCheckDollar, faTags, faTruckFieldUn } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faCamera, faCartFlatbed, faCheck, faDollar, faDollarSign, faHouse, faList, faMoneyBill, faMoneyCheckDollar, faTags, faTruckFieldUn, faTruckFast, faSignal } from '@fortawesome/free-solid-svg-icons';
 import './sidebar.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -73,6 +73,24 @@ function Sidebar() {
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faDollarSign} />
                                 <span>Quản lý đơn nhập hàng</span>
+                            </span>
+                        </NavLink>
+                        <NavLink to="/store/statistic" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                            <span className="sidebar-link">
+                                <FontAwesomeIcon icon={faSignal} />
+                                <span>Thống kê</span>
+                            </span>
+                        </NavLink>
+                        <NavLink to="/store/shippernew" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                            <span className="sidebar-link">
+                                <FontAwesomeIcon icon={faTruckFast} />
+                                <span>Đơn mới</span>
+                            </span>
+                        </NavLink>
+                        <NavLink to="/store/shipper" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
+                            <span className="sidebar-link">
+                                <FontAwesomeIcon icon={faTruckFast} />
+                                <span>Đơn nhận</span>
                             </span>
                         </NavLink>
                     </ul>
