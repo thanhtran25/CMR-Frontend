@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './statisticManager.scss';
+import './shipper.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
-function StatisticManager() {
+function Shipper() {
     const [showAdd, setShowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
@@ -18,9 +18,9 @@ function StatisticManager() {
                     <div className="page-heading">
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
-                            <div id="search-statistic-form" name="search-statistic-form">
+                            <div id="search-shipper-form" name="search-shipper-form">
                                 <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-statistic-text" type="text" className="form-control" placeholder="Tìm kiếm" />
+                                    <input id="serch-shipper-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     <div className="form-control-icon">
                                         <i className="bi bi-search"></i>
                                     </div>
@@ -43,10 +43,10 @@ function StatisticManager() {
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
                                     <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-statistic' className="btn btn-danger">
+                                        <button id='btn-delete-shipper' className="btn btn-danger">
                                             <i className="bi bi-trash-fill"></i> Xóa nhà cung cấp
                                         </button>
-                                        <button id='btn-createstatistic' className="btn btn-primary" onClick={() => setShowAdd(true)}>
+                                        <button id='btn-createshipper' className="btn btn-primary" onClick={() => setShowAdd(true)}>
                                             <i className="bi bi-plus"></i> Thêm nhà cung cấp
                                         </button>
                                     </div>
@@ -198,4 +198,4 @@ function StatisticManager() {
     )
 }
 
-export default StatisticManager;
+export default Shipper;
