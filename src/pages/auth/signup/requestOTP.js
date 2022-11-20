@@ -7,15 +7,29 @@ import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { requestOtpService } from '~/service/authService'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { handelNotify, handleError } from '~/core/utils/req';
+import { useParams } from 'react-router-dom';
+import { Notify } from '~/core/constant';
 const RequestOTP = () => {
+    const { emailurl } = useParams();
     const navigate = useNavigate();
-    const email = sessionStorage.getItem('emailUser');
+    const [showAlertCf, setShowAlertCf] = useState(false);
+    let emailuser = ''
+    if (emailurl) {
+        if (emailurl === 'confirm') {
+            emailuser = sessionStorage.getItem('emailUser');
+        } else {
+            emailuser = emailurl
+        }
+    }
+
     const [otp, setotp] = useState({
         otp: "",
-        email: email
+        email: emailuser
     });
     const [time, setTime] = useState(false)
-    const [showAlertCf, setShowAlertCf] = useState(false);
     const [validate, setValidate] = useState('')
     const handleChange = e => {
         const value = e.target.value;
@@ -28,19 +42,34 @@ const RequestOTP = () => {
         const isValid = validateAll()
         if (!isValid) return
         try {
-            let response = await OtpComfirmService(otp);
-            console.log(otp);
+            const res = await OtpComfirmService(otp);
+            setShowAlertCf({
+                open: true,
+                variant: Notify.SUCCESS,
+                text: 'Xác nhận tài khoản thành công',
+                title: 'Đăng ký thành công',
+                backdrop: 'static',
+                onClick: () => handleSwitchPage()
+            })
         } catch (e) {
-            console.log(e);
+            console.log(e)
+            if (e) {
+                handelNotify('error', 'Mã OTP không hợp lệ')
+            }
+
         }
+    }
+    const handleSwitchPage = () => {
+        navigate('/login')
     }
     const handleRequire = async (e) => {
         e.currentTarget.disabled = true;
         try {
             const email1 = {
-                email: email
+                email: emailuser
             }
             await requestOtpService(email1)
+            handelNotify('', 'Bạn có thể yêu cầu lại sau 90s')
         } catch (error) {
 
         }
@@ -63,6 +92,18 @@ const RequestOTP = () => {
     }
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <Modal
                 show={showAlertCf.open}
                 onHide={() => setShowAlertCf({ open: false })}

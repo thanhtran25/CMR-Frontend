@@ -43,28 +43,36 @@ const ProductBody = () => {
         try {
             const res = await getProductsService(list)
             const data = (res && res.data) ? res.data : [];
-            const resBrand = await getBrandsService(limit)
-            const data1 = (resBrand && resBrand.data) ? resBrand.data : [];
             SetPagination(selectPagination(data.totalPage))
             setProducts(data.products)
-            setBrand(data1)
         } catch (error) {
             console.log(error)
         }
     }
-    const handleChangeBrand = (e) => {
-        const searchPdt = {
-            ...categoryId,
-            brandId: e.target.value,
-            name: ''
+    const getBrands = async () => {
+        try {
+            const resBrand = await getBrandsService(limit)
+            const data1 = (resBrand && resBrand.data) ? resBrand.data : [];
+            setBrand(data1)
+        } catch (error) {
+
         }
-        dispatch(choseCategories(searchPdt));
+    }
+    const handleChangeBrand = (e) => {
+        if (e.value) {
+            const searchPdt = {
+                ...categoryId,
+                brandId: e.value,
+                name: ''
+            }
+            dispatch(choseCategories(searchPdt));
+        }
     }
     const handleSwitchDetail = (id) => {
         navigate('/product/' + id)
     }
     const handleSortByPrice = (e) => {
-        const value = e.target.value
+        const value = e.value
         const sort = {
             ...categoryId,
             sort: 'price',
@@ -73,36 +81,37 @@ const ProductBody = () => {
         }
         dispatch(choseCategories(sort));
     }
-    const handleSortByNew = () => {
-        const sort = {
-            ...categoryId,
-            sort: 'createdAt',
-            sortBy: 'desc',
-            sale: '',
-            name: ''
+    const handleFiter = (e) => {
+        let fill = {}
+        if (e.value === 'all') {
+            fill = {
+                limit: 12,
+                page: 1,
+                name: '',
+                brandId: '',
+                categoryId: '',
+                description: '',
+                sortBy: '',
+                sort: '',
+            }
         }
-        dispatch(choseCategories(sort));
-    }
-    const handleSortAll = () => {
-        const searchPdt = {
-            limit: 12,
-            page: 1,
-            name: '',
-            brandId: '',
-            categoryId: '',
-            description: '',
-            sortBy: '',
-            sort: '',
+        if (e.value === 'new') {
+            fill = {
+                ...categoryId,
+                sort: 'createdAt',
+                sortBy: 'desc',
+                sale: '',
+                name: ''
+            }
         }
-        dispatch(choseCategories(searchPdt));
-    }
-    const hanleSortBySale = () => {
-        const sort = {
-            ...categoryId,
-            sale: 'sale',
-            name: ''
+        if (e.value === 'sale') {
+            fill = {
+                ...categoryId,
+                sale: 'sale',
+                name: ''
+            }
         }
-        dispatch(choseCategories(sort));
+        dispatch(choseCategories(fill));
     }
     const handleAddcart = async (product) => {
         try {
@@ -118,10 +127,32 @@ const ProductBody = () => {
 
         }
     }
+    const optionsfiter = [
+        { value: 'all', label: 'Tất cả' },
+        { value: 'new', label: 'Mới nhất' },
+        { value: 'sale', label: 'Đang khuyến mãi' }
+    ]
+    const optionsprice = [
+        { value: '', label: 'Giá' },
+        { value: 'desc', label: 'Giảm dần' },
+        { value: 'asc', label: 'Tăng dần' }
+    ]
+    const [optionsbrands, setOptionsbrands] = useState([{ value: '', label: 'Thượng hiệu' },])
     useEffect(() => {
-
         getListProducts(categoryId)
     }, [categoryId])
+    useEffect(() => {
+        setOptionsbrands([{ value: '', label: 'Thượng hiệu' },])
+        if (brand) {
+            brand.brands.map((item, index) => {
+                setOptionsbrands(current => [...current, { value: item.id, label: item.name }]);
+            }
+            )
+        }
+    }, [brand])
+    useEffect(() => {
+        getBrands()
+    }, [])
     return (
         <>
             <img
@@ -131,49 +162,53 @@ const ProductBody = () => {
             />
             <div className='container'>
                 <div className='row'>
+                    <div className='col-12 mt-4 mb-2'>
+                        <div className='row'>
+                            <div className='col-8'>
+                                <div className='row'>
+                                    <div className='col-2'>
+                                        <span className='text-filter'>Sắp xếp:</span>
+                                    </div>
+                                    <div className='col-3'>
+                                        <Select
+                                            onChange={handleFiter}
+                                            defaultValue={optionsfiter[0]}
+                                            options={optionsfiter}
 
-                    <div className='col-2'>
-                        <h2 className='text-filter'>Sắp xếp:</h2>
+                                        />
+                                    </div>
+                                    <div className='col-3'>
+                                        <Select
+                                            onChange={handleSortByPrice}
+                                            defaultValue={optionsprice[0]}
+                                            options={optionsprice}
+
+                                        />
+                                    </div>
+                                    <div className='col-3'>
+                                        <Select
+                                            onChange={handleChangeBrand}
+                                            defaultValue={optionsbrands[0]}
+                                            options={optionsbrands}
+
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div className='col-10 mt-3'>
-
-
-                        <button onClick={handleSortAll} type="button" className="profile-rep">Tất cả</button>
-
-
-                        <button onClick={handleSortByNew} type="button" className="profile-rep">Mới nhất</button>
-
-
-                        <button onClick={hanleSortBySale} type="button" className="profile-rep">Đang khuyến mãi</button>
-
-
-                        <button onClick={handleSortByPrice} value='asc' type="button" className="profile-rep">Giá tăng dần</button>
-
-
-                        <button onClick={handleSortByPrice} value='desc' type="button" className="profile-rep">Giá giảm dần</button>
-
-
-                        <select onChange={handleChangeBrand} name="brand" className='profile-rep' >
-                            <option value="">Thương hiệu</option>
-                            {
-                                brand &&
-                                brand.brands.map(item => {
-                                    return (<option value={item.id}>{item.name}</option>)
-                                })
-                            }
-                        </select>
-
-
-                    </div>
-
-
 
                 </div>
+
+
+
+
                 <div className="row">
 
                     {
                         products && products.length > 0 &&
-                        products.map(item => {
+                        products.map((item, index) => {
                             return (
                                 <div className="col-12 col-sm-6 mb-2 col-md-3">
                                     <div className="product">
@@ -216,14 +251,14 @@ const ProductBody = () => {
                     <ul id="pagination" className="pagination justify-content-center">
                         {
                             pagination && pagination.length > 0 &&
-                            pagination.map(item => {
+                            pagination.map((item, index) => {
                                 return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
                             })
                         }
 
                     </ul>
                 </nav>
-            </div>
+            </div >
         </>
     )
 }

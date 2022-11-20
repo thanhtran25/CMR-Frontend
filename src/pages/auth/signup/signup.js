@@ -10,8 +10,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Notify } from '~/core/constant';
 import { handelNotify } from '~/core/utils/req';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 const Signup = () => {
     const [user, setUser] = useState({
         email: "",
@@ -55,19 +55,32 @@ const Signup = () => {
                 onClick: () => handleSwitchPage()
             })
         } catch (e) {
+            console.log(e.response.data.error)
             if (e.response.data.error) {
                 handelNotify('error', e.response.data.error)
             }
         }
     }
     const handleSwitchPage = () => {
-        navigate('/signup/requestOTP')
+        navigate('/signup/otp/confirm')
     }
     const handleOnclickLogin = () => {
         navigate('/Login');
     }
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <Modal
                 show={showAlertCf.open}
                 onHide={() => setShowAlertCf({ open: false })}
