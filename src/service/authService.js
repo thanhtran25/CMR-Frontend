@@ -56,17 +56,17 @@ const requestOtpService = (email) => {
     const bodyParameters = {
         ...email
     };
-    request.post(
+    return request.post(
         'auth/signup/resend-otp',
         bodyParameters
     )
 }
-const OtpComfirmService = (req) => {
-    console.log(req)
+const OtpComfirmService = async (req) => {
     const bodyParameters = {
         ...req
     };
-    request.post(
+
+    return request.post(
         'auth/signup/confirm',
         bodyParameters
     )

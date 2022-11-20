@@ -26,8 +26,8 @@ import Payment from '~/pages/payment/payment';
 import ProductBody from '~/pages/product/productbody';
 import Contact from '~/pages/contact/contact';
 import Guarantee from '~/pages/guarantee/guarantee';
-import RequestOTP from '~/pages/auth/signup/requestOTP';
 import cookies from 'react-cookies';
+import RequestOTP from '~/pages/auth/signup/requestOTP';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -43,6 +43,7 @@ const publicRoutes = [
     { path: '/products', component: ProductBody, layout: LayoutLogin },
     { path: '/contact', component: Contact, layout: LayoutLogin },
     { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
+    { path: '/signup/otp/:emailurl', component: RequestOTP, layout: LayoutLogin },
     { path: '*' },
 ]
 
