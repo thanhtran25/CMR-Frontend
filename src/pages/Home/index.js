@@ -117,11 +117,11 @@ function Home() {
                 <hr />
 
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
-                    <div className='col-xl-4'>
-                        <img className="section-mid-img" src={require('~/assets/images/mayanh-gioithieu.jpg')} width="400px" height="400px"
+                    <div className='col-0 col-xl-4'>
+                        <img className="section-mid-img" src={require('~/assets/images/mayanh-gioithieu.jpg')} width="350px" height="350px"
                             alt="Generic placeholder image" />
                     </div>
-                    <div className='col-xl-8'>
+                    <div className='col-0 col-xl-8'>
                         <h2> Máy ảnh tuyệt đỉnh. Hình ảnh tuyệt đẹp.</h2>
                         <p> Xứng tầm cột mốc mới, mở ra tầm nhìn nhiếp ảnh vượt trội, mang đến khả năng biểu đạt từng chi
                             tiết ở đẳng cấp chuyên nghiệp với tốc độ bắt nét cực nhanh đến kinh ngạc trong thân máy nhỏ gọn.
@@ -130,23 +130,23 @@ function Home() {
 
                 </div>
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
-                    <div className='col-xl-8'>
+                    <div className='col-0 col-xl-8'>
                         <h2> Lưu lại những thước phim. Tạo nên nhiều kỉ niệm đáng nhớ. </h2>
                         <p> Thân máy nhỏ gọn, tích hợp mọi tính năng để mang lại những thước phim tuyệt đẹp. kèm theo khả
                             năng lấy nét siêu nhanh. Tính năng theo dõi trong thời gian thực và lấy nét tự động theo ánh
                             mắt. Chất lượng âm thanh bắt âm thanh cực xa.</p>
                     </div>
-                    <div className='col-xl-4'>
+                    <div className='col-0 col-xl-4'>
                         <img className="section-mid-img" src={require('~/assets/images/mayquay-gioithieu.jpg')} width="400px" height="400px"
                             alt="Generic placeholder image" />
                     </div>
                 </div>
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
-                    <div className='col-xl-4'>
+                    <div className='col-0 col-xl-4'>
                         <img className="section-mid-img" src={require('~/assets/images/phukien-gioithieu.jpg')} width="400px" height="400px"
                             alt="Generic placeholder image" />
                     </div>
-                    <div className='col-xl-8'>
+                    <div className='col-0 col-xl-8'>
                         <h2> Phụ kiện tuyệt vời.Tạo nên thiết bị hoàn hảo.</h2>
                         <p> Có rất nhiều phụ kiện cho để bạn lựa chọn. Giúp cho thiết bị của bạn thêm phần chuyên nghiệp,
                             khiến độ zoom cực xa cực kì sắc nét. Làm cho thiết bị của bạn an toàn, kéo dài thời gian sử
