@@ -9,9 +9,9 @@ import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-import { getProductService, createProductService } from '~/service/productService';
+import { getProductService, createProductService, getProductByIdService } from '~/service/productService';
 import { getBrandService } from '~/service/brandService';
-import { getCategoriesService } from '~/service/categoriesService';
+import { getCategoriesService } from '~/service/categoryService';
 
 import { validateFull, validateProduct } from '~/core/utils/validate';
 import { Notify, Gender, Roles } from '~/core/constant';
@@ -169,6 +169,28 @@ function ProductManager() {
         }
 
     }
+
+    const [repairValidate, SetRepairValidate] = useState('');
+    const [repairProduct, setRepairProduct] = useState('');
+    const handleShowRepair = async (e) => {
+        SetRepairValidate('')
+        try {
+            let data = await getProductByIdService(e)
+            setRepairProduct(data.data)
+        } catch (error) {
+
+        }
+        setShowRepair(true)
+    }
+
+    const handleChangeRepairProduct = e => {
+        const value = e.target.value
+        setRepairProduct({
+            ...repairProduct,
+            [e.target.name]: value
+        });
+
+    }
     return (
         <>
             <div id="main" className="layout-navbar">
@@ -253,7 +275,7 @@ function ProductManager() {
                                                                 <td className='text-break'>
                                                                     <pre>
                                                                         <button ><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
-                                                                        <button ><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button><span>  </span>
+                                                                        <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button><span>  </span>
                                                                         <button ><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
                                                                     </pre>
                                                                 </td>
@@ -382,34 +404,45 @@ function ProductManager() {
                                             type="text"
                                             placeholder=""
                                             autoFocus
+                                            name='name'
+                                            value={repairProduct.name}
+                                            onChange={handleChangeRepairProduct}
                                         />
+                                        {repairValidate.birthday && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.birthday}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thương hiệu:</Form.Label>
-                                        <Form.Select aria-label="Default select example">
-                                            <option>Chọn thương hiệu</option>
-                                            <option value="1">Canon</option>
-                                            <option value="2">...</option>
-                                            <option value="3">...</option>
+                                        <Form.Select aria-label="Default select example" onChange={handleChangeBrand}>
+                                            <option value='0'>Chọn thương hiệu</option>
+                                            {
+                                                brand && brand.length > 0 &&
+                                                brand.map(item => {
+                                                    if (item.id == repairProduct.brandId)
+                                                        return (
+                                                            <option selected value={item.id}>{item.name}</option>
+                                                        )
+                                                    return <option value={item.id}>{item.name}</option>
+                                                })
+                                            }
                                         </Form.Select>
+                                        {repairValidate.brandId && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.brandId}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Danh mục:</Form.Label>
-                                        <Form.Select aria-label="Default select example">
-                                            <option>Chọn danh mục</option>
-                                            <option value="1">Máy ảnh</option>
-                                            <option value="2">...</option>
-                                            <option value="3">...</option>
+                                        <Form.Select aria-label="Default select example" onChange={handleChangeCategories}>
+                                            <option value='0'>Chọn danh mục</option>
+                                            {
+                                                categories && categories.length > 0 &&
+                                                categories.map(item => {
+                                                    if (item.id == repairProduct.categoryId)
+                                                        return (
+                                                            <option selected value={item.id}>{item.name}</option>
+                                                        )
+                                                    return <option value={item.id}>{item.name}</option>
+                                                })
+                                            }
                                         </Form.Select>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Kho:</Form.Label>
-                                        <Form.Select aria-label="Default select example">
-                                            <option>Chọn kho</option>
-                                            <option value="1">Tp HCM</option>
-                                            <option value="2">Hà Nội</option>
-                                            <option value="3">...</option>
-                                        </Form.Select>
+                                        {repairValidate.categoryId && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.categoryId}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Giá sản phẩm:</Form.Label>
@@ -418,28 +451,24 @@ function ProductManager() {
                                             placeholder=""
                                             autoFocus
                                         />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Khuyến mãi:</Form.Label>
-                                        <Form.Select aria-label="Default select example">
-                                            <option>Chọn khuyến mãi</option>
-                                            <option value="1">20/10/2022 ngày hội siêu sale phụ nữ</option>
-                                            <option value="2">...</option>
-                                            <option value="3">...</option>
-                                        </Form.Select>
+                                        {repairValidate.price && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.price}</p>}
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3">
                                         <Form.Label>Chọn 2 ảnh sản phẩm:</Form.Label>
                                         <Form.Control type="file" multiple />
+                                        {repairValidate.images && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.images}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>
-                                        <Form.Select aria-label="Default select example">
-                                            <option>Chọn thời hạn bảo hành</option>
-                                            <option value="1">1 năm</option>
-                                            <option value="2">...</option>
-                                            <option value="3">...</option>
+                                        <Form.Select aria-label="Default select example" onChange={handleChangeWarranty}>
+                                            {repairProduct.warrantyPeriod == 0 && <option value="0">Chọn thời hạn bảo hành</option>}
+                                            {repairProduct.warrantyPeriod == 1 && <option value="1">1 năm</option>}
+                                            {repairProduct.warrantyPeriod == 2 && <option value="2">2 năm</option>}
+                                            {repairProduct.warrantyPeriod == 3 && <option value="3">3 năm</option>}
+
+
                                         </Form.Select>
+                                        {repairValidate.warrantyPeriod && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.warrantyPeriod}</p>}
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-3"
@@ -447,6 +476,7 @@ function ProductManager() {
                                     >
                                         <Form.Label>Mô tả</Form.Label>
                                         <Form.Control as="textarea" rows={3} />
+                                        {repairValidate.description && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.description}</p>}
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>

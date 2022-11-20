@@ -17,4 +17,51 @@ const createProductService = (product) => {
         config,
     )
 }
-export { getProductService, createProductService }
+const getProductsService = (product) => {
+    let s = '';
+    let sale = '';
+    if (product.sale && product.sale !== '')
+        sale = '/' + product.sale
+    if (product.limit) {
+        s += '?limit=' + product.limit + '';
+    } else {
+        s += '?limit=10';
+    }
+    if (product.name && product.name !== '') {
+        s += '&name=' + product.name + '';
+    }
+    if (product.brandId && product.brandId !== '') {
+        s += '&brandId=' + product.brandId + '';
+    }
+    if (product.categoryId && product.categoryId !== '') {
+        s += '&categoryId=' + product.categoryId + '';
+    }
+    if (product.description && product.description !== '') {
+        s += '&description=' + product.description + '';
+    }
+    if (product.sortBy) {
+        s += '&sortBy=' + product.sortBy + '';
+    }
+    if (product.sort) {
+        s += '&sort=' + product.sort + '';
+    }
+    if (product.page) {
+        s += '&page=' + product.page + '';
+    }
+
+
+    return request.get(
+        'products' + sale + s,
+    )
+}
+const getProductByIdService = (id) => {
+
+    return request.get(
+        'products/' + id + '', ''
+
+    )
+}
+
+export {
+    getProductService, createProductService, getProductByIdService, getProductsService
+}

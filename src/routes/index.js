@@ -23,6 +23,10 @@ import Shipper from '~/manager/Shipper';
 import ShipperNew from '~/manager/ShipperNew';
 import RolesAdmin from '~/admin/RolesAdmin'
 import Payment from '~/pages/payment/payment';
+import ProductBody from '~/pages/product/productbody';
+import Contact from '~/pages/contact/contact';
+import Guarantee from '~/pages/guarantee/guarantee';
+import RequestOTP from '~/pages/auth/signup/requestOTP';
 import cookies from 'react-cookies';
 
 const publicRoutes = [
@@ -31,11 +35,14 @@ const publicRoutes = [
     { path: '/signup', component: Signup, layout: LayoutLogin },
     { path: '/forgotpassword', component: Forgotpassword, layout: LayoutLogin },
     { path: '/password-reset/:uid/:token', component: changePassword, layout: LayoutLogin },
-    { path: '/productdetail', component: productDetail, layout: null },
     { path: '/Payment', component: Payment, layout: LayoutLogin },
     { path: '/Cart', component: cart, layout: LayoutLogin },
     { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '/store/login', component: LoginManager, layout: null },
+    { path: '/product/:id', component: productDetail, layout: null },
+    { path: '/products', component: ProductBody, layout: LayoutLogin },
+    { path: '/contact', component: Contact, layout: LayoutLogin },
+    { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
     { path: '*' },
 ]
 

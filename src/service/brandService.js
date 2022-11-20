@@ -9,5 +9,26 @@ const getBrandService = (brand) => {
         'brands',
     )
 }
-
-export { getBrandService }
+const getBrandByIdService = (id) => {
+    return request.get(
+        'brands/' + id,
+    )
+}
+const getBrandsService = (brand) => {
+    let s = ''
+    if (brand.limit) {
+        s += '?limit=' + brand.limit + '';
+    } else {
+        s += '?limit=10';
+    }
+    if (brand.name && brand.name !== '') {
+        s += '&name=' + brand.name + '';
+    }
+    if (brand.page) {
+        s += '&page=' + brand.page + '';
+    }
+    return request.get(
+        'brands/' + s,
+    )
+}
+export { getBrandService, getBrandByIdService, getBrandsService }
