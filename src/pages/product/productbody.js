@@ -18,7 +18,7 @@ const ProductBody = () => {
     const [brand, setBrand] = useState('')
     const [pagination, SetPagination] = useState('')
     const [banner, SetBanner] = useState('')
-    const limit = 12
+    const limit = 24
     const selectPagination = (page) => {
         let content = [];
         for (let i = 1; i <= page; i++) {
@@ -38,7 +38,7 @@ const ProductBody = () => {
     }
     const getListProducts = async (list) => {
         const limit = {
-            limit: 10
+            limit: 24
         }
         try {
             const res = await getProductsService(list)
@@ -85,7 +85,7 @@ const ProductBody = () => {
         let fill = {}
         if (e.value === 'all') {
             fill = {
-                limit: 12,
+                limit: 24,
                 page: 1,
                 name: '',
                 brandId: '',
@@ -127,10 +127,13 @@ const ProductBody = () => {
 
         }
     }
+    function VND(x) {
+        return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });;
+    }
     const optionsfiter = [
         { value: 'all', label: 'Tất cả' },
         { value: 'new', label: 'Mới nhất' },
-        { value: 'sale', label: 'Đang khuyến mãi' }
+        { value: 'sale', label: 'Khuyến mãi' }
     ]
     const optionsprice = [
         { value: '', label: 'Giá' },
@@ -155,110 +158,105 @@ const ProductBody = () => {
     }, [])
     return (
         <>
-            <img
-                className="d-block w-100 slide"
-                src={require('~/assets/images/banner-1.jpg')}
-                style={{ maxHeight: '450px' }}
-            />
-            <div className='container'>
-                <div className='row'>
-                    <div className='col-12 mt-4 mb-2'>
-                        <div className='row'>
-                            <div className='col-8'>
-                                <div className='row'>
-                                    <div className='col-2'>
-                                        <span className='text-filter'>Sắp xếp:</span>
-                                    </div>
-                                    <div className='col-3'>
-                                        <Select
-                                            onChange={handleFiter}
-                                            defaultValue={optionsfiter[0]}
-                                            options={optionsfiter}
+            <div >
+                <div className='container' style={{ backgroundColor: '#ffffff' }}>
+                    <div className='row'>
+                        <div className='col-12 mt-4 mb-2'>
+                            <div className='row' style={{ marginTop: "160px" }}>
+                                <div className='col-8'>
+                                    <div className='row'>
+                                        <div className='col-4 col-md-2'>
+                                            <span className='text-filter text-md-pr'>Sắp xếp:</span>
+                                        </div>
+                                        <div className='col-4 col-md-3'>
+                                            <Select
+                                                onChange={handleFiter}
+                                                defaultValue={optionsfiter[0]}
+                                                options={optionsfiter}
 
-                                        />
-                                    </div>
-                                    <div className='col-3'>
-                                        <Select
-                                            onChange={handleSortByPrice}
-                                            defaultValue={optionsprice[0]}
-                                            options={optionsprice}
+                                            />
+                                        </div>
+                                        <div className='col-4  col-md-3'>
+                                            <Select
+                                                onChange={handleSortByPrice}
+                                                defaultValue={optionsprice[0]}
+                                                options={optionsprice}
 
-                                        />
-                                    </div>
-                                    <div className='col-3'>
-                                        <Select
-                                            onChange={handleChangeBrand}
-                                            defaultValue={optionsbrands[0]}
-                                            options={optionsbrands}
+                                            />
+                                        </div>
+                                        <div className='col-4 col-md-3'>
+                                            <Select
+                                                onChange={handleChangeBrand}
+                                                defaultValue={optionsbrands[0]}
+                                                options={optionsbrands}
 
-                                        />
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
+
                     </div>
 
-                </div>
+                    <div className="row">
 
+                        {
+                            products && products.length > 0 &&
+                            products.map((item, index) => {
+                                return (
+                                    <div className="offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4">
+                                        <div className="product">
 
-
-
-                <div className="row">
-
-                    {
-                        products && products.length > 0 &&
-                        products.map((item, index) => {
-                            return (
-                                <div className="col-12 col-sm-6 mb-2 col-md-3">
-                                    <div className="product">
-
-                                        <div class="picture1">
-                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" />
-                                        </div>
-                                        <div class="picture2">
-                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" />
-                                        </div>
-                                        <div className="product-info">
-                                            <h3>{item.name}</h3>
-                                            <span>{item.price}</span>
-                                        </div>
-                                        <div className="product-action" >
-                                            <ul className="product-action-icon-front product-action-a">
-                                                <li>
-                                                    <button onClick={() => handleSwitchDetail(item.id)} className="tooltip" href="#" data-tip="Chi Tiết">
-                                                        <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li >
-                                                    <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                                        <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                                        <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                            </ul>
+                                            <div class="picture1">
+                                                <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" width="90%" />
+                                            </div>
+                                            <div class="picture2">
+                                                <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
+                                            </div>
+                                            <div className="product-info">
+                                                <h3>{item.name}</h3>
+                                                <span>{VND(item.price)}</span>
+                                            </div>
+                                            <div className="product-action" >
+                                                <ul className="product-action-icon-front product-action-a">
+                                                    <li>
+                                                        <button onClick={() => handleSwitchDetail(item.id)} className="tooltip" href="#" data-tip="Chi Tiết">
+                                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                                        </button>
+                                                    </li>
+                                                    <li >
+                                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
-                </div>
-                <nav className="mt-4">
-                    <ul id="pagination" className="pagination justify-content-center">
-                        {
-                            pagination && pagination.length > 0 &&
-                            pagination.map((item, index) => {
-                                return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
-                            })
-                        }
+                                )
+                            })}
+                    </div>
+                    <nav className="mt-4">
+                        <ul id="pagination" className="pagination justify-content-center">
+                            {
+                                pagination && pagination.length > 0 &&
+                                pagination.map((item, index) => {
+                                    return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
+                                })
+                            }
 
-                    </ul>
-                </nav>
-            </div >
+                        </ul>
+                    </nav>
+                </div >
+            </div>
+
         </>
     )
 }
