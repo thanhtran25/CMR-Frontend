@@ -9,5 +9,9 @@ const getCategoriesService = (categories) => {
         'categories',
     )
 }
-
-export { getCategoriesService }
+const getCategoryByIdService = (id) => {
+    return request.get(
+        'categories/' + id,
+    )
+}
+export { getCategoriesService, getCategoryByIdService }
