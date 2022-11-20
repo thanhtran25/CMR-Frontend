@@ -39,7 +39,7 @@ const publicRoutes = [
     { path: '/Cart', component: cart, layout: LayoutLogin },
     { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '/store/login', component: LoginManager, layout: null },
-    { path: '/product/:id', component: productDetail, layout: null },
+    { path: '/product/:id', component: productDetail, layout: LayoutLogin },
     { path: '/products', component: ProductBody, layout: LayoutLogin },
     { path: '/contact', component: Contact, layout: LayoutLogin },
     { path: '/guarantee', component: Guarantee, layout: LayoutLogin },

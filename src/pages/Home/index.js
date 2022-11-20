@@ -86,7 +86,7 @@ function Home() {
                     <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
                 </Modal.Footer>
             </Modal>
-            <div className="container homeContain" style={{ marginTop: '5rem', color: '#3A4048' }}>
+            <div className="container homeContain" style={{ marginTop: '3rem', color: '#3A4048' }}>
                 <h2 className="title"> SẢN PHẨM NỔI TRỘI </h2>
                 <div className="row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className="col-12 col-xl-4 section-clo" style={{ textAlign: 'center' }}>
@@ -118,7 +118,7 @@ function Home() {
 
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className='col-0 col-xl-4'>
-                        <img className="section-mid-img" src={require('~/assets/images/mayanh-gioithieu.jpg')} width="350px" height="350px"
+                        <img className="section-mid-img" src={require('~/assets/images/mayanh-gioithieu.jpg')} width="90%"
                             alt="Generic placeholder image" />
                     </div>
                     <div className='col-0 col-xl-8'>
@@ -137,13 +137,13 @@ function Home() {
                             mắt. Chất lượng âm thanh bắt âm thanh cực xa.</p>
                     </div>
                     <div className='col-0 col-xl-4'>
-                        <img className="section-mid-img" src={require('~/assets/images/mayquay-gioithieu.jpg')} width="400px" height="400px"
+                        <img className="section-mid-img" src={require('~/assets/images/mayquay-gioithieu.jpg')} width="90%"
                             alt="Generic placeholder image" />
                     </div>
                 </div>
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className='col-0 col-xl-4'>
-                        <img className="section-mid-img" src={require('~/assets/images/phukien-gioithieu.jpg')} width="400px" height="400px"
+                        <img className="section-mid-img" src={require('~/assets/images/phukien-gioithieu.jpg')} width="90%"
                             alt="Generic placeholder image" />
                     </div>
                     <div className='col-0 col-xl-8'>
@@ -154,46 +154,176 @@ function Home() {
                     </div>
 
                 </div>
-                <hr />
-                <h2 className="title" style={{ textAlign: 'center', paddingBottom: '3rem' }}> MÁY ẢNH </h2>
-                <div className="section-row row">
-                    <div className='col-xl-5'>
-                        <img className="section-mid-img" src={require('~/assets/images/mayanh-tieubieu.jpg')} width="460px" height="600px"
-                            alt="Generic placeholder image" />
-                    </div>
-                    <div className="col-xl-7" style={{ alignItems: 'center', margin: '0 auto' }}>
-                        <div className="col-xl-4">
-                            <div className="product">
+                <hr className='col-0' />
+                <h2 className="title" style={{ textAlign: 'center', paddingBottom: '3rem' }}> MỚI NHẤT </h2>
+                <div className="row">
+                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                        <div className="product">
 
-                                <div class="picture1">
-                                    <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" />
-                                </div>
-                                <div class="picture2">
-                                    <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" />
-                                </div>
-                                <div className="product-info">
-                                    <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                    <span>2,290,000 đ</span>
-                                </div>
-                                <div className="product-action" >
-                                    <ul className="product-action-icon-front product-action-a">
-                                        <li>
-                                            <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                                <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                            </button>
-                                        </li>
-                                        <li >
-                                            <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                                <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                                <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="picture1">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div class="picture2">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div className="product-info">
+                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
+                                <span>2,290,000 đ</span>
+                            </div>
+                            <div className="product-action" >
+                                <ul className="product-action-icon-front product-action-a">
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li >
+                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                        <div className="product">
+
+                            <div class="picture1">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div class="picture2">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div className="product-info">
+                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
+                                <span>2,290,000 đ</span>
+                            </div>
+                            <div className="product-action" >
+                                <ul className="product-action-icon-front product-action-a">
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li >
+                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                        <div className="product">
+
+                            <div class="picture1">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div class="picture2">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div className="product-info">
+                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
+                                <span>2,290,000 đ</span>
+                            </div>
+                            <div className="product-action" >
+                                <ul className="product-action-icon-front product-action-a">
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li >
+                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                        <div className="product">
+
+                            <div class="picture1">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div class="picture2">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div className="product-info">
+                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
+                                <span>2,290,000 đ</span>
+                            </div>
+                            <div className="product-action" >
+                                <ul className="product-action-icon-front product-action-a">
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li >
+                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                        <div className="product">
+
+                            <div class="picture1">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div class="picture2">
+                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
+                            </div>
+                            <div className="product-info">
+                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
+                                <span>2,290,000 đ</span>
+                            </div>
+                            <div className="product-action" >
+                                <ul className="product-action-icon-front product-action-a">
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li >
+                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                        </button>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
