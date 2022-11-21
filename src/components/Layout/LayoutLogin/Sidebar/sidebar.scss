@@ -9,13 +9,14 @@
 }
 
 .header-menu {
-    background-color: rgba(0, 0, 0, 80%);
+    background-color: rgba(0, 0, 0, 70%);
 }
 
 .menu-item {
     display: inline-block;
     text-align: center;
     position: relative;
+    padding: 0px !important;
 }
 
 .menu-item span {
@@ -28,7 +29,6 @@
     display: block;
     overflow: hidden;
     transition: 0.7s all;
-    padding: 5px 10px;
     text-transform: uppercase;
 }
 

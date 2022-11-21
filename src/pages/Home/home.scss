@@ -73,7 +73,7 @@ hr {
     position: relative;
     transition: 0.5s;
     width: 100%;
-    box-shadow: 3px 3px 3px 2px rgba(0, 0, 0, .5);
+    box-shadow: 2px 2px 8px rgba(112, 111, 111, 0.5);
     padding: 10px;
     background: white;
 }
@@ -84,7 +84,7 @@ hr {
 
 .product-action {
     position: absolute;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(30, 215, 221, 0.2);
     width: 100%;
     height: 100%;
     top: 0%;
@@ -99,8 +99,8 @@ hr {
 
 .product-action-icon-front {
     display: flex;
-    margin-top: 50%;
-    margin-left: 15%;
+    margin-top: 90%;
+    margin-left: 4.5%;
 }
 
 .product-action-icon-front li button {
@@ -134,8 +134,9 @@ hr {
 
 
 .product-info {
-    text-align: center;
-    margin-bottom: 10%;
+    text-align: left;
+    margin-bottom: 5%;
+    padding-left: 10px;
 }
 
 button.tooltip {
@@ -180,27 +181,37 @@ button.tooltip:hover::before {
 }
 
 .product-info span {
-    font-size: 15px;
-    font-weight: 450;
-    color: black;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(247, 23, 23);
 }
 
-.product-info h3 {
-    font-weight: 700;
+.product-info del {
     font-size: 12px;
+    text-decoration: line-through;
+    font-style: italic;
+    color: rgb(77, 77, 77);
+    height: 200px !important;
+}
+
+.product-info p {
+    font-size: 14px;
     margin-bottom: 10px;
-    text-transform: uppercase;
+    font-weight: bold;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .picture1 {
-    border-bottom: 2px solid rgb(27, 26, 26);
+    border-bottom: 1px solid rgb(71, 71, 71);
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
 
 .picture2 {
     display: none;
-    border-bottom: 2px solid rgba(3, 3, 3);
+    border-bottom: 1px solid rgb(71, 71, 71);
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
@@ -241,4 +252,19 @@ button.tooltip:hover::before {
     .col-0 {
         display: none;
     }
+}
+
+@media only screen and (min-width: 1200px) {
+    .col-2-4 {
+        width: 20% !important;
+    }
+}
+
+.percent {
+    color: white;
+    font-size: 12px;
+    background-color: red;
+    padding: 2px;
+    border-radius: 5px;
+    margin-left: 2px;
 }
