@@ -30,7 +30,6 @@
 
 .preview-thumbnail.nav-tabs {
     border: none;
-    margin-top: 15px;
 }
 
 .preview-thumbnail.nav-tabs li {
@@ -144,20 +143,39 @@
 
 .add-to-cart,
 .like {
-    background: #df1f26;
-    padding: 1.2em 1.5em;
-    border: none;
+    border-radius: 3% !important;
     text-transform: UPPERCASE;
     font-weight: bold;
-    color: #fff;
     -webkit-transition: background .3s ease;
     transition: background .3s ease;
+    margin-left: 3%;
+    margin-top: 5%;
 }
 
-.add-to-cart:hover,
+
+.buy {
+    background: rgba(11, 236, 86, 0.15);
+    border: 2px solid rgb(25, 172, 12);
+    color: rgb(25, 172, 12);
+}
+
+.buy:hover,
 .like:hover {
-    background: #690202;
-    color: #fff;
+    background: rgba(11, 236, 86, 0.4);
+    border: 2px solid rgb(25, 172, 12);
+    color: rgb(25, 172, 12);
+}
+
+.buy-now {
+    background: rgb(236, 11, 11);
+    border: 2px solid rgb(236, 11, 11);
+    color: rgb(255, 255, 255);
+}
+
+.buy-now:hover {
+    background: rgb(236, 11, 11, 0.8);
+    border: 2px solid rgb(236, 11, 11);
+    color: rgb(255, 255, 255);
 }
 
 .not-available {
@@ -226,4 +244,70 @@
 
 .my-img-thumbnail-active {
     box-shadow: rgba(236, 2, 2) 0px 5px 15px;
+}
+
+.tab-pane {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 3px 8px;
+}
+
+.tab-pane2 {
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 8px;
+}
+
+.count-product {
+    height: 40px;
+    border: 1px solid #999;
+    width: 60px;
+    position: relative;
+
+    input {
+        width: 60px !important;
+        border: 0px;
+        padding: 0px;
+        height: 38px;
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+    }
+
+    .amount-plus {
+        background: rgb(25, 172, 12);
+        color: #fff;
+        font-family: Courier;
+        height: 20px;
+        width: 20px;
+        display: block;
+        position: absolute;
+        top: -1px;
+        right: -1px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .amount-minus {
+        background: rgb(236, 11, 11);
+        color: #fff;
+        font-family: Courier;
+        height: 20px;
+        width: 20px;
+        display: block;
+        position: absolute;
+        bottom: -1px;
+        right: -1px;
+        text-align: center;
+        line-height: 20px;
+        font-size: 16px;
+
+        font-weight: bold;
+    }
+
+    .amount-plus:hover {
+        background: #328a32;
+    }
+
+    .amount-minus:hover {
+        background: #e62d2d;
+    }
 }
