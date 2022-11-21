@@ -11,11 +11,11 @@ function Footer() {
             <div className={cx('row')}>
                 <div className={cx('col-0 col-md-3 offset-1 pt-3')} >
                     <ul className={cx('text-md text-xl')}>
-                        <li > <a href='#' >CAMERA </a><br /></li>
-                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>VIDEO CAM</a></li>
-                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>ACCESSORIES</a></li>
-                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>GUARANTEE </a> </li>
-                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>CONTACT </a> </li>
+                        <li > <a href='#' >MÁY ẢNH </a><br /></li>
+                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>MÁY QUAY</a></li>
+                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>PHỤ KIỆN</a></li>
+                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>BẢO HÀNH </a> </li>
+                        <li > <a href='#' style={{ color: 'rgb(211, 207, 207)' }}>LIÊN HỆ </a> </li>
                     </ul>
                 </div>
                 <div className={cx('col-5 offset-1 pt-3 text-md-span')}>

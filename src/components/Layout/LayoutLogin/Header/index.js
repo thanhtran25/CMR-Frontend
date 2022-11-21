@@ -38,7 +38,7 @@ function Header() {
     const handleShow = () => setShow(true);
 
 
-    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Sign In</Button>;
+    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Đăng Nhập</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
         let arrName = user.fullname.split(' ');
@@ -206,12 +206,12 @@ function Header() {
                             <Form className="d-flex">
                                 <Form.Control
                                     type="search"
-                                    placeholder="...Search"
+                                    placeholder="...Tìm kiếm"
                                     className="me-2"
                                     aria-label="Search"
                                     onChange={handleChangeSearchPdt}
                                 />
-                                <Button onClick={handeClickSearch} variant="warning">Search</Button>
+                                <Button onClick={handeClickSearch} variant="warning">Tìm</Button>
                             </Form>
                         </div>
                     </div>
