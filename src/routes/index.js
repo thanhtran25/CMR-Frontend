@@ -70,10 +70,14 @@ const privateRoutesM = [
 
 const privateRoutesU = [
     { path: '/', component: Home },
-    { path: '/Profile', component: UserProfile, layout: null },
-    { path: '/productdetail', component: productDetail, layout: null },
+    { path: '/Profile', component: UserProfile, layout: LayoutLogin },
+    { path: '/productdetail', component: productDetail, layout: LayoutLogin },
     { path: '/Payment', component: Payment, layout: LayoutLogin },
     { path: '/Cart', component: cart, layout: LayoutLogin },
+    { path: '/product/:id', component: productDetail, layout: LayoutLogin },
+    { path: '/products', component: ProductBody, layout: LayoutLogin },
+    { path: '/contact', component: Contact, layout: LayoutLogin },
+    { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
     { path: '*', component: Home },
 ]
 
@@ -91,6 +95,8 @@ const xulyRoutes = () => {
     }
 }
 
-const privateRoutes = xulyRoutes();
+const privateRoutes = () => {
+    return xulyRoutes();
+}
 
-export { publicRoutes, privateRoutes };
+export { xulyRoutes, publicRoutes, privateRoutes };

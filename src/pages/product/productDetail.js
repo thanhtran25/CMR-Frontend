@@ -38,7 +38,7 @@ const ProductDetail = () => {
         setIsActive(current => !current);
     };
     function VND(x) {
-        return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });;
+        return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
     useEffect(() => {
         getProduct()
@@ -56,8 +56,8 @@ const ProductDetail = () => {
                         <div className="wrapper  details col-md-7">
                             <h3 className="product-title">{product.name}</h3>
                             <h6 className="price">Thương hiệu: <span>{product.brandId}</span></h6>
-                            <h6 className="price">Giá bán: <span>{VND(product.price)}</span></h6>
-                            <h6 className="price">Giá khuyến mãi: <span>{VND(product.price * (100 - product.percent) / 100)}</span></h6>
+                            <h6 className="price">Giá bán: <span>{product && product.price && VND(product.price)}</span></h6>
+                            <h6 className="price">Giá khuyến mãi: <span>{product && product.price && VND(product.price * (100 - product.percent) / 100)}</span></h6>
                             <h6 className="price">Số lượng: </h6>
                             <div className='product-amount'>
                                 <input type='number' step="1" min="1" max="999" value="1" />

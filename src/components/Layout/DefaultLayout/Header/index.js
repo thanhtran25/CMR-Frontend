@@ -29,6 +29,7 @@ function Header() {
         cookies.remove("user")
         cookies.remove("hasPassword")
         dispatch(userLogout());
+        navigate('/');
     }
     const [show, setShow] = useState(false);
     const [validate, setValidate] = useState('')
