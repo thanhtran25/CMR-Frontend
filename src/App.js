@@ -1,13 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { privateRoutes, publicRoutes } from '~/routes';
+import { xulyRoutes, privateRoutes, publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layout';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 function App() {
+  const user = useSelector(state => state.user.user);
+  const [routerArr, setRouterArr] = useState()
+  useEffect(() => {
+    setRouterArr(privateRoutes())
+    console.log(routerArr)
+  }, [user])
   return (
     <Router>
       <div className="App">
         <Routes>
-          {privateRoutes.map((route, index) => {
+          {routerArr && routerArr.length > 0 && routerArr.map((route, index) => {
             const Page = route.component;
             let Layout = DefaultLayout;
             if (route.layout) {

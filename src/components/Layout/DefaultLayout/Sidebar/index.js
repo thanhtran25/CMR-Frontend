@@ -15,7 +15,6 @@ import { Link, NavLink } from 'react-router-dom'
 function Sidebar() {
     const dispatch = useDispatch()
     const handleClickCategory = (value) => {
-        console.log(value)
         const searchPdt = {
             limit: 8,
             page: 1,

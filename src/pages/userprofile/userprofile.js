@@ -5,8 +5,7 @@ import { Gender } from '~/core/constant'
 import { useSelector } from "react-redux"
 
 const UserProfile = () => {
-    let user = useSelector(state => state.user.user);
-    console.log(user)
+    const user = useSelector(state => state.user.user);
     const [userProfile, setUserProfile] = useState({
         email: user.email,
         fullname: user.fullname,
@@ -38,26 +37,26 @@ const UserProfile = () => {
     let pathGender = <p>{userProfile.gender}</p>
     if (!repair) {
         pathBtn = <input type="button" className="profile-save-btn" onClick={handleOnclickSave} name="btnAddMore" value="Save" />
-        pathFullname = <input type="text" name='fullname' onChange={handleChange} class="form-control inputProfile" value={userProfile.fullname} />
-        pathBirthday = <input type="date" name="birthday" onChange={handleChange} class="form-control inputProfile" value={userProfile.birthday} />
-        pathNumberPhone = <input type="text" name="numberPhone" onChange={handleChange} class="form-control inputProfile" value={userProfile.numberPhone} />
-        pathAddress = <input type="text" name="address" onChange={handleChange} class="form-control inputProfile" value={userProfile.address} />
+        pathFullname = <input type="text" name='fullname' onChange={handleChange} className="form-control inputProfile" value={userProfile.fullname} />
+        pathBirthday = <input type="date" name="birthday" onChange={handleChange} className="form-control inputProfile" value={userProfile.birthday} />
+        pathNumberPhone = <input type="text" name="numberPhone" onChange={handleChange} className="form-control inputProfile" value={userProfile.numberPhone} />
+        pathAddress = <input type="text" name="address" onChange={handleChange} className="form-control inputProfile" value={userProfile.address} />
         pathGender = (<div className='row' style={{ padding: '0 12px' }}>
-            <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'male'} value={Gender.MALE} name="gender" id="flexRadioDefault1" />
-                <label class="form-check-label" for="flexRadioDefault1">
+            <div className="form-check col-4">
+                <input className="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'male'} value={Gender.MALE} name="gender" id="flexRadioDefault1" />
+                <label className="form-check-label" for="flexRadioDefault1">
                     Nam
                 </label>
             </div>
-            <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'female'} value={Gender.FEMALE} name="gender" id="flexRadioDefault2" />
-                <label class="form-check-label" for="flexRadioDefault2">
+            <div className="form-check col-4">
+                <input className="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'female'} value={Gender.FEMALE} name="gender" id="flexRadioDefault2" />
+                <label className="form-check-label" for="flexRadioDefault2">
                     Nữ
                 </label>
             </div>
-            <div class="form-check col-4">
-                <input class="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'other'} value={Gender.OTHER} name="gender" id="flexRadioDefault2" />
-                <label class="form-check-label" for="flexRadioDefault2">
+            <div className="form-check col-4">
+                <input className="form-check-input" type="radio" onChange={handleChange} checked={userProfile.gender === 'other'} value={Gender.OTHER} name="gender" id="flexRadioDefault2" />
+                <label className="form-check-label" for="flexRadioDefault2">
                     Khác
                 </label>
             </div>
