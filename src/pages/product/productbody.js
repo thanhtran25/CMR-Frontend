@@ -6,14 +6,19 @@ import { getProductsService, getProductByIdService } from '~/service/productServ
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { choseCategories } from '~/store/action/productAction';
+import { changeCart } from '~/store/action/cartAction';
 import { getBrandsService, getBrandByIdService } from '~/service/brandService';
 import Select from 'react-select'
+import { current } from '@reduxjs/toolkit';
+import Addcart from '~/core/utils/changecart';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const ProductBody = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const categoryId = useSelector(state => state.product.categoryId);
-    const cart = useSelector(state => state.product.cart);
+    const cart = useSelector(state => state.cart.cart);
     const [products, setProducts] = useState('')
     const [brand, setBrand] = useState('')
     const [pagination, SetPagination] = useState('')
@@ -113,22 +118,77 @@ const ProductBody = () => {
         }
         dispatch(choseCategories(fill));
     }
-    const handleAddcart = async (product) => {
+    const handleAddcart = async (product, amount) => {
+        const cartss = JSON.parse(sessionStorage.getItem('cart'))
+        if (sessionStorage.getItem('amount')) {
+            sessionStorage.setItem('amount', parseInt(sessionStorage.getItem('amount')) + amount)
+        } else {
+            sessionStorage.setItem('amount', parseInt(1))
+        }
+        console.log(sessionStorage.getItem('amount'))
         try {
             const res = await getProductByIdService(product)
             const data = res && res.data ? res.data : ''
-            let addcart = (prevcart => {
-                const product = prevcart.product
-            }
-            )
+            const datafill = {
+                img1: data.img1,
+                name: data.name,
+                percent: data.percent,
+                price: data.price,
+                saleCodeId: data.saleCodeId,
+                count: amount,
+                productId: data.id,
+                total: data.price * amount
 
+            }
+            let check = false
+            const newCart = cart && cart.length > 0 && cart.map(obj => {
+                if (obj.productId === product) {
+                    check = true
+                    return {
+                        ...obj,
+                        count: obj.count + amount,
+                        total: parseInt(obj.price * (obj.count + amount))
+                    };
+                }
+
+                return obj;
+            });
+            if (!cartss) {
+                sessionStorage.setItem('cart', JSON.stringify([datafill]))
+                dispatch(changeCart([datafill]))
+            }
+            if (check) {
+                sessionStorage.setItem('cart', JSON.stringify(newCart))
+                dispatch(changeCart(newCart))
+            } else if (cartss && !check) {
+                sessionStorage.setItem('cart', JSON.stringify([...cart, datafill]))
+                dispatch(changeCart([...cart, datafill]))
+            }
 
         } catch (error) {
-
+            console.log(error)
         }
     }
     function VND(x) {
         return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });;
+    }
+    const [searchPdt, setSearchPdt] = useState('')
+    const handleChangeSearchPdt = e => {
+        const value = e.target.value;
+        setSearchPdt(value);
+    }
+    const handeClickSearch = () => {
+        const name = {
+            limit: 12,
+            page: 1,
+            name: searchPdt,
+            brandId: '',
+            categoryId: '',
+            description: '',
+            sortBy: '',
+            sort: '',
+        }
+        dispatch(choseCategories(name))
     }
     const optionsfiter = [
         { value: 'all', label: 'Tất cả' },
@@ -158,6 +218,25 @@ const ProductBody = () => {
     }, [])
     return (
         <>
+            <img
+                className="d-block w-100 slide"
+                src={require('~/assets/images/banner-1.jpg')}
+                style={{ maxHeight: '450px' }}
+            />
+            <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
+                <div className='search-bar '>
+                    <Form className="d-flex">
+                        <Form.Control
+                            type="search"
+                            placeholder="...Search"
+                            className="me-2"
+                            aria-label="Search"
+                            onChange={handleChangeSearchPdt}
+                        />
+                        <Button onClick={handeClickSearch} variant="warning">Search</Button>
+                    </Form>
+                </div>
+            </div>
             <div >
                 <div className='container' style={{ backgroundColor: '#ffffff' }}>
                     <div className='row'>
@@ -206,7 +285,7 @@ const ProductBody = () => {
                             products && products.length > 0 &&
                             products.map((item, index) => {
                                 return (
-                                    <div className="offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4">
+                                    <div className="offset-md-0 col-md-6 col-lg-4 col-xl-2 mt-4">
                                         <div className="product">
 
                                             <div class="picture1">
@@ -227,7 +306,7 @@ const ProductBody = () => {
                                                         </button>
                                                     </li>
                                                     <li >
-                                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                                        <button onClick={() => handleAddcart(item.id, 1)} className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
                                                             <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
                                                         </button>
                                                     </li>

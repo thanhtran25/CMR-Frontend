@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '~/store/action/userAction';
 import validator from 'validator';
 import { ChangePasswordUserService } from '~/service/userService';
-import { choseCategories } from '~/store/action/productAction';
 
 function Header() {
     const user = useSelector(state => state.user.user);
@@ -33,7 +32,6 @@ function Header() {
     }
     const [show, setShow] = useState(false);
     const [validate, setValidate] = useState('')
-    const [searchPdt, setSearchPdt] = useState('')
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -63,23 +61,7 @@ function Header() {
     const [confirmPass, setConfirmPass] = useState({
         repass: "",
     })
-    const handleChangeSearchPdt = e => {
-        const value = e.target.value;
-        setSearchPdt(value);
-    }
-    const handeClickSearch = () => {
-        const name = {
-            limit: 12,
-            page: 1,
-            name: searchPdt,
-            brandId: '',
-            categoryId: '',
-            description: '',
-            sortBy: '',
-            sort: '',
-        }
-        dispatch(choseCategories(name))
-    }
+
     const handleChangePassword = e => {
         const value = e.target.value;
         setChange({
@@ -201,20 +183,6 @@ function Header() {
                         <pre> G O L D    D U C K    C A M E R A </pre>
                     </div>
 
-                    <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
-                        <div className='search-bar '>
-                            <Form className="d-flex">
-                                <Form.Control
-                                    type="search"
-                                    placeholder="...Search"
-                                    className="me-2"
-                                    aria-label="Search"
-                                    onChange={handleChangeSearchPdt}
-                                />
-                                <Button onClick={handeClickSearch} variant="warning">Search</Button>
-                            </Form>
-                        </div>
-                    </div>
 
 
                     <div className='col-4 col-xl-3'>
