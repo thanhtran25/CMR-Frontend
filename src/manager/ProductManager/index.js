@@ -9,11 +9,11 @@ import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-import { getProductService, createProductService, getProductByIdService } from '~/service/productService';
+import { getProductsService, getProductService, createProductService, getProductByIdService, updateProductService, deleteProductService } from '~/service/productService';
 import { getBrandService } from '~/service/brandService';
 import { getCategoriesService } from '~/service/categoryService';
 
-import { validateFull, validateProduct } from '~/core/utils/validate';
+import { validateFull, validateProduct, validateProductR } from '~/core/utils/validate';
 import { Notify, Gender, Roles } from '~/core/constant';
 import { handleError, handelNotify } from '~/core/utils/req';
 import { ToastContainer, toast } from 'react-toastify';
@@ -34,13 +34,14 @@ function ProductManager() {
             saleCodeId: 0,
             warrantyPeriod: '',
         })
+        setFile([]);
         setShowAdd(true)
     };
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
     const [searchProduct, setSearchProduct] = useState({
         page: 1,
-        limit: 4,
+        limit: 1,
         sort: '',
         sortBy: '',
         description: '',
@@ -49,15 +50,34 @@ function ProductManager() {
         categoryId: '',
         saleCodeId: '',
     });
+    const [pagination, SetPagination] = useState('')
     const getListProduct = async () => {
         try {
-            const res = await getProductService(searchProduct);
+            const res = await getProductsService(searchProduct);
             const data = (res && res.data) ? res.data : [];
             setProduct(data.products);
+            SetPagination(selectPagination(data.totalPage))
         } catch {
 
         }
     }
+    const selectPagination = (page) => {
+        let content = [];
+        for (let i = 1; i <= page; i++) {
+            content.push({
+                pageNumber: i,
+            });
+        }
+
+        return content
+    }
+    const handelChange = (i) => {
+        setSearchProduct({
+            ...searchProduct,
+            page: i
+        })
+    }
+
     const [brand, setBrand] = useState({
         page: 1,
         limit: 4,
@@ -142,10 +162,16 @@ function ProductManager() {
 
     }
     const handleClickAddProduct = async () => {
-
         let bodyFormData = new FormData();
+        let count = 0;
         for (let key in files.files) {
+            count = count + 1;
             bodyFormData.append('images', files.files[key]);
+            console.log(files.files[key])
+            if (count == files.files.length) {
+                count = 0;
+                break;
+            }
         }
         bodyFormData.append('name', addProduct.name);
         bodyFormData.append('price', addProduct.price);
@@ -172,6 +198,14 @@ function ProductManager() {
 
     const [repairValidate, SetRepairValidate] = useState('');
     const [repairProduct, setRepairProduct] = useState('');
+    const [filesR, setFileR] = useState([]);
+    const [showAlertCf, setShowAlertCf] = useState({
+        open: false,
+        valirant: '',
+        text: '',
+        title: '',
+        backdrop: ''
+    });
     const handleShowRepair = async (e) => {
         SetRepairValidate('')
         try {
@@ -191,8 +225,179 @@ function ProductManager() {
         });
 
     }
+    const handleChangeBrandR = (e) => {
+        setRepairProduct({
+            ...repairProduct,
+            brandId: e.target.value
+        });
+    }
+    const handleChangeCategoriesR = (e) => {
+        setRepairProduct({
+            ...repairProduct,
+            categoryId: e.target.value
+        });
+    }
+    const handleChangeWarrantyR = (e) => {
+        setRepairProduct({
+            ...repairProduct,
+            warrantyPeriod: e.target.value
+        });
+    }
+
+    const handleChangeFilesR = (e) => {
+        setFileR({
+            files: e.target.files,
+        })
+
+    }
+    const handleShowCfRepairProduct = (e) => {
+        let bodyFormData = new FormData();
+        let count = 0;
+        for (let key in filesR.files) {
+            count = count + 1;
+            bodyFormData.append('images', filesR.files[key]);
+            if (count == filesR.files.length) {
+                count = 0;
+                break;
+            }
+        }
+        bodyFormData.append('name', repairProduct.name);
+        bodyFormData.append('price', repairProduct.price);
+        bodyFormData.append('description', repairProduct.description);
+        bodyFormData.append('brandId', repairProduct.brandId);
+        bodyFormData.append('categoryId', repairProduct.categoryId);
+        bodyFormData.append('warrantyPeriod', repairProduct.warrantyPeriod);
+        const isValid = validateProductR(bodyFormData)
+        SetRepairValidate(isValid)
+        if (Object.keys(isValid).length > 0) return
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có chắc chắn muốn sửa sản phẩm này không?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleClickRepairProduct(e, bodyFormData)
+        })
+    }
+    const handleClickRepairProduct = async (product, bodyFormData) => {
+        try {
+            const data = await updateProductService(bodyFormData, repairProduct.id)
+            const req = handleError(data.request)
+            setShowRepair(false)
+            setShowAlertCf({
+                open: false
+            })
+            handelNotify('success', 'Sửa sản phẩm ' + req)
+            setProduct(prevState => {
+                const newState = prevState.map(obj => {
+                    if (obj.id === product) {
+                        return {
+                            ...obj,
+                            name: repairProduct.name,
+                            brandId: repairProduct.brandId,
+                            categoryId: repairProduct.categoryId,
+                            price: repairProduct.price,
+                            warrantyPeriod: repairProduct.warrantyPeriod,
+                            description: repairProduct.description,
+                            img1: repairProduct.img1,
+                            img2: repairProduct.img2,
+                        };
+                    }
+                    console.log(obj)
+                    return obj;
+                });
+
+                return newState;
+            });
+        } catch (e) {
+            const req = handleError(e.request);
+            setShowAlertCf({
+                open: false
+            })
+            handelNotify('error', req)
+        }
+    }
+    const handleShowDetail = async (e) => {
+        try {
+            let data = await getProductByIdService(e)
+            // console.log(data)
+            setRepairProduct(data.data)
+        } catch (error) {
+
+        }
+        setShowDetail(true)
+    }
+    const handleShowCfDelete = (e) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm này không?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleDelete(e)
+        })
+    }
+    const handleDelete = async (product) => {
+        try {
+            const data = await deleteProductService(product)
+            setShowAlertCf({
+                open: false
+            })
+            setSearchProduct({
+                ...searchProduct,
+                sort: '',
+                sortBy: '',
+                description: '',
+                name: '',
+                brandId: '',
+                categoryId: '',
+                saleCodeId: '',
+            })
+            const req = handleError(data.request)
+            handelNotify('success', 'Xóa sản phẩm ' + req)
+        } catch (error) {
+            const req = handleError(error.request)
+            setShowAlertCf({
+                open: false
+            })
+            handelNotify('error', req)
+        }
+    }
     return (
         <>
+            {/* Modal Thông báo */}
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            {/* Modal Xác nhận */}
+            <Modal
+                show={showAlertCf.open}
+                onHide={() => setShowAlertCf({ open: false })}
+                backdrop={showAlertCf.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
+                    <Modal.Title>{showAlertCf.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowAlertCf({ open: false })}>
+                        Hủy
+                    </Button>
+                    <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
@@ -274,9 +479,9 @@ function ProductManager() {
                                                                 </td>
                                                                 <td className='text-break'>
                                                                     <pre>
-                                                                        <button ><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
+                                                                        <button onClick={e => handleShowDetail(item.id)}><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
                                                                         <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button><span>  </span>
-                                                                        <button ><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
+                                                                        <button onClick={e => handleShowCfDelete(item.id)}><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
                                                                     </pre>
                                                                 </td>
                                                             </tr>
@@ -286,8 +491,15 @@ function ProductManager() {
                                                 }
                                             </tbody>
                                         </table>
-                                        <nav className="mt-5">
+                                        <nav className="mt-4">
                                             <ul id="pagination" className="pagination justify-content-center">
+                                                {
+                                                    pagination && pagination.length > 0 &&
+                                                    pagination.map(item => {
+                                                        return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
+                                                    })
+                                                }
+
                                             </ul>
                                         </nav>
                                     </div>
@@ -357,7 +569,7 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3">
                                         <Form.Label>Chọn 2 ảnh sản phẩm:</Form.Label>
-                                        <Form.Control type="file" multiple name="file" onChange={handleChangeFiles} />
+                                        <Form.Control type="file" multiple name="files" onChange={handleChangeFiles} />
                                         {addValidate.images && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{addValidate.images}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
@@ -408,11 +620,11 @@ function ProductManager() {
                                             value={repairProduct.name}
                                             onChange={handleChangeRepairProduct}
                                         />
-                                        {repairValidate.birthday && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.birthday}</p>}
+                                        {repairValidate.name && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.name}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thương hiệu:</Form.Label>
-                                        <Form.Select aria-label="Default select example" onChange={handleChangeBrand}>
+                                        <Form.Select aria-label="Default select example" onChange={handleChangeBrandR}>
                                             <option value='0'>Chọn thương hiệu</option>
                                             {
                                                 brand && brand.length > 0 &&
@@ -429,7 +641,7 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Danh mục:</Form.Label>
-                                        <Form.Select aria-label="Default select example" onChange={handleChangeCategories}>
+                                        <Form.Select aria-label="Default select example" onChange={handleChangeCategoriesR}>
                                             <option value='0'>Chọn danh mục</option>
                                             {
                                                 categories && categories.length > 0 &&
@@ -450,24 +662,51 @@ function ProductManager() {
                                             type="text"
                                             placeholder=""
                                             autoFocus
+                                            name='price'
+                                            value={repairProduct.price}
+                                            onChange={handleChangeRepairProduct}
                                         />
                                         {repairValidate.price && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.price}</p>}
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3">
                                         <Form.Label>Chọn 2 ảnh sản phẩm:</Form.Label>
-                                        <Form.Control type="file" multiple />
+                                        <Form.Control type="file" multiple name="file" onChange={handleChangeFilesR} />
                                         {repairValidate.images && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.images}</p>}
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>
-                                        <Form.Select aria-label="Default select example" onChange={handleChangeWarranty}>
-                                            {repairProduct.warrantyPeriod == 0 && <option value="0">Chọn thời hạn bảo hành</option>}
-                                            {repairProduct.warrantyPeriod == 1 && <option value="1">1 năm</option>}
-                                            {repairProduct.warrantyPeriod == 2 && <option value="2">2 năm</option>}
-                                            {repairProduct.warrantyPeriod == 3 && <option value="3">3 năm</option>}
-
-
-                                        </Form.Select>
+                                        {repairProduct.warrantyPeriod == 0 &&
+                                            <Form.Select aria-label="Default select example" onChange={handleChangeWarrantyR}>
+                                                <option selected value="0">Chọn thời hạn bảo hành</option>
+                                                <option value="1">1 năm</option>
+                                                <option value="2">2 năm</option>
+                                                <option value="3">3 năm</option>
+                                            </Form.Select>
+                                        }
+                                        {repairProduct.warrantyPeriod == 1 &&
+                                            <Form.Select aria-label="Default select example" onChange={handleChangeWarrantyR}>
+                                                <option value="0">Chọn thời hạn bảo hành</option>
+                                                <option selected value="1">1 năm</option>
+                                                <option value="2">2 năm</option>
+                                                <option value="3">3 năm</option>
+                                            </Form.Select>
+                                        }
+                                        {repairProduct.warrantyPeriod == 2 &&
+                                            <Form.Select aria-label="Default select example" onChange={handleChangeWarrantyR}>
+                                                <option value="0">Chọn thời hạn bảo hành</option>
+                                                <option value="1">1 năm</option>
+                                                <option selected value="2">2 năm</option>
+                                                <option value="3">3 năm</option>
+                                            </Form.Select>
+                                        }
+                                        {repairProduct.warrantyPeriod == 3 &&
+                                            <Form.Select aria-label="Default select example" onChange={handleChangeWarrantyR}>
+                                                <option value="0">Chọn thời hạn bảo hành</option>
+                                                <option value="1">1 năm</option>
+                                                <option value="2">2 năm</option>
+                                                <option selected value="3">3 năm</option>
+                                            </Form.Select>
+                                        }
                                         {repairValidate.warrantyPeriod && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.warrantyPeriod}</p>}
                                     </Form.Group>
                                     <Form.Group
@@ -475,7 +714,10 @@ function ProductManager() {
 
                                     >
                                         <Form.Label>Mô tả</Form.Label>
-                                        <Form.Control as="textarea" rows={3} />
+                                        <Form.Control as="textarea" rows={3}
+                                            name='description'
+                                            value={repairProduct.description}
+                                            onChange={handleChangeRepairProduct} />
                                         {repairValidate.description && <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{repairValidate.description}</p>}
                                     </Form.Group>
                                 </Form>
@@ -484,7 +726,7 @@ function ProductManager() {
                                 <Button variant="secondary" onClick={() => setShowRepair(false)}>
                                     Đóng
                                 </Button>
-                                <Button variant="primary" onClick={() => setShowRepair(false)}>
+                                <Button variant="primary" onClick={handleShowCfRepairProduct}>
                                     Sửa
                                 </Button>
                             </Modal.Footer>
@@ -505,6 +747,7 @@ function ProductManager() {
                                             placeholder=""
                                             disabled
                                             readOnly
+                                            value={repairProduct.id}
                                         />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
@@ -514,24 +757,36 @@ function ProductManager() {
                                             placeholder=""
                                             disabled
                                             readOnly
+                                            name='price'
+                                            value={repairProduct.name}
                                         />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thương hiệu:</Form.Label>
                                         <Form.Select aria-label="Default select example" disabled readOnly>
-                                            <option value="1">Canon</option>
+                                            {
+                                                brand && brand.length > 0 &&
+                                                brand.map(item => {
+                                                    if (item.id == repairProduct.brandId)
+                                                        return (
+                                                            <option value={item.id}>{item.name}</option>
+                                                        )
+                                                })
+                                            }
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Danh mục:</Form.Label>
                                         <Form.Select aria-label="Default select example" disabled readOnly>
-                                            <option value="1">Máy ảnh</option>
-                                        </Form.Select>
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Kho:</Form.Label>
-                                        <Form.Select aria-label="Default select example" disabled readOnly>
-                                            <option value="1">Tp HCM</option>
+                                            {
+                                                categories && categories.length > 0 &&
+                                                categories.map(item => {
+                                                    if (item.id == repairProduct.categoryId)
+                                                        return (
+                                                            <option value={item.id}>{item.name}</option>
+                                                        )
+                                                })
+                                            }
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
@@ -541,33 +796,30 @@ function ProductManager() {
                                             placeholder=""
                                             disabled
                                             readOnly
+                                            value={repairProduct.price}
                                         />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Khuyến mãi:</Form.Label>
-                                        <Form.Select aria-label="Default select example" disabled readOnly>
-                                            <option value="1">20/10/2022 ngày hội siêu sale phụ nữ</option>
-                                        </Form.Select>
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 1</Form.Label>
-                                        <img src={require('~/assets/images/cam-6-1-1.jpg')} width='100px' height='100px' />
+                                        <img src={'http://localhost:1912/static/product/image/' + repairProduct.img1} width='100px' height='100px' />
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 2</Form.Label>
-                                        <img src={require('~/assets/images/cam-6-1-2.jpg')} width='100px' height='100px' />
+                                        <img src={'http://localhost:1912/static/product/image/' + repairProduct.img2} width='100px' height='100px' />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>
                                         <Form.Select aria-label="Default select example" disabled readOnly>
-                                            <option value="1">1 năm</option>
+                                            {repairProduct.warrantyPeriod == 1 && <option value="1">1 năm</option>}
+                                            {repairProduct.warrantyPeriod == 2 && <option value="2">2 năm</option>}
+                                            {repairProduct.warrantyPeriod == 3 && <option value="3">3 năm</option>}
                                         </Form.Select>
                                     </Form.Group>
                                     <Form.Group
                                         className="mb-3"
                                     >
                                         <Form.Label>Mô tả</Form.Label>
-                                        <Form.Control as="textarea" rows={3} disabled readOnly />
+                                        <Form.Control as="textarea" rows={3} disabled readOnly value={repairProduct.description} />
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>

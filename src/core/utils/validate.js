@@ -116,7 +116,53 @@ const validateProduct = (data) => {
     if (data.getAll('images') !== null && data.getAll('images') !== undefined) {
         if (data.getAll('images').length == 0) {
             msg.images = "Please choose images"
-        } else if (data.getAll('images').length != 4) {
+        } else if (data.getAll('images').length != 2) {
+            msg.images = "Please only choose 2 images"
+        }
+    }
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
+const validateProductR = (data) => {
+    const msg = {};
+    if (data.get('name') !== null && data.get('name') !== undefined) {
+        if (validator.isEmpty(data.get('name'))) {
+            msg.name = "Please input name"
+        }
+    }
+    if (data.get('price') !== null && data.get('price') !== undefined) {
+        if (validator.isEmpty(data.get('price'))) {
+            msg.price = "Please input price"
+        } else {
+            if (validator.isNumeric(data.get('price')) === false) {
+                msg.price = "Price is number"
+            }
+        }
+    }
+    if (data.get('description') !== null && data.get('description') !== undefined) {
+        if (validator.isEmpty(data.get('description'))) {
+            msg.description = "Please input description"
+        }
+    }
+    if (data.get('description') !== null && data.get('brandId') !== undefined) {
+        if (data.get('brandId') == 0) {
+            msg.brandId = "Please choose brandId"
+        }
+    }
+    if (data.get('categoryId') !== null && data.get('categoryId') !== undefined) {
+        if (data.get('categoryId') == 0) {
+            msg.categoryId = "Please choose categoryId"
+        }
+    }
+    if (data.get('warrantyPeriod') !== null && data.get('warrantyPeriod') !== undefined) {
+        if (data.get('warrantyPeriod') == 0) {
+            msg.warrantyPeriod = "Please choose warrantyPeriod"
+        }
+    }
+    if (data.getAll('images') !== null && data.getAll('images') !== undefined) {
+        if (data.getAll('images').length == 0) {
+
+        } else if (data.getAll('images').length != 2) {
             msg.images = "Please only choose 2 images"
         }
     }
@@ -127,4 +173,5 @@ export {
     validateFull,
     isVietnamesePhoneNumber,
     validateProduct,
+    validateProductR,
 }
