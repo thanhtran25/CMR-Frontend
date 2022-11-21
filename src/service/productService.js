@@ -62,6 +62,19 @@ const getProductByIdService = (id) => {
     )
 }
 
+const updateProductService = (product, id) => {
+    return request.put(
+        'products/' + id + '',
+        product,
+        config
+    )
+}
+const deleteProductService = (id) => {
+    return request.delete(
+        'products/' + id + '',
+        config,
+    )
+}
 export {
-    getProductService, createProductService, getProductByIdService, getProductsService
+    getProductService, createProductService, getProductByIdService, getProductsService, updateProductService, deleteProductService
 }
