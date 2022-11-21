@@ -17,6 +17,7 @@
 @media screen and (max-width: 996px) {
     .preview {
         margin-bottom: 20px;
+        border: 1px grey;
     }
 }
 
@@ -67,7 +68,6 @@
 }
 
 .card1 {
-    margin-top: 50px;
     padding: 3em;
     line-height: 1.5em;
 }
@@ -107,11 +107,6 @@
     text-transform: UPPERCASE;
     font-weight: bold;
 }
-
-.checked,
-// .price span {
-//     color: #ff9f1a;
-// }
 
 .product-title,
 .rating,
@@ -220,49 +215,15 @@
     }
 }
 
-.product-amount {
-    height: 40px;
-    border: 1px solid #999;
-    width: 80px;
-    position: relative;
+.my-img-thumbnail {
+    padding: 0.25rem;
+    border: 1px solid rgb(167, 167, 167);
+    background-color: #fff;
+    border-radius: 0.375rem;
+    max-width: 100%;
+    height: auto;
+}
 
-    input {
-        width: 60px !important;
-        border: 0px;
-        padding: 0px;
-        height: 38px;
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-    }
-
-    .amount-plus {
-        background: #999;
-        color: #fff;
-        font-family: Courier;
-        height: 20px;
-        width: 20px;
-        display: block;
-        position: absolute;
-        top: -1px;
-        right: -1px;
-        text-align: center;
-        line-height: 20px;
-        font-size: 16px;
-    }
-
-    .amount-minus {
-        background: #999;
-        color: #fff;
-        font-family: Courier;
-        height: 20px;
-        width: 20px;
-        display: block;
-        position: absolute;
-        bottom: -1px;
-        right: -1px;
-        text-align: center;
-        line-height: 20px;
-        font-size: 16px;
-    }
+.my-img-thumbnail-active {
+    box-shadow: rgba(236, 2, 2) 0px 5px 15px;
 }
