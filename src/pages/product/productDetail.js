@@ -48,18 +48,18 @@ const ProductDetail = () => {
             <div className="card1">
                 <div className="container" style={{ marginTop: '10%' }}>
                     <div className="row">
-                        <div className="wrapper border border-dark preview col-md-5">
+                        <div className="tab-pane wrapper preview col-md-5">
                             <div className="preview-pic tab-content">
-                                <div className="tab-pane active" id="pic-1"><img className="img-fluid" src={'http://localhost:1912/static/product/image/' + images} /></div>
+                                <div className=" active" id="pic-1"><img className="img-fluid" src={'http://localhost:1912/static/product/image/' + images} /></div>
                             </div>
                         </div>
-                        <div className="wrapper  details col-md-7">
-                            <h3 className="product-title">{product.name}</h3>
-                            <h6 className="price">Thương hiệu: <span>{product.brandId}</span></h6>
-                            <h6 className="price">Giá bán: <span>{product && product.price && VND(product.price)}</span></h6>
-                            <h6 className="price">Giá khuyến mãi: <span>{product && product.price && VND(product.price * (100 - product.percent) / 100)}</span></h6>
-                            <h6 className="price">Số lượng: </h6>
-                            <div className='product-amount'>
+                        <div className="wrapper details col-md-7">
+                            <h3 className="product-title px-3">{product.name}</h3>
+                            <h6 className="price px-3">Thương hiệu: <span>{product.brandId}</span></h6>
+                            <h6 className="price px-3">Giá bán: <span>{product && product.price && VND(product.price)}</span></h6>
+                            <h6 className="price px-3">Giá khuyến mãi: <span>{product && product.price && VND(product.price * (100 - product.percent) / 100)}</span></h6>
+                            <h6 className="price px-3">Số lượng: </h6>
+                            <div className='count-product mx-3'>
                                 <input type='number' step="1" min="1" max="999" value="1" />
                                 <button className='amount-plus'>
                                     +
@@ -68,12 +68,12 @@ const ProductDetail = () => {
                                     -
                                 </button>
                             </div>
-                            <h6 className="price mt-3">Mô tả:</h6>
-                            <p className="product-description">{product.description}</p>
+                            <h6 className="price mt-3 px-3">Mô tả:</h6>
+                            <p className="product-description px-3">{product.description}</p>
 
 
                         </div>
-                        <div className='wrapper preview col-md-5'>
+                        <div className='wrapper tab-pane2 preview col-md-5 mt-2 py-2'>
                             <ul className="preview-thumbnail nav nav-tabs">
                                 <li><a data-target="#pic-1" data-toggle="tab"><img onClick={(e) => handleClickImage(product.img1, e)}
                                     className={!isActive ? 'my-img-thumbnail my-img-thumbnail-active' : 'my-img-thumbnail'}
@@ -84,9 +84,12 @@ const ProductDetail = () => {
                             </ul>
                         </div>
                         <div className="wrapper preview col-md-7"><div className="action">
-                            <button className="add-to-cart btn btn-default" type="button">
+                            <button className="add-to-cart buy btn" type="button">
                                 <FontAwesomeIcon icon={faCartShopping} className='fa-icon' />
                                 <span>       </span>Thêm giỏ hàng
+                            </button>
+                            <button className="add-to-cart btn buy-now" type="button">
+                                <span>       </span>Mua ngay
                             </button>
                         </div></div>
                     </div>
