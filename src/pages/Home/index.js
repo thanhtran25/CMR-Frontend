@@ -14,7 +14,7 @@ import { forgotPasswordService } from '~/service/authService';
 import { getProductsService } from '~/service/productService';
 import { useNavigate } from "react-router-dom";
 function Home() {
-    const limit = 8
+    const limit = 10
     const navigate = useNavigate();
     const [showAlertCf, setShowAlertCf] = useState(false);
     const [productnew, setProductnew] = useState({
@@ -64,6 +64,19 @@ function Home() {
         } catch (error) {
 
         }
+    }
+    function VND(x) {
+        return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
+    let path = <div></div>
+    function oldPrice(price, percent) {
+        path = ''
+        if (percent != 0) {
+            const x = price;
+            path = <a href='#' className='percent'>{percent}%</a>
+            return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+        }
+        return '';
     }
     const handelCloseCheck = async () => {
         cookies.save('hasPassword', 'true')
@@ -188,7 +201,7 @@ function Home() {
                     {products && products.length > 0 &&
                         products.map((item, index) => {
                             return (
-                                <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                                <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-2-4 mt-4'>
                                     <div className="product">
 
                                         <div class="picture1">
@@ -198,8 +211,9 @@ function Home() {
                                             <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
                                         </div>
                                         <div className="product-info">
-                                            <h3>{item.name}</h3>
-                                            <span>{item.price}</span>
+                                            <p>{item.name}</p>
+                                            <span>{VND(item.price * (100 - item.percent) / 100)} </span> <br></br>
+                                            <p style={{ height: "20px" }}><del> {oldPrice(item.price, item.percent)}</del>  {path}</p>
                                         </div>
                                         <div className="product-action" >
                                             <ul className="product-action-icon-front product-action-a">

@@ -170,7 +170,17 @@ const ProductBody = () => {
         }
     }
     function VND(x) {
-        return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });;
+        return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
+    let path = <div></div>
+    function oldPrice(price, percent) {
+        path = ''
+        if (percent != 0) {
+            const x = price;
+            path = <a href='#' className='percent'>{percent}%</a>
+            return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+        }
+        return '';
     }
     const [searchPdt, setSearchPdt] = useState('')
     const handleChangeSearchPdt = e => {
@@ -219,43 +229,28 @@ const ProductBody = () => {
     return (
         <>
             <img
-                className="d-block w-100 slide"
+                className="d-block w-100"
                 src={require('~/assets/images/banner-1.jpg')}
-                style={{ maxHeight: '450px' }}
+                style={{ maxHeight: '300px' }}
             />
-            <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
-                <div className='search-bar '>
-                    <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="...Search"
-                            className="me-2"
-                            aria-label="Search"
-                            onChange={handleChangeSearchPdt}
-                        />
-                        <Button onClick={handeClickSearch} variant="warning">Search</Button>
-                    </Form>
-                </div>
-            </div>
             <div >
                 <div className='container' style={{ backgroundColor: '#ffffff' }}>
                     <div className='row'>
                         <div className='col-12 mt-4 mb-2'>
-                            <div className='row' style={{ marginTop: "160px" }}>
-                                <div className='col-8'>
+                            <div className='row' >
+                                <div className='col-12'>
                                     <div className='row'>
-                                        <div className='col-4 col-md-2'>
-                                            <span className='text-filter text-md-pr'>Sắp xếp:</span>
+                                        <div className='col-1 btn border' disabled>
+                                            Lọc
                                         </div>
-                                        <div className='col-4 col-md-3'>
+                                        <div className='col-4 col-md-2'>
                                             <Select
                                                 onChange={handleFiter}
                                                 defaultValue={optionsfiter[0]}
                                                 options={optionsfiter}
-
                                             />
                                         </div>
-                                        <div className='col-4  col-md-3'>
+                                        <div className='col-4  col-md-2'>
                                             <Select
                                                 onChange={handleSortByPrice}
                                                 defaultValue={optionsprice[0]}
@@ -263,13 +258,27 @@ const ProductBody = () => {
 
                                             />
                                         </div>
-                                        <div className='col-4 col-md-3'>
+                                        <div className='col-4 col-md-2'>
                                             <Select
                                                 onChange={handleChangeBrand}
                                                 defaultValue={optionsbrands[0]}
                                                 options={optionsbrands}
 
                                             />
+                                        </div>
+                                        <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
+                                            <div className='search-bar '>
+                                                <Form className="d-flex">
+                                                    <Form.Control
+                                                        type="search"
+                                                        placeholder="...Search"
+                                                        className="me-2"
+                                                        aria-label="Search"
+                                                        onChange={handleChangeSearchPdt}
+                                                    />
+                                                    <Button onClick={handeClickSearch} variant="warning">Search</Button>
+                                                </Form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -285,7 +294,7 @@ const ProductBody = () => {
                             products && products.length > 0 &&
                             products.map((item, index) => {
                                 return (
-                                    <div className="offset-md-0 col-md-6 col-lg-4 col-xl-2 mt-4">
+                                    <div className="offset-md-0 col-md-6 col-lg-4 col-2-4 mt-4">
                                         <div className="product">
 
                                             <div class="picture1">
@@ -295,8 +304,9 @@ const ProductBody = () => {
                                                 <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
                                             </div>
                                             <div className="product-info">
-                                                <h3>{item.name}</h3>
-                                                <span>{VND(item.price)}</span>
+                                                <p>{item.name}</p>
+                                                <span>{VND(item.price * (100 - item.percent) / 100)} </span> <br></br>
+                                                <p style={{ height: "20px" }}><del> {oldPrice(item.price, item.percent)}</del>  {path}</p>
                                             </div>
                                             <div className="product-action" >
                                                 <ul className="product-action-icon-front product-action-a">

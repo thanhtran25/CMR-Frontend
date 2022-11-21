@@ -36,7 +36,7 @@ function Header() {
     const handleShow = () => setShow(true);
 
 
-    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-3'>Sign In</Button>;
+    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-4 btn-sm mt-1'>Đăng Nhập</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
         let arrName = user.fullname.split(' ');
@@ -45,7 +45,7 @@ function Header() {
         } else {
             name += arrName[arrName.length - 1];
         }
-        path = (<NavDropdown style={{ color: '#fff' }} title={name} id="basic-nav-dropdown" className='col-7 col-xl-3 navNav'>
+        path = (<NavDropdown title={name} id="basic-nav-dropdown" className='col-7 col-xl-3 navNav btn btn-sm btn-warning mt-1'>
             <NavDropdown.Item as={Link} to={'/Profile'}>Thông tin tài khoản</NavDropdown.Item>
             <NavDropdown.Item onClick={handleShow}>
                 Đổi mật khẩu
@@ -178,18 +178,17 @@ function Header() {
                 </Modal.Footer>
             </Modal>
             <div>
-                <div className='header-topbar row pt-3 gx-0' >
-                    <div className='header-topbar-content col-12 col-xl-4'>
+                <div className='header-topbar row' >
+                    <div className='header-topbar-content col-12 offset-0 col-xl-4 offset-xl-4'>
                         <pre> G O L D    D U C K    C A M E R A </pre>
                     </div>
                     <div className='col-4 col-xl-3'>
                         <div className='row'>
-                            <div className='col-xl-6'></div>
-                            <Link className='shop-card col-1 col-xl-1'>
+                            <Link className='shop-card offset-6 col-xl-1'>
                                 <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
                                 <span className='cart-count'>0</span>
                             </Link>
-                            <div className='col-1 col-xl-1'></div>
+                            <div className='col-1'></div>
                             {path}
                         </div>
                     </div>
