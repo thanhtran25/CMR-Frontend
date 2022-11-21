@@ -11,8 +11,29 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer } from 'react-toastify';
 import { Notify } from '~/core/constant';
 import { forgotPasswordService } from '~/service/authService';
+import { getProductsService } from '~/service/productService';
+import { useNavigate } from "react-router-dom";
 function Home() {
+    const limit = 8
+    const navigate = useNavigate();
     const [showAlertCf, setShowAlertCf] = useState(false);
+    const [productnew, setProductnew] = useState({
+        limit: limit,
+        page: 1,
+        sortBy: 'desc',
+        sort: 'createdAt',
+        sale: '',
+    });
+    const [products, setProducts] = useState()
+    const getListProducts = async (list) => {
+        try {
+            const res = await getProductsService(list)
+            const data = (res && res.data) ? res.data : [];
+            setProducts(data.products)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const hadelCheckHasPw = () => {
         if (cookies.load('hasPassword')) {
             if (cookies.load('hasPassword') === 'false') {
@@ -50,9 +71,16 @@ function Home() {
             open: false
         })
     }
+    const handleClickDetail = (item) => {
+        navigate('/product/' + item)
+    }
     useEffect(() => {
         hadelCheckHasPw()
     }, [])
+    useEffect(() => {
+        getListProducts(productnew)
+        console.log(products)
+    }, [productnew])
     return (
         <>
             <ToastContainer
@@ -157,176 +185,47 @@ function Home() {
                 <hr className='col-0' />
                 <h2 className="title" style={{ textAlign: 'center', paddingBottom: '3rem' }}> MỚI NHẤT </h2>
                 <div className="row">
-                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
-                        <div className="product">
+                    {products && products.length > 0 &&
+                        products.map((item, index) => {
+                            return (
+                                <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
+                                    <div className="product">
 
-                            <div class="picture1">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div class="picture2">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div className="product-info">
-                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                <span>2,290,000 đ</span>
-                            </div>
-                            <div className="product-action" >
-                                <ul className="product-action-icon-front product-action-a">
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li >
-                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
-                        <div className="product">
+                                        <div class="picture1">
+                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" width="90%" />
+                                        </div>
+                                        <div class="picture2">
+                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
+                                        </div>
+                                        <div className="product-info">
+                                            <h3>{item.name}</h3>
+                                            <span>{item.price}</span>
+                                        </div>
+                                        <div className="product-action" >
+                                            <ul className="product-action-icon-front product-action-a">
+                                                <li>
+                                                    <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                                        <FontAwesomeIcon onClick={() => handleClickDetail(item.id)} icon={faSearch} className='fa-icon' />
+                                                    </button>
+                                                </li>
+                                                <li >
+                                                    <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                                        <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                                        <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
 
-                            <div class="picture1">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div class="picture2">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div className="product-info">
-                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                <span>2,290,000 đ</span>
-                            </div>
-                            <div className="product-action" >
-                                <ul className="product-action-icon-front product-action-a">
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li >
-                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
-                        <div className="product">
-
-                            <div class="picture1">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div class="picture2">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div className="product-info">
-                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                <span>2,290,000 đ</span>
-                            </div>
-                            <div className="product-action" >
-                                <ul className="product-action-icon-front product-action-a">
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li >
-                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
-                        <div className="product">
-
-                            <div class="picture1">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div class="picture2">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div className="product-info">
-                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                <span>2,290,000 đ</span>
-                            </div>
-                            <div className="product-action" >
-                                <ul className="product-action-icon-front product-action-a">
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li >
-                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-xl-3 mt-4'>
-                        <div className="product">
-
-                            <div class="picture1">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-2.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div class="picture2">
-                                <img className="product-img img" src={require('~/assets/images/cam-6-1-1.jpg')} alt="Canon" width="90%" />
-                            </div>
-                            <div className="product-info">
-                                <h3>Máy Ảnh Nikon D750 Powershot - Black III</h3>
-                                <span>2,290,000 đ</span>
-                            </div>
-                            <div className="product-action" >
-                                <ul className="product-action-icon-front product-action-a">
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                            <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li >
-                                        <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                            <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <hr />
 
