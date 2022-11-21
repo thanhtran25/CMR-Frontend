@@ -63,84 +63,60 @@ const UserProfile = () => {
         </div>)
     }
     return (
-        <div className="container emp-profile">
+        <div className="container">
             <form method="post">
-                <div className="row">
-                    <div className="col-md-4">
-                        <div className="profile-img">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                            <div className="file btn btn-lg btn-primary">
-                                Change Photo
-                                <input type="file" name="file" />
+                <div className='row '>
+                    <div className="emp-profile col-10 offset-1">
+                        <div className='row p-5'>
+
+                            <div className="col-md-2">
+                                {pathBtn}
+
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="profile-head">
-                            <h5>
-                                {userProfile.fullname}
-                            </h5>
-                            <h6>
-                                {userProfile.email}
-                            </h6>
-                            <p className="proile-rating">RANKINGS : <span>8/10</span></p>
-                            <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                <li className="nav-item">
-                                    <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="col-md-2">
-                        {pathBtn}
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-4">
+                            <div className="col-md-8">
+                                <div className="tab-content profile-tab" id="myTabContent">
+                                    <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                    </div>
-                    <div className="col-md-8">
-                        <div className="tab-content profile-tab" id="myTabContent">
-                            <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-                                <div className="row">
-                                    <div className="col-md-5">
-                                        <label >Name</label>
-                                    </div>
-                                    <div className="col-md-7">
-                                        {pathFullname}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-5 mt-2">
-                                        <label >Birth Day</label>
-                                    </div>
-                                    <div className="col-md-7 mt-2">
-                                        {pathBirthday}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-5 mt-2">
-                                        <label>Phone</label>
-                                    </div>
-                                    <div className="col-md-7 mt-2">
-                                        {pathNumberPhone}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-5 mt-2">
-                                        <label>Address</label>
-                                    </div>
-                                    <div className="col-md-7 mt-2">
-                                        {pathAddress}
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-5 mt-2">
-                                        <label>Gender</label>
-                                    </div>
-                                    <div className="col-md-7 mt-2">
-                                        {pathGender}
+                                        <div className="row">
+                                            <div className="col-md-5">
+                                                <label >Name</label>
+                                            </div>
+                                            <div className="col-md-7">
+                                                {pathFullname}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-5 mt-2">
+                                                <label >Birth Day</label>
+                                            </div>
+                                            <div className="col-md-7 mt-2">
+                                                {pathBirthday}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-5 mt-2">
+                                                <label>Phone</label>
+                                            </div>
+                                            <div className="col-md-7 mt-2">
+                                                {pathNumberPhone}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-5 mt-2">
+                                                <label>Address</label>
+                                            </div>
+                                            <div className="col-md-7 mt-2">
+                                                {pathAddress}
+                                            </div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-md-5 mt-2">
+                                                <label>Gender</label>
+                                            </div>
+                                            <div className="col-md-7 mt-2">
+                                                {pathGender}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -206,12 +206,12 @@ function Header() {
                             <Form className="d-flex">
                                 <Form.Control
                                     type="search"
-                                    placeholder="...Search"
+                                    placeholder="...Tìm kiếm"
                                     className="me-2"
                                     aria-label="Search"
                                     onChange={handleChangeSearchPdt}
                                 />
-                                <Button onClick={handeClickSearch} variant="warning">Search</Button>
+                                <Button onClick={handeClickSearch} variant="warning">Tìm</Button>
                             </Form>
                         </div>
                     </div>
