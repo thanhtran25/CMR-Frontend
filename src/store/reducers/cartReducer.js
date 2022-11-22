@@ -1,7 +1,7 @@
 
 const initState = {
     cart: JSON.parse(sessionStorage.getItem('cart')),
-    amount: 0,
+    amount: JSON.parse(sessionStorage.getItem('amount')),
     check: [],
     total: ''
 }
@@ -22,6 +22,11 @@ const cartReducer = (state = initState, action) => {
             return {
                 ...state,
                 total: action.payload,
+            }
+        case "CHANGE_AMOUNT":
+            return {
+                ...state,
+                amount: action.payload,
             }
         default:
             return state

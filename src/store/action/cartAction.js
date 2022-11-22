@@ -17,8 +17,15 @@ const userPayment = (payload) => {
         payload: payload
     }
 }
+const changeAmount = (payload) => {
+    return {
+        type: "CHANGE_AMOUNT",
+        payload: payload
+    }
+}
 export {
     changeCart,
     checkCart,
-    userPayment
+    userPayment,
+    changeAmount
 }

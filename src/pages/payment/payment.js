@@ -1,11 +1,85 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './payment.scss'
+import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react'
-
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCart, checkCart, userPayment } from '~/store/action/cartAction';
+import cookies from 'react-cookies';
+import { shippingService } from '~/service/paymentService';
 const Payment = () => {
-
+    const refname = useRef(null);
+    const refaddress = useRef(null);
+    const refphone = useRef(null);
+    const user = cookies.load('user')
+    const [userPay, setUserPay] = useState('');
+    const checked = useSelector(state => state.cart.check);
+    const total = useSelector(state => state.cart.total);
+    const [isReadonly, setIsReadonly] = useState({
+        customerName: false,
+        address: false,
+        numberPhone: false
+    });
+    const handleReadOnly = () => {
+        if (!user.fullname && user.fullname === '') {
+            setIsReadonly({
+                ...isReadonly,
+                customerName: false
+            })
+        }
+        if (user.address) {
+            setIsReadonly({
+                ...isReadonly,
+                address: true
+            })
+        }
+        if (user.numberPhone) (
+            setIsReadonly({
+                ...isReadonly,
+                numberPhone: true
+            })
+        )
+    }
+    const handleRepairAddress = async () => {
+        const address = {
+            address: userPay.address
+        }
+        try {
+            const res = await shippingService(address)
+            const data = res && res.data ? res.data : '';
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const handleChange = (e) => {
+        const value = e.target.value
+        setUserPay({
+            ...userPay,
+            [e.target.name]: value
+        })
+        console.log(userPay)
+    }
+    function VND(x) {
+        return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
+    useEffect(() => {
+        if (user) {
+            handleReadOnly()
+            setUserPay({
+                customerName: user.fullname,
+                address: user.address,
+                numberPhone: user.numberPhone
+            })
+        } else {
+            setUserPay({
+                customerName: '',
+                address: '',
+                numberPhone: ''
+            })
+        }
+    }, [])
     return (
         <div className="container">
             <div className='row'>
@@ -19,7 +93,7 @@ const Payment = () => {
                     <div className='col-12'>
                         <div className='row mt-2'>
                             <div className='col-10'>
-                                <input type="text" value='Tô Phương Dũng' className="form-control" />
+                                <input readOnly={isReadonly.customerName} onChange={handleChange} name="customerName" ref={refname} type="text" value={userPay.customerName} className="form-control" placeholder="Họ và tên" />
                             </div>
                             <div className='col-2'>
                                 <button type="button" className="btn btn-secondary btnSua">Sửa</button>
@@ -27,15 +101,15 @@ const Payment = () => {
                         </div>
                         <div className='row mt-4'>
                             <div className='col-10'>
-                                <input type="text" value='Địa chỉ giao hàng' className="form-control" />
+                                <input readOnly={isReadonly.address} name="address" onChange={handleChange} ref={refaddress} type="text" value={userPay.address} className="form-control" placeholder="Địa chỉ" />
                             </div>
                             <div className='col-2'>
-                                <button type="button" className="btn btn-secondary btnSua">Sửa</button>
+                                <button onClick={handleRepairAddress} type="button" className="btn btn-secondary btnSua">Sửa</button>
                             </div>
                         </div>
                         <div className='row mt-4 pb-2'>
                             <div className='col-10'>
-                                <input type="text" value='Số điện thoại' className="form-control" />
+                                <input readOnly={isReadonly.numberPhone} name="numberPhone" onChange={handleChange} ref={refphone} type="text" value={userPay.numberPhone} className="form-control" placeholder="Số điện thoại" />
                             </div>
                             <div className='col-2'>
                                 <button type="button" className="btn btn-secondary btnSua">Sửa</button>
@@ -43,12 +117,22 @@ const Payment = () => {
                         </div>
                         <hr className='my-hr-line' />
                         <div className='row totalItem'>
-                            <div className='col-10'>Đơn hàng (7 sản phẩm)</div>
+                            <div className='col-10'>Đơn hàng ({total.amount})</div>
                             <div className='col-2'><button type="button" className="btn btn-secondary btnSua">Sửa</button></div>
                         </div>
                         <hr />
                         <div className='row'>
-                            <div className='col-8'>2 x Máy Ảnh Canon EOS 6D MarkII</div>
+                            {checked && checked.length > 0 &&
+                                checked.map((item, index) => {
+                                    return (
+                                        <>
+                                            <div className='col-8 mt-3'>{item.count + ' x ' + item.name}</div>
+                                            <div className='col-4 mt-3'>{total && VND(item.total)}</div>
+                                        </>
+                                    )
+                                })
+                            }
+                            {/* <div className='col-8'>2 x Máy Ảnh Canon EOS 6D MarkII</div>
                             <div className='col-4'>32,000,000 ₫</div>
                             <div className='col-8 mt-3'>2 x Máy Ảnh Canon EOS 6D MarkII</div>
                             <div className='col-4 mt-3'>32,000,000 ₫</div>
@@ -57,7 +141,7 @@ const Payment = () => {
                             <div className='col-8 mt-3'>2 x Máy Ảnh Canon EOS 6D MarkII</div>
                             <div className='col-4 mt-3'>32,000,000 ₫</div>
                             <div className='col-8 mt-3'>2 x Máy Ảnh Canon EOS 6D MarkII</div>
-                            <div className='col-4 mt-3'>32,000,000 ₫</div>
+                            <div className='col-4 mt-3'>32,000,000 ₫</div> */}
                         </div>
                         <hr className='mt-4' />
                         <div className='row'>
@@ -65,7 +149,7 @@ const Payment = () => {
                                 Tạm tính
                             </div>
                             <div className='col-4'>
-                                947,800,000 ₫
+                                {total && VND(total.totalPrice)}
                             </div>
                             <div className='col-8 mt-2' style={{
                                 color: 'red',
@@ -77,7 +161,7 @@ const Payment = () => {
                                 color: 'red',
                                 fontStyle: 'italic'
                             }}>
-                                947,800,000 ₫
+                                {total && VND(total.totalSale)}
                             </div>
                             <div className='col-8 mt-2'>
                                 Phí vận chuyển
@@ -92,7 +176,7 @@ const Payment = () => {
                                 Thành tiền
                             </div>
                             <div className='col-4 mt-2' style={{ fontWeight: 'bold' }}>
-                                947,800,000 ₫
+                                {total && VND(total.total)}
                                 <div className='mt-2' style={{
                                     fontStyle: 'italic',
                                     color: 'gray'

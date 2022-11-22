@@ -118,7 +118,7 @@ const ProductBody = () => {
         }
         dispatch(choseCategories(fill));
     }
-    const handleAddcart = async (product, amount) => {
+    const handleAddcart = async (product, amount, type) => {
         const cartss = JSON.parse(sessionStorage.getItem('cart'))
         if (sessionStorage.getItem('amount')) {
             sessionStorage.setItem('amount', parseInt(sessionStorage.getItem('amount')) + amount)
@@ -163,6 +163,9 @@ const ProductBody = () => {
             } else if (cartss && !check) {
                 sessionStorage.setItem('cart', JSON.stringify([...cart, datafill]))
                 dispatch(changeCart([...cart, datafill]))
+            }
+            if (type === 'buy') {
+                navigate('/cart')
             }
 
         } catch (error) {
@@ -315,12 +318,12 @@ const ProductBody = () => {
                                                     </button>
                                                 </li>
                                                 <li >
-                                                    <button onClick={() => handleAddcart(item.id, 1)} className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                                    <button onClick={() => handleAddcart(item.id, 1, 'add')} className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
                                                         <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
                                                     </button>
                                                 </li>
                                                 <li>
-                                                    <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                                    <button onClick={() => handleAddcart(item.id, 1, 'buy')} className="tooltip" href="#" data-tip="Mua Ngay">
                                                         <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
                                                     </button>
                                                 </li>
