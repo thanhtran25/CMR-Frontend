@@ -1,12 +1,12 @@
 import request from '~/core/utils/axios';
 import cookies from 'react-cookies';
-const token = cookies.load('Token')
-const config = {
-    headers: { Authorization: `Bearer ${token}` }
-};
+
+const token = cookies.load('Tokenadmin')
+
 const ChangePasswordUserService = (user, token) => {
-
-
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     const bodyParameters = {
         ...user
     };
@@ -17,12 +17,28 @@ const ChangePasswordUserService = (user, token) => {
         config,
     )
 }
+const ChangePasswordAdminService = (user, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    const bodyParameters = {
+        ...user
+    };
 
-const getUsersService = (token, users) => {
-    console.log(users)
+    return request.put(
+        'users/me/password',
+        bodyParameters,
+        config
+    )
+}
+const getUsersService = (users, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     let s = '';
-    const locked = users.locked
-    delete users.lock
+    if (users.locked && users.locked !== '') {
+        s += '/' + users.locked + '';
+    }
     if (users.limit) {
         s += '?limit=' + users.limit + '';
     } else {
@@ -49,12 +65,14 @@ const getUsersService = (token, users) => {
 
 
     return request.get(
-        'users/' + locked + '' + s + '',
+        'users' + s + '',
         config
     )
 }
 const getUserbyIdService = (id, token) => {
-
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
 
 
     return request.get(
@@ -63,7 +81,9 @@ const getUserbyIdService = (id, token) => {
     )
 }
 const createUserService = (user, token) => {
-
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
 
     const bodyParameters = {
         ...user
@@ -77,6 +97,9 @@ const createUserService = (user, token) => {
 }
 
 const updateUserService = (user, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     let id = user.id
     delete user.id
     delete user.email
@@ -96,6 +119,9 @@ const updateUserService = (user, token) => {
     )
 }
 const deleteUserService = (id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     console.log(config)
     return request.delete(
         'users/' + id + '',
@@ -103,13 +129,18 @@ const deleteUserService = (id, token) => {
     )
 }
 const unLockUserService = (id, token) => {
-    console.log(config)
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     return request.put(
         'users/locked/' + id, {},
         config,
     )
 }
 const changePositionService = (user, id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     const bodyParameters = {
         ...user
     };

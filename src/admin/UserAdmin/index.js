@@ -25,8 +25,8 @@ import {
 } from '~/service/userService'
 
 function UserAdmin() {
-    const token = cookies.load('Token');
-    const limit = 8;
+    const token = cookies.load('Tokenadmin');
+    const limit = 10;
     const [showAdd, setshowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setshowDetail] = useState(false);
@@ -86,7 +86,7 @@ function UserAdmin() {
     const [pagination, SetPagination] = useState('')
     const getListUser = async (list) => {
         try {
-            const res = await getUsersService(token, list)
+            const res = await getUsersService(list, token)
             const data = (res && res.data) ? res.data : [];
             SetPagination(selectPagination(data.totalPage))
             setUsers(data.users)
@@ -153,7 +153,12 @@ function UserAdmin() {
             console.log(data)
             handleClodeAdd()
             handelNotify('success', 'Thêm tài khoản thành công')
-            setUsers(prevState => [...prevState, data.data]);
+            // setUsers(prevState => [...prevState, data.data]);
+            setSearchUser({
+                ...searchUser,
+                limit: limit,
+                page: 1,
+            })
         } catch (error) {
             const req = handleError(error.request)
             handelNotify('success', req)
@@ -325,6 +330,7 @@ function UserAdmin() {
     }
     useEffect(() => {
         getListUser(searchUser)
+        console.log(searchUser)
     }, [searchUser])
     return (
         <>
