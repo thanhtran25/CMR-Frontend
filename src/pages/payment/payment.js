@@ -12,56 +12,80 @@ import { validateFull } from '~/core/utils/validate';
 import { handelNotify } from '~/core/utils/req';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Notify } from '~/core/constant';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import { useNavigate } from "react-router-dom";
 const Payment = () => {
     const refname = useRef(null);
     const refaddress = useRef(null);
     const refphone = useRef(null);
-    const user = cookies.load('user')
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
     const [userPay, setUserPay] = useState('');
     const checked = useSelector(state => state.cart.check);
     const total = useSelector(state => state.cart.total);
+    const [showAlertCf, setShowAlertCf] = useState(false);
     const [shippingFee, setShippingFee] = useState('');
     const [isReadonly, setIsReadonly] = useState({
-        customerName: false,
+        customerName: true,
         address: false,
-        numberPhone: false
+        numberPhone: true
     });
     const [validate, setValiday] = useState('')
     const [details, setDetails] = useState()
-    const handleRepairAddress = async () => {
-        const address = {
-            address: userPay.address
-        }
-        try {
-            const res = await shippingService(address)
-            const data = res && res.data ? res.data : '';
-            setShippingFee(data.result)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    const handleClcikPayment = async () => {
+    // const handleRepairAddress = async () => {
+    //     const address = {
+    //         address: userPay.address
+    //     }
+    //     try {
+    //         const res = await shippingService(address)
+    //         const data = res && res.data ? res.data : '';
+    //         setShippingFee(data.result)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    const handleshowCf = () => {
         if (checked.length > 0) {
             const isval = validateFull(userPay)
             setValiday(isval)
             if (Object.keys(isval).length > 0) return
-            const pay = {
-                customerName: userPay.customerName,
-                address: userPay.address + ' , Vietnam (' + shippingFee.distance + ')',
-                numberPhone: userPay.numberPhone,
-                details: details,
-                shippingFee: shippingFee.shippingFee
+            if (!isReadonly.address || !isReadonly.customerName || !isReadonly.numberPhone) {
+                handelNotify('warn', 'Lưu tất cả trước khi thanh toán')
+                return
             }
-            try {
-                const res = await paymentService(pay)
-                const data = res && res.data ? res.data : '';
-                console.log(data)
-            } catch (error) {
-
-            }
+            setShowAlertCf({
+                open: true,
+                variant: Notify.WARNING,
+                text: 'Bạn chắc chắc muốn thanh toán',
+                title: 'Xác nhận thanh toán',
+                backdrop: 'static',
+                onClick: () => handleClcikPayment()
+            })
         } else {
             handelNotify('warn', 'Chưa chọn sản phẩm để thanh toán')
         }
+    }
+    const handleClcikPayment = async () => {
+        const pay = {
+            customerName: userPay.customerName,
+            address: userPay.address + ' , Vietnam (' + shippingFee.distance + ')',
+            numberPhone: userPay.numberPhone,
+            details: details,
+            shippingFee: shippingFee.shippingFee
+        }
+        try {
+            const res = await paymentService(pay)
+            const data = res && res.data ? res.data : '';
+            console.log(data)
+        } catch (error) {
+
+        }
+    }
+    const handleSwitchCart = () => {
+        navigate('/cart')
     }
     const handleChange = (e) => {
         const value = e.target.value
@@ -75,6 +99,46 @@ const Payment = () => {
         return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
     useEffect(() => {
+
+    }, [shippingFee])
+    useEffect(() => {
+        let details = []
+        checked && checked.length > 0 &&
+            checked.map((item, index) => {
+                const product = {
+                    productId: item.productId,
+                    count: item.count,
+                    price: item.total
+                }
+                details.push(product)
+            })
+        if (cookies.load('user')) {
+            if (user.fullname == '') {
+                setIsReadonly({
+                    ...isReadonly,
+                    customerName: false
+                })
+            }
+            if (user.address == '') {
+                setIsReadonly({
+                    ...isReadonly,
+                    address: false
+                })
+            }
+            if (user.numberPhone == '') {
+                setIsReadonly({
+                    ...isReadonly,
+                    numberPhone: false
+                })
+            }
+        }
+        else {
+            setIsReadonly({
+                customerName: false,
+                address: false,
+                numberPhone: false
+            })
+        }
         if (user) {
             setUserPay({
                 customerName: user.fullname,
@@ -89,25 +153,104 @@ const Payment = () => {
 
             })
         }
-
-    }, [shippingFee])
-    useEffect(() => {
-        let details = []
-        checked && checked.length > 0 &&
-            checked.map((item, index) => {
-                const product = {
-                    productId: item.productId,
-                    count: item.count,
-                    price: item.total
-                }
-                details.push(product)
-            }
-
-            )
         setDetails(details)
     }, [])
+    const handleClickFocus = (e) => {
+        const type = e.target.value
+        if (type === 'name') {
+            setIsReadonly({
+                ...isReadonly,
+                customerName: false
+            })
+            refname.current.focus();
+        }
+        if (type === 'address') {
+            setIsReadonly({
+                ...isReadonly,
+                address: false
+            })
+            refaddress.current.focus();
+        }
+        if (type === 'phone') {
+            setIsReadonly({
+                ...isReadonly,
+                numberPhone: false
+            })
+            refphone.current.focus();
+        }
+        // let pathbtnName = <button type="button" class="btn btn-success">Success</button>
+    }
+    const handleClickNotFocus = async (e) => {
+        const type = e.target.value
+        if (type === 'name') {
+            setIsReadonly({
+                ...isReadonly,
+                customerName: true
+            })
+        }
+        if (type === 'address') {
+            const address = {
+                address: userPay.address
+            }
+            try {
+                const res = await shippingService(address)
+                const data = res && res.data ? res.data : '';
+                handelNotify('success', 'Tính phí ship thành công')
+                setShippingFee(data.result)
+                dispatch(userPayment({ ...total, total: total.total + data.result.shippingFee }))
+                setIsReadonly({
+                    ...isReadonly,
+                    address: true
+                })
+            } catch (error) {
+                console.log(error)
+                handelNotify('warn', 'Tính phí ship thất bại')
+            }
+        }
+        if (type === 'phone') {
+            setIsReadonly({
+                ...isReadonly,
+                numberPhone: true
+            })
+        }
+        // let pathbtnName = <button type="button" class="btn btn-success">Success</button>
+    }
+    let pathName = <button onClick={handleClickFocus} value='name' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    let pathAdress = <button onClick={handleClickFocus} value='address' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    let pathPhone = <button onClick={handleClickFocus} value='phone' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    if (!isReadonly.address) {
+        pathAdress = <button onClick={handleClickNotFocus} value='address' type="button" class="btn btn-success">Lưu</button>
+    }
+    if (!isReadonly.customerName) {
+        pathName = <button onClick={handleClickNotFocus} value='name' type="button" class="btn btn-success">Lưu</button>
+    }
+    if (!isReadonly.numberPhone) {
+        pathPhone = <button onClick={handleClickNotFocus} value='phone' type="button" class="btn btn-success">Lưu</button>
+    }
     return (
         <>
+            <Modal
+                show={showAlertCf.open}
+                onHide={() => setShowAlertCf({ open: false })}
+                backdrop={showAlertCf.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
+                    <Modal.Title>{showAlertCf.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setShowAlertCf({ open: false })}
+                    >
+                        Hủy
+                    </Button>
+                    <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
             <ToastContainer
                 position="top-center"
                 autoClose={2000}
@@ -132,35 +275,35 @@ const Payment = () => {
                         <div className='col-12'>
                             <div className='row mt-2'>
                                 <div className='col-10'>
-                                    <input onChange={handleChange} name="customerName" ref={refname} type="text" value={userPay.customerName} className="form-control" placeholder="Họ và tên" />
+                                    <input readOnly={isReadonly.customerName} onChange={handleChange} name="customerName" ref={refname} type="text" value={userPay.customerName} className="form-control" placeholder="Họ và tên" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.customerName}</p>
                                 </div>
                                 <div className='col-2'>
-                                    <button type="button" className="btn btn-secondary btnSua">Sửa</button>
+                                    {pathName}
                                 </div>
                             </div>
                             <div className='row mt-4'>
                                 <div className='col-10'>
-                                    <input name="address" onChange={handleChange} ref={refaddress} type="text" value={userPay.address} className="form-control" placeholder="Địa chỉ" />
+                                    <input readOnly={isReadonly.address} name="address" onChange={handleChange} ref={refaddress} type="text" value={userPay.address} className="form-control" placeholder="Địa chỉ" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.address}</p>
                                 </div>
                                 <div className='col-2'>
-                                    <button onClick={handleRepairAddress} type="button" className="btn btn-secondary btnSua">Sửa</button>
+                                    {pathAdress}
                                 </div>
                             </div>
                             <div className='row mt-4 pb-2'>
                                 <div className='col-10'>
-                                    <input name="numberPhone" onChange={handleChange} ref={refphone} type="text" value={userPay.numberPhone} className="form-control" placeholder="Số điện thoại" />
+                                    <input readOnly={isReadonly.numberPhone} name="numberPhone" onChange={handleChange} ref={refphone} type="text" value={userPay.numberPhone} className="form-control" placeholder="Số điện thoại" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.numberPhone}</p>
                                 </div>
                                 <div className='col-2'>
-                                    <button type="button" className="btn btn-secondary btnSua">Sửa</button>
+                                    {pathPhone}
                                 </div>
                             </div>
                             <hr className='my-hr-line' />
                             <div className='row totalItem'>
                                 <div className='col-10'>Đơn hàng ({total.amount})</div>
-                                <div className='col-2'><button type="button" className="btn btn-secondary btnSua">Sửa</button></div>
+                                <div className='col-2'><button onClick={handleSwitchCart} type="button" className="btn btn-secondary btnSua">Sửa</button></div>
                             </div>
                             <hr />
                             <div className='row'>
@@ -221,7 +364,7 @@ const Payment = () => {
                             </div>
                             <hr className='mt-3 my-hr-line' />
                             <div className='row'>
-                                <button onClick={handleClcikPayment} type="button" className="btn btn-danger w-20">Thanh Toán</button>
+                                <button onClick={handleshowCf} type="button" className="btn btn-danger w-20">Thanh Toán</button>
                             </div>
                         </div>
                     </div>
