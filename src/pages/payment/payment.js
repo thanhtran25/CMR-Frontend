@@ -79,7 +79,7 @@ const Payment = () => {
         try {
             const res = await paymentService(pay)
             const data = res && res.data ? res.data : '';
-            console.log(data)
+            navigate('/cart')
         } catch (error) {
 
         }

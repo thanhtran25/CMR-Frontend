@@ -102,8 +102,6 @@ const Cart = () => {
     }
     const handleSwitchPaymet = () => {
         if (checked.length > 0) {
-            console.log(checked)
-            console.log(total)
             dispatch(checkCart(checked))
             dispatch(userPayment(total))
             navigate('/payment')
@@ -114,6 +112,17 @@ const Cart = () => {
     }
     const handleSwitchShopping = () => {
         navigate('/products')
+    }
+    const deleteCart = (e) => {
+        let array = [...cart]; // make a separate copy of the array
+        cart.map((item, index) => {
+            if (item.productId == e) {
+                array.splice(index, 1)
+                return
+            }
+        })
+        dispatch(changeCart(array))
+        sessionStorage.setItem('cart', JSON.stringify(array))
     }
     useEffect(() => {
         let totalPrice = 0, totalSale = 0, total = 0, amount = 0, amountcheck = 0
@@ -139,7 +148,7 @@ const Cart = () => {
             amount: amountcheck
         })
         dispatch(changeAmount(amount))
-
+        sessionStorage.setItem('amount', amount)
     }, [checked, cart])
     return (
         <>
@@ -213,7 +222,7 @@ const Cart = () => {
 
                                                         </td>
                                                         <td><div className="price-wrap"><p className="text-break">{VND(item.total)}</p></div></td>
-                                                        <td><FontAwesomeIcon icon={faCircleXmark} className='fa-icon' /></td>
+                                                        <td><button onClick={() => deleteCart(item.productId)}><FontAwesomeIcon icon={faCircleXmark} className='fa-icon' /></button></td>
                                                     </tr>
                                                 )
                                             })

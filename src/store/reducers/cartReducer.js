@@ -1,7 +1,12 @@
-
+let amout
+if (JSON.parse(sessionStorage.getItem('amount'))) {
+    amout = JSON.parse(sessionStorage.getItem('amount'))
+} else {
+    amout = 0
+}
 const initState = {
     cart: JSON.parse(sessionStorage.getItem('cart')),
-    amount: JSON.parse(sessionStorage.getItem('amount')),
+    amount: amout,
     check: [],
     total: ''
 }
