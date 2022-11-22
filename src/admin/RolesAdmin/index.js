@@ -20,8 +20,8 @@ import {
 } from '~/service/userService'
 
 function RolesAdmin() {
-    const token = cookies.load('Token');
-    const limit = 4;
+    const token = cookies.load('Tokenadmin');
+    const limit = 10;
     const [show, setShow] = useState(false);
     const [users, setUsers] = useState();
     const [showRepair, setShowRepair] = useState(false);
@@ -42,7 +42,7 @@ function RolesAdmin() {
     });
     const getListUser = async (list) => {
         try {
-            const res = await getUsersService(token, list)
+            const res = await getUsersService(list, token)
             const data = (res && res.data) ? res.data : [];
             SetPagination(selectPagination(data.totalPage))
             setUsers(data.users)
