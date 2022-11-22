@@ -215,25 +215,23 @@ function Home() {
                                             <span>{VND(item.price * (100 - item.percent) / 100)} </span> <br></br>
                                             <p style={{ height: "20px" }}><del> {oldPrice(item.price, item.percent)}</del>  {path}</p>
                                         </div>
-                                        <div className="product-action" >
-                                            <ul className="product-action-icon-front product-action-a">
-                                                <li>
-                                                    <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                                        <FontAwesomeIcon onClick={() => handleClickDetail(item.id)} icon={faSearch} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li >
-                                                    <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                                        <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                                        <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                        <ul className="product-action-icon-front product-action-a">
+                                            <li>
+                                                <button className="tooltip" href="#" data-tip="Chi Tiết">
+                                                    <FontAwesomeIcon onClick={() => handleClickDetail(item.id)} icon={faSearch} className='fa-icon' />
+                                                </button>
+                                            </li>
+                                            <li >
+                                                <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
+                                                    <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button className="tooltip" href="#" data-tip="Mua Ngay">
+                                                    <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             )
