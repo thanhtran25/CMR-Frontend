@@ -64,14 +64,12 @@ const ProductBody = () => {
         }
     }
     const handleChangeBrand = (e) => {
-        if (e.value) {
-            const searchPdt = {
-                ...categoryId,
-                brandId: e.value,
-                name: ''
-            }
-            dispatch(choseCategories(searchPdt));
+        const searchPdt = {
+            ...categoryId,
+            brandId: e.value,
+            name: ''
         }
+        dispatch(choseCategories(searchPdt));
     }
     const handleSwitchDetail = (id) => {
         navigate('/product/' + id)
