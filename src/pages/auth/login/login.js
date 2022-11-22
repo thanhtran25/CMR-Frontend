@@ -31,13 +31,15 @@ const Login = () => {
         if (!isValid) return
         try {
             let response = await loginService(login);
-            const data = response.data;
-            console.log(data)
-
-            cookies.save("Token", data.accessToken)
-            cookies.save("user", data.information)
-            dispatch(userLogin(data.information))
-            navigate('/');
+            const data = response && response.data ? response.data : '';
+            if (data.information.role !== 'customer') {
+                alert('Đăng nhập thất bại')
+            } else {
+                cookies.save("Token", data.accessToken)
+                cookies.save("user", data.information)
+                dispatch(userLogin(data.information))
+                navigate('/');
+            }
         } catch (e) {
             if (e.response.data.error[0].field) {
                 alert(e.response.data.error[0].message)
@@ -45,7 +47,6 @@ const Login = () => {
             else {
                 alert(e.response.data.error)
             }
-            console.log(e)
         }
     }
     const validateAll = () => {
