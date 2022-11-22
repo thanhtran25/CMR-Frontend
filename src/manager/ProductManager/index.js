@@ -19,6 +19,7 @@ import { handleError, handelNotify } from '~/core/utils/req';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
+import cookies from 'react-cookies'
 
 function ProductManager() {
 
