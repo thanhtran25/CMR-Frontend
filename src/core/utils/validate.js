@@ -169,9 +169,77 @@ const validateProductR = (data) => {
     if (Object.keys(msg).length > 0) return msg
     return false
 }
+const validateSupplier = (data) => {
+    const msg = {};
+    if (data.name !== null && data.name !== undefined) {
+        if (validator.isEmpty(data.name)) {
+            msg.name = "Please input name"
+        }
+        else {
+            if (validator.isNumeric(data.name)) {
+                msg.name = "Name is letter"
+            }
+        }
+    }
+    if (data.address !== null && data.address !== undefined) {
+        if (validator.isEmpty(data.address)) {
+            msg.address = "Please input Address"
+        }
+    }
+    if (data.numberPhone !== null && data.numberPhone !== undefined) {
+        if (validator.isEmpty(data.numberPhone)) {
+            msg.numberPhone = "Please input Phone number"
+        }
+        else {
+            if (!isVietnamesePhoneNumber(data.numberPhone)) {
+                msg.numberPhone = "Incorrect Phone number"
+            }
+        }
+    }
+
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
+
+const validateCategories = (data) => {
+    const msg = {};
+    if (data.name !== null && data.name !== undefined) {
+        if (validator.isEmpty(data.name)) {
+            msg.name = "Please input name"
+        }
+        else {
+            if (validator.isNumeric(data.name)) {
+                msg.name = "Name is letter"
+            }
+        }
+    }
+
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
+
+const validateBrand = (data) => {
+    const msg = {};
+    if (data.name !== null && data.name !== undefined) {
+        if (validator.isEmpty(data.name)) {
+            msg.name = "Please input name"
+        }
+        else {
+            if (validator.isNumeric(data.name)) {
+                msg.name = "Name is letter"
+            }
+        }
+    }
+
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
 export {
     validateFull,
     isVietnamesePhoneNumber,
     validateProduct,
     validateProductR,
+    validateSupplier,
+    validateCategories,
+    validateBrand,
 }

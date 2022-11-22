@@ -28,6 +28,8 @@ import Contact from '~/pages/contact/contact';
 import Guarantee from '~/pages/guarantee/guarantee';
 import cookies from 'react-cookies';
 import RequestOTP from '~/pages/auth/signup/requestOTP';
+import Error404 from '~/pages/404/B404';
+
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -38,19 +40,21 @@ const publicRoutes = [
     { path: '/Payment', component: Payment, layout: LayoutLogin },
     { path: '/Cart', component: cart, layout: LayoutLogin },
     { path: '/admin/login', component: loginAdmin, layout: null },
+    { path: '/admin/*', component: loginAdmin, layout: null },
     { path: '/store/login', component: LoginManager, layout: null },
     { path: '/product/:id', component: productDetail, layout: LayoutLogin },
     { path: '/products', component: ProductBody, layout: LayoutLogin },
     { path: '/contact', component: Contact, layout: LayoutLogin },
     { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
     { path: '/signup/otp/:emailurl', component: RequestOTP, layout: LayoutLogin },
-    { path: '*' },
+    { path: '/productdetail', component: productDetail, layout: LayoutLogin },
+    { path: '*', component: Error404, layout: null },
 ]
 
 const privateRoutesA = [
     { path: '/admin/user', component: userAdmin, layout: AdminLayout },
     { path: '/admin/role', component: RolesAdmin, layout: AdminLayout },
-    { path: '*', component: Home },
+    { path: '/admin/*', component: userAdmin, layout: AdminLayout },
 ]
 
 const privateRoutesM = [
@@ -65,7 +69,37 @@ const privateRoutesM = [
     { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
     { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
-    { path: '*', component: Home },
+    { path: '/store/*', component: ProductManager, layout: ManagerLayout },
+]
+
+const privateRoutesSt = [
+    { path: '/store/bill', component: BillManager, layout: ManagerLayout },
+    { path: '/store/brand', component: BrandManager, layout: ManagerLayout },
+    { path: '/store/categories', component: CategoriesManager, layout: ManagerLayout },
+    { path: '/store/inventories', component: InventoriesManager, layout: ManagerLayout },
+    { path: '/store/product', component: ProductManager, layout: ManagerLayout },
+    { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
+    { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
+    { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
+    { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
+    { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
+    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
+    { path: '/store/*', component: ProductManager, layout: ManagerLayout },
+]
+
+const privateRoutesSh = [
+    { path: '/store/bill', component: BillManager, layout: ManagerLayout },
+    { path: '/store/brand', component: BrandManager, layout: ManagerLayout },
+    { path: '/store/categories', component: CategoriesManager, layout: ManagerLayout },
+    { path: '/store/inventories', component: InventoriesManager, layout: ManagerLayout },
+    { path: '/store/product', component: ProductManager, layout: ManagerLayout },
+    { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
+    { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
+    { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
+    { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
+    { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
+    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
+    { path: '/store/*', component: ProductManager, layout: ManagerLayout },
 ]
 
 const privateRoutesU = [
@@ -78,18 +112,79 @@ const privateRoutesU = [
     { path: '/products', component: ProductBody, layout: LayoutLogin },
     { path: '/contact', component: Contact, layout: LayoutLogin },
     { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
-    { path: '*', component: Home },
+    { path: '*', component: Error404, layout: null },
 ]
 
+const publicRoutesU = [
+    { path: '/admin/login', component: loginAdmin, layout: null },
+    { path: '/admin/*', component: loginAdmin, layout: null },
+]
+const publicRoutesMASS = [
+    { path: '/', component: Home },
+    { path: '/login', component: Login, layout: LayoutLogin },
+    { path: '/signup', component: Signup, layout: LayoutLogin },
+    { path: '/forgotpassword', component: Forgotpassword, layout: LayoutLogin },
+    { path: '/password-reset/:uid/:token', component: changePassword, layout: LayoutLogin },
+    { path: '/Payment', component: Payment, layout: LayoutLogin },
+    { path: '/Cart', component: cart, layout: LayoutLogin },
+    { path: '/product/:id', component: productDetail, layout: LayoutLogin },
+    { path: '/products', component: ProductBody, layout: LayoutLogin },
+    { path: '/contact', component: Contact, layout: LayoutLogin },
+    { path: '/guarantee', component: Guarantee, layout: LayoutLogin },
+    { path: '/signup/otp/:emailurl', component: RequestOTP, layout: LayoutLogin },
+    { path: '/productdetail', component: productDetail, layout: LayoutLogin },
+    { path: '*', component: Error404, layout: null },
+]
 const xulyRoutes = () => {
-    if (cookies.load('user')) {
-        if (cookies.load('user').role === 'admin') {
-            return privateRoutesA;
-        } else if (cookies.load('user').role === 'manager') {
-            return privateRoutesM;
-        } else if (cookies.load('user').role === 'customer') {
-            return privateRoutesU;
+    if (cookies.load('admin') && cookies.load('user')) {
+        if (cookies.load('admin').role === 'admin') {
+            const tmp = [];
+            tmp.push(...privateRoutesA);
+            tmp.push(...privateRoutesU);
+            return tmp;
+        } else if (cookies.load('admin').role === 'manager') {
+            const tmp = [];
+            tmp.push(...privateRoutesM);
+            tmp.push(...privateRoutesU);
+            return tmp;
+        } else if (cookies.load('admin').role === 'staff') {
+            const tmp = [];
+            tmp.push(...privateRoutesSt);
+            tmp.push(...privateRoutesU);
+            return tmp;
+        } else if (cookies.load('admin').role === 'shipper') {
+            const tmp = [];
+            tmp.push(...privateRoutesSh);
+            tmp.push(...privateRoutesU);
+            return tmp;
         }
+    } else if (cookies.load('admin')) {
+        if (cookies.load('admin').role === 'admin') {
+            const tmp = [];
+            tmp.push(...privateRoutesA);
+            tmp.push(...publicRoutesMASS);
+            return tmp;
+        } else if (cookies.load('admin').role === 'manager') {
+            const tmp = [];
+            tmp.push(...privateRoutesM);
+            tmp.push(...publicRoutesMASS);
+            return tmp;
+        } else if (cookies.load('admin').role === 'staff') {
+            const tmp = [];
+            tmp.push(...privateRoutesSt);
+            tmp.push(...publicRoutesMASS);
+            return tmp;
+        } else if (cookies.load('admin').role === 'shipper') {
+            const tmp = [];
+            tmp.push(...privateRoutesSh);
+            tmp.push(...publicRoutesMASS);
+            return tmp;
+        }
+    } else if (cookies.load('user')) {
+        const tmp = [];
+        tmp.push(...privateRoutesU);
+        tmp.push(...publicRoutesU);
+        return tmp;
     } else {
         return publicRoutes;
     }

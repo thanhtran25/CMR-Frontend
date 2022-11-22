@@ -5,11 +5,12 @@ import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 function App() {
   const user = useSelector(state => state.user.user);
+  const admin = useSelector(state => state.admin.admin);
   const [routerArr, setRouterArr] = useState()
   useEffect(() => {
     setRouterArr(privateRoutes())
     console.log(routerArr)
-  }, [user])
+  }, [user, admin])
   return (
     <Router>
       <div className="App">
