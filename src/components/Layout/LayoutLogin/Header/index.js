@@ -18,6 +18,7 @@ import { ChangePasswordUserService } from '~/service/userService';
 
 function Header() {
     const user = useSelector(state => state.user.user);
+    const amount = useSelector(state => state.cart.amount)
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const handleOnclickLogin = () => {
@@ -184,9 +185,9 @@ function Header() {
                     </div>
                     <div className='col-4 col-xl-3'>
                         <div className='row'>
-                            <Link className='shop-card offset-6 col-xl-1'>
+                            <Link to='/cart' className='shop-card offset-6 col-xl-1'>
                                 <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
-                                <span className='cart-count'>0</span>
+                                <span className='cart-count'>{amount}</span>
                             </Link>
                             <div className='col-1'></div>
                             {path}
