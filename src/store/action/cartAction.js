@@ -5,6 +5,20 @@ const changeCart = (payload) => {
         payload: payload
     }
 }
+const checkCart = (payload) => {
+    return {
+        type: "CHECK_CART",
+        payload: payload
+    }
+}
+const userPayment = (payload) => {
+    return {
+        type: "USER_PAYMENT",
+        payload: payload
+    }
+}
 export {
-    changeCart
+    changeCart,
+    checkCart,
+    userPayment
 }
