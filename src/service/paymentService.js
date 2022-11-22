@@ -5,16 +5,29 @@ const config = {
     headers: { Authorization: `Bearer ${token}` }
 };
 const shippingService = async (address) => {
-    console.log(config)
     const bodyParameters = {
         ...address
     };
-
-    return await request.get(
+    return await request.post(
         'bills/shipping',
         bodyParameters,
         config
     )
 
 }
-export { shippingService }
+const paymentService = async (address) => {
+    console.log(config)
+    const bodyParameters = {
+        ...address
+    };
+    return await request.post(
+        'bills',
+        bodyParameters,
+        // config
+    )
+
+}
+export {
+    shippingService,
+    paymentService
+}

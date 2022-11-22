@@ -30,6 +30,16 @@ const validateFull = (data) => {
             }
         }
     }
+    if (data.customerName !== null && data.customerName !== undefined) {
+        if (validator.isEmpty(data.customerName)) {
+            msg.customerName = "Please input Fullname"
+        }
+        else {
+            if (validator.isNumeric(data.customerName)) {
+                msg.customerName = "Fullname is letter"
+            }
+        }
+    }
     if (data.birthday !== null && data.birthday !== undefined) {
         if (validator.isEmpty(data.birthday)) {
             msg.birthday = "Please input birthday"
