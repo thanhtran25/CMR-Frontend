@@ -61,7 +61,7 @@ const CartBox = () => {
                         </button>
                     </div>
                     <div className="box-list-item">
-                        {cart.map((element, index) => {
+                        {cart && cart.length > 0 && cart.map((element, index) => {
                             return (
 
                                 <div className="box-item" key={index}>
@@ -78,7 +78,7 @@ const CartBox = () => {
                 </div>
                 <div className="box-triangle"></div>
             </div>
-            <div className="box-number">{cart.length}</div>
+            <div className="box-number">{cart && cart.length > 0 && cart.length}</div>
         </div>
     )
 }
