@@ -1,9 +1,7 @@
 import request from '~/core/utils/axios';
 import cookies from 'react-cookies';
-const token = cookies.load('Token');
-const config = {
-    headers: { Authorization: `Bearer ${token}` }
-};
+
+
 const getBrandService = (brand) => {
     return request.get(
         'brands',
@@ -31,4 +29,50 @@ const getBrandsService = (brand) => {
         'brands/' + s,
     )
 }
-export { getBrandService, getBrandByIdService, getBrandsService }
+const createBrandService = (brand, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+
+    const bodyParameters = {
+        ...brand
+    };
+
+    return request.post(
+        'brands',
+        bodyParameters,
+        config,
+    )
+}
+
+const updateBrandService = (brand, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    let id = brand.id
+    delete brand.id
+    delete brand.createdAt
+    delete brand.updatedAt
+    delete brand.deletedAt
+
+
+    const bodyParameters = {
+        ...brand
+    };
+    return request.put(
+        'brands/' + id + '',
+        bodyParameters,
+        config
+    )
+}
+const deleteBrandService = (id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    console.log(config)
+    return request.delete(
+        'brands/' + id + '',
+        config,
+    )
+}
+export { getBrandService, getBrandByIdService, getBrandsService, deleteBrandService, updateBrandService, createBrandService }

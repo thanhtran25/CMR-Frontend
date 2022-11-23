@@ -39,19 +39,23 @@ const LoginAdmin = () => {
             const data = response.data;
             console.log(data)
 
-            cookies.save("Tokenadmin", data.accessToken, { path: '/' })
-            cookies.save("admin", data.information, { path: '/' })
-            dispatch(adminLogin(data.information))
-            if (cookies.load("admin")) {
-                if (cookies.load('admin').role === 'admin') {
-                    navigate('/admin/user');
-                } else if (cookies.load('admin').role === 'manager') {
-                    navigate('/store/product');
-                } else if (cookies.load('admin').role === 'staff') {
-                    navigate('/store/product');
-                } else if (cookies.load('admin').role === 'shipper') {
-                    navigate('/store/product');
+            if (data.information.role !== 'customer') {
+                cookies.save("Tokenadmin", data.accessToken, { path: '/' })
+                cookies.save("admin", data.information, { path: '/' })
+                dispatch(adminLogin(data.information))
+                if (cookies.load("admin")) {
+                    if (cookies.load('admin').role === 'admin') {
+                        navigate('/admin/user');
+                    } else if (cookies.load('admin').role === 'manager') {
+                        navigate('/store/product');
+                    } else if (cookies.load('admin').role === 'staff') {
+                        navigate('/store/product');
+                    } else if (cookies.load('admin').role === 'shipper') {
+                        navigate('/store/product');
+                    }
                 }
+            } else {
+                alert('Tài khoản này không có quyền truy cập');
             }
         } catch (e) {
             if (e.response.data.error[0].field) {

@@ -1,16 +1,17 @@
 import request from '~/core/utils/axios';
 import cookies from 'react-cookies';
-const token = cookies.load('Token');
-const config = {
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
-};
+
+
 const getProductService = (product) => {
     return request.get(
         'products',
     )
 }
 
-const createProductService = (product) => {
+const createProductService = (product, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+    };
     return request.post(
         'products',
         product,
@@ -62,14 +63,20 @@ const getProductByIdService = (id) => {
     )
 }
 
-const updateProductService = (product, id) => {
+const updateProductService = (product, id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+    };
     return request.put(
         'products/' + id + '',
         product,
         config
     )
 }
-const deleteProductService = (id) => {
+const deleteProductService = (id, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" }
+    };
     return request.delete(
         'products/' + id + '',
         config,

@@ -11,7 +11,7 @@ import { faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-soli
 
 import { getProductsService, getProductService, createProductService, getProductByIdService, updateProductService, deleteProductService } from '~/service/productService';
 import { getBrandService } from '~/service/brandService';
-import { getCategoriesService } from '~/service/categoryService';
+import { getCategoriessService } from '~/service/categoryService';
 
 import { validateFull, validateProduct, validateProductR } from '~/core/utils/validate';
 import { Notify, Gender, Roles } from '~/core/constant';
@@ -22,7 +22,7 @@ import validator from 'validator';
 import cookies from 'react-cookies'
 
 function ProductManager() {
-
+    const token = cookies.load('Tokenadmin');
     const [showAdd, setShowAdd] = useState(false);
     const handleshowAdd = () => {
         SetAddValidate('')
@@ -104,7 +104,7 @@ function ProductManager() {
     });
     const getListCategories = async () => {
         try {
-            const res = await getCategoriesService(categories);
+            const res = await getCategoriessService(categories);
             const data = (res && res.data) ? res.data : [];
             setCategories(data.categories);
         } catch {
@@ -184,7 +184,7 @@ function ProductManager() {
         SetAddValidate(isValid);
         if (Object.keys(isValid).length > 0) return
         try {
-            const data = await createProductService(bodyFormData);
+            const data = await createProductService(bodyFormData, token);
             const req = handleError(data.request)
             setShowAdd(false);
             handelNotify('success', 'Thêm sản phẩm thành công')
@@ -282,7 +282,7 @@ function ProductManager() {
     }
     const handleClickRepairProduct = async (product, bodyFormData) => {
         try {
-            const data = await updateProductService(bodyFormData, repairProduct.id)
+            const data = await updateProductService(bodyFormData, repairProduct.id, token)
             const req = handleError(data.request)
             setShowRepair(false)
             setShowAlertCf({
@@ -340,7 +340,7 @@ function ProductManager() {
     }
     const handleDelete = async (product) => {
         try {
-            const data = await deleteProductService(product)
+            const data = await deleteProductService(product, token)
             setShowAlertCf({
                 open: false
             })
@@ -460,6 +460,7 @@ function ProductManager() {
                                                 {
                                                     product && product.length > 0 &&
                                                     product.map(item => {
+                                                        console.log(item)
                                                         let s = 'table-info';
                                                         if ((product.indexOf(item) + 1) % 2 !== 0) {
                                                             s = 'table-light';
@@ -727,7 +728,7 @@ function ProductManager() {
                                 <Button variant="secondary" onClick={() => setShowRepair(false)}>
                                     Đóng
                                 </Button>
-                                <Button variant="primary" onClick={handleShowCfRepairProduct}>
+                                <Button variant="primary" onClick={() => handleShowCfRepairProduct(repairProduct.id)}>
                                     Sửa
                                 </Button>
                             </Modal.Footer>
