@@ -57,14 +57,14 @@ const UserProfile = () => {
 
         }
     }
-    let pathBtn = <input type="button" className="profile-edit-btn" onClick={handleOnclickEdit} name="btnAddMore" value="Edit Profile" />
+    let pathBtn = <input type="button" className="btn btn-secondary" onClick={handleOnclickEdit} name="btnAddMore" value="Edit Profile" />
     let pathFullname = <p>{userProfile.fullname}</p>
     let pathBirthday = <p>{userProfile.birthday}</p>
     let pathNumberPhone = <p>{userProfile.numberPhone}</p>
     let pathAddress = <p>{userProfile.address}</p>
     let pathGender = <p>{userProfile.gender}</p>
     if (!repair) {
-        pathBtn = <input type="button" className="profile-save-btn" onClick={handleOnclickSave} name="btnAddMore" value="Save" />
+        pathBtn = <input type="button" className="btn btn-success" onClick={handleOnclickSave} name="btnAddMore" value="Save" />
         pathFullname = <input type="text" name='fullname' onChange={handleChange} className="form-control inputProfile" value={userProfile.fullname} />
         pathBirthday = <input type="date" name="birthday" onChange={handleChange} className="form-control inputProfile" value={userProfile.birthday} />
         pathNumberPhone = <input type="text" name="numberPhone" onChange={handleChange} className="form-control inputProfile" value={userProfile.numberPhone} />
@@ -117,7 +117,8 @@ const UserProfile = () => {
             <div className="container">
                 <form method="post">
                     <div className='row '>
-                        <div className="emp-profile col-10 offset-1">
+                        <div className="emp-profile col-8 offset-2">
+                            <h3 className='titleGiohang'>Thông tin tài khoản</h3>
                             <div className='row p-5'>
 
                                 <div className="col-md-2">
