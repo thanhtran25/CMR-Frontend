@@ -13,6 +13,8 @@ import { Notify } from '~/core/constant';
 import { forgotPasswordService } from '~/service/authService';
 import { getProductsService } from '~/service/productService';
 import { useNavigate } from "react-router-dom";
+import Banner from "~/components/Layout/DefaultLayout/Banner"
+
 function Home() {
     const limit = 10
     const navigate = useNavigate();
@@ -127,6 +129,7 @@ function Home() {
                     <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
                 </Modal.Footer>
             </Modal>
+            <Banner />
             <div className="container homeContain" style={{ marginTop: '3rem', color: '#3A4048' }}>
                 <h2 className="title"> SẢN PHẨM NỔI TRỘI </h2>
                 <div className="row" style={{ paddingTop: '2%', alignItems: 'center' }}>
