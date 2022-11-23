@@ -90,6 +90,7 @@ function BillManager() {
         }
         setStates(states)
     }
+
     function VND(x) {
         return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
@@ -110,6 +111,7 @@ function BillManager() {
             }
         }
     }
+
     let price = 0, total = 0
     useEffect(() => {
         getListBills(searchBills)

@@ -90,7 +90,7 @@ function Sidebar() {
                         <NavLink to="/store/shipper" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faTruckFast} />
-                                <span>Đơn nhận</span>
+                                <span>Đơn đã nhận</span>
                             </span>
                         </NavLink>
                     </ul>
