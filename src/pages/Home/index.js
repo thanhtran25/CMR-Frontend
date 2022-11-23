@@ -18,11 +18,16 @@ import { forgotPasswordService } from '~/service/authService';
 import { getProductsService } from '~/service/productService';
 import { useNavigate } from "react-router-dom";
 import Banner from "~/components/Layout/DefaultLayout/Banner"
+import { getProductByIdService } from '~/service/productService';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeCart } from '~/store/action/cartAction';
 
 function Home() {
     const limit = 8
     const navigate = useNavigate();
+    const cart = useSelector(state => state.cart.cart);
     const [showAlertCf, setShowAlertCf] = useState(false);
+    const dispatch = useDispatch()
     const [productnew, setProductnew] = useState({
         limit: limit,
         page: 1,
@@ -93,6 +98,60 @@ function Home() {
     useEffect(() => {
         hadelCheckHasPw()
     }, [])
+    const handleAddcart = async (product, amount, type) => {
+        const cartss = JSON.parse(sessionStorage.getItem('cart'))
+        if (sessionStorage.getItem('amount')) {
+            sessionStorage.setItem('amount', parseInt(sessionStorage.getItem('amount')) + amount)
+        } else {
+            sessionStorage.setItem('amount', parseInt(1))
+        }
+        console.log(sessionStorage.getItem('amount'))
+        try {
+            const res = await getProductByIdService(product)
+            const data = res && res.data ? res.data : ''
+            const datafill = {
+                img1: data.img1,
+                name: data.name,
+                percent: data.percent,
+                price: data.price,
+                saleCodeId: data.saleCodeId,
+                count: amount,
+                productId: data.id,
+                total: data.price * amount
+
+            }
+            let check = false
+            const newCart = cart && cart.length > 0 && cart.map(obj => {
+                if (obj.productId === product) {
+                    check = true
+                    return {
+                        ...obj,
+                        count: obj.count + amount,
+                        total: parseInt(obj.price * (obj.count + amount))
+                    };
+                }
+
+                return obj;
+            });
+            if (!cartss) {
+                sessionStorage.setItem('cart', JSON.stringify([datafill]))
+                dispatch(changeCart([datafill]))
+            }
+            if (check) {
+                sessionStorage.setItem('cart', JSON.stringify(newCart))
+                dispatch(changeCart(newCart))
+            } else if (cartss && !check) {
+                sessionStorage.setItem('cart', JSON.stringify([...cart, datafill]))
+                dispatch(changeCart([...cart, datafill]))
+            }
+            if (type === 'buy') {
+                navigate('/cart')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         getListProducts(productnew)
         console.log(products)
@@ -184,7 +243,7 @@ function Home() {
                                             <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
                                         </div>
                                         <div className="wsk-cp-text">
-                                            <div className="wsk-buy">
+                                            <div onClick={() => handleAddcart(item.id, 1, 'buy')} className="wsk-buy">
                                                 <span>Mua ngay</span>
                                             </div>
                                             <div className="title-product">
@@ -199,7 +258,7 @@ function Home() {
                                                         <p style={{ height: '12px', marginTop: '5px' }}><del className='text-secondary' style={{ textDecoration: 'line-through', fontStyle: 'italic' }}> {oldPrice(item.price, item.percent)}</del></p>
                                                     </span>
                                                 </div>
-                                                <div className="wcf-right">
+                                                <div onClick={() => handleAddcart(item.id, 1, 'add')} className="wcf-right">
                                                     <OverlayTrigger
                                                         key={'add-to-cart'}
                                                         placement='bottom'
