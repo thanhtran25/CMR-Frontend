@@ -2,11 +2,12 @@ import React from 'react'
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Badge from 'react-bootstrap/Badge';
 
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faShoppingBasket, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import cookies from 'react-cookies'
 import { useState, useEffect } from 'react';
 import { handelNotify } from '~/core/utils/req';
@@ -73,12 +74,9 @@ function Home() {
     function VND(x) {
         return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
-    let path = <div></div>
     function oldPrice(price, percent) {
-        path = ''
         if (percent != 0) {
             const x = price;
-            path = <span href='#' className='percent'>-{percent}%</span>
             return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
         }
         return '';
@@ -134,34 +132,6 @@ function Home() {
             </Modal>
             <Banner />
             <div className="container homeContain" style={{ marginTop: '3rem', color: '#3A4048' }}>
-                <h2 className="title"> SẢN PHẨM NỔI TRỘI </h2>
-                <div className="row" style={{ paddingTop: '2%', alignItems: 'center' }}>
-                    <div className="col-12 col-xl-4 section-clo" style={{ textAlign: 'center' }}>
-                        <img src={require('~/assets/images/icon-mayanh.jpg')} alt="Hello Duck" width="140" height="140" />
-                        <h2> Máy Ảnh </h2>
-                        <p> Lựa chọn máy ảnh phù hợp với bạn. Nếu các bạn chưa biết sản phẩm nào phù hợp thì chúng tôi sẽ
-                            giúp bạn.</p>
-                        <div className="section-intro-button" onClick={hadelCheckHasPw} ><a href="#"> Xem Thêm
-                            &raquo;</a></div>
-                    </div>
-                    <div className="col-12 col-xl-4 section-clo" style={{ textAlign: 'center' }}>
-                        <img src={require('~/assets/images/icon-mayquay.png')} alt="Hello Duck" width="140" height="140" />
-                        <h2> Máy Ảnh </h2>
-                        <p> Lựa chọn máy ảnh phù hợp với bạn. Nếu các bạn chưa biết sản phẩm nào phù hợp thì chúng tôi sẽ
-                            giúp bạn.</p>
-                        <div className="section-intro-button" ><a href="#"> Xem Thêm
-                            &raquo;</a></div>
-                    </div>
-                    <div className="col-12 col-xl-4 section-clo" style={{ textAlign: 'center' }}>
-                        <img src={require('~/assets/images/icon-phukien.png')} alt="Hello Duck" width="140" height="140" />
-                        <h2> Máy Ảnh </h2>
-                        <p> Lựa chọn máy ảnh phù hợp với bạn. Nếu các bạn chưa biết sản phẩm nào phù hợp thì chúng tôi sẽ
-                            giúp bạn.</p>
-                        <div className="section-intro-button" ><a href="#"> Xem Thêm
-                            &raquo;</a></div>
-                    </div>
-                </div>
-                <hr />
 
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className='col-0 col-xl-4'>
@@ -208,8 +178,7 @@ function Home() {
                     {products && products.length > 0 &&
                         products.map((item, index) => {
                             return (
-
-                                <div className="col-md-3">
+                                <div className="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <div className="wsk-cp-product" role="button" onClick={() => handleClickDetail(item.id)}>
                                         <div className="wsk-cp-img">
                                             <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
@@ -225,8 +194,9 @@ function Home() {
                                                 <div className="wcf-left">
                                                     <span className="price">
                                                         <span>{VND(item.price * (100 - item.percent) / 100)} </span>
+                                                        {item.percent && <Badge bg="danger" className='percent'>-{item.percent}%</Badge>}
                                                         <br></br>
-                                                        <p style={{height: '12px', marginTop: '5px'}}><del style={{textDecoration: 'line-through', fontStyle: 'italic', color: "#B2B2B2"}}> {oldPrice(item.price, item.percent)}</del>  {path}</p>
+                                                        <p style={{ height: '12px', marginTop: '5px' }}><del className='text-secondary' style={{ textDecoration: 'line-through', fontStyle: 'italic' }}> {oldPrice(item.price, item.percent)}</del></p>
                                                     </span>
                                                 </div>
                                                 <div className="wcf-right">
@@ -242,17 +212,12 @@ function Home() {
                                                         <button href="#" className="buy-btn" data-tip="Mua Ngay">
                                                             <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
                                                         </button>
-
                                                     </OverlayTrigger>
-
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
                             )
                         })
                     }

@@ -3,6 +3,9 @@ import { xulyRoutes, privateRoutes, publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layout';
 import { Fragment, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { ScrollToTop } from "~/components/scrollToTop";
+
+
 function App() {
   const user = useSelector(state => state.user.user);
   const admin = useSelector(state => state.admin.admin);
@@ -13,6 +16,7 @@ function App() {
   }, [user, admin])
   return (
     <Router>
+      <ScrollToTop />
       <div className="App">
         <Routes>
           {routerArr && routerArr.length > 0 && routerArr.map((route, index) => {

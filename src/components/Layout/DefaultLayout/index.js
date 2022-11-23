@@ -1,5 +1,6 @@
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
 function DefaultLayout({ children }) {
     const mystyle = {
@@ -21,7 +22,7 @@ function DefaultLayout({ children }) {
 
                 {children}
             </div>
-
+            <Footer />
         </div>
     )
 }
