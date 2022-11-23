@@ -154,7 +154,10 @@ const ProductDetail = () => {
                                 <h3 className="product-title px-3">{product.name}</h3>
                                 <h6 className="price px-3">Thương hiệu: <span>{product.brandId}</span></h6>
                                 <h6 className="price px-3">Giá bán: <span>{product && product.price && VND(product.price)}</span></h6>
-                                <h6 className="price px-3">Giá khuyến mãi: <span>{product && product.price && VND(product.price * (100 - product.percent) / 100)}</span></h6>
+                                <h6 className="price px-3">Giá khuyến mãi:
+                                    <span>{product && product.price && VND(product.price * (100 - product.percent) / 100)}</span>
+                                    <del>{product.percent}</del>
+                                </h6>
                                 <h6 className="price px-3">Số lượng: </h6>
                                 <div className='count-product mx-3'>
                                     <input onChange={handleChangeCount} type='number' step="1" min="1" max="999" value={count} />
