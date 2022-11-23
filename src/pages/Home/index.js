@@ -243,8 +243,8 @@ function Home() {
                                             <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
                                         </div>
                                         <div className="wsk-cp-text">
-                                            <div onClick={() => handleAddcart(item.id, 1, 'buy')} className="wsk-buy">
-                                                <span>Mua ngay</span>
+                                            <div className="wsk-buy">
+                                                <span onClick={(e) => { e.stopPropagation(); handleAddcart(item.id, 1, 'buy') }}>Mua ngay</span>
                                             </div>
                                             <div className="title-product">
                                                 <h6>{item.name}</h6>
@@ -258,7 +258,7 @@ function Home() {
                                                         <p style={{ height: '12px', marginTop: '5px' }}><del className='text-secondary' style={{ textDecoration: 'line-through', fontStyle: 'italic' }}> {oldPrice(item.price, item.percent)}</del></p>
                                                     </span>
                                                 </div>
-                                                <div onClick={() => handleAddcart(item.id, 1, 'add')} className="wcf-right">
+                                                <div className="wcf-right">
                                                     <OverlayTrigger
                                                         key={'add-to-cart'}
                                                         placement='bottom'
@@ -268,7 +268,7 @@ function Home() {
                                                             </Tooltip>
                                                         }
                                                     >
-                                                        <button href="#" className="buy-btn" data-tip="Mua Ngay">
+                                                        <button onClick={(e) => { e.stopPropagation(); handleAddcart(item.id, 1, 'add') }} href="#" className="buy-btn" data-tip="Mua Ngay">
                                                             <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
                                                         </button>
                                                     </OverlayTrigger>
