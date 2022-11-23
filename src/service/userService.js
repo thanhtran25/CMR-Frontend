@@ -113,7 +113,7 @@ const updateUserService = (user, token) => {
         ...user
     };
     return request.put(
-        'users/' + id + '',
+        'users/me',
         bodyParameters,
         config
     )
