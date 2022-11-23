@@ -180,9 +180,17 @@ function Header() {
             </Modal>
             <div>
                 <div className='header-topbar row' >
+
                     <div className='header-topbar-content col-12 offset-0 col-xl-4 offset-xl-4'>
-                        <pre> G O L D    D U C K    C A M E R A </pre>
+                        <NavLink to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
+                            <pre>
+
+                                G O L D    D U C K    C A M E R A
+
+                            </pre>
+                        </NavLink>
                     </div>
+
                     <div className='col-4 col-xl-3'>
                         <div className='row'>
                             <Link to='/cart' className='shop-card offset-6 col-xl-1'>

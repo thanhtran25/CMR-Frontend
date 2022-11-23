@@ -240,7 +240,41 @@ const validateBrand = (data) => {
             }
         }
     }
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
 
+const validateSalecode = (data) => {
+    const msg = {};
+    if (data.name !== null && data.name !== undefined) {
+        if (validator.isEmpty(data.name)) {
+            msg.name = "Please input name"
+        }
+        else {
+            if (validator.isNumeric(data.name)) {
+                msg.name = "Name is letter"
+            }
+        }
+    }
+    if (data.startDate !== null && data.startDate !== undefined) {
+        if (validator.isEmpty(data.startDate)) {
+            msg.startDate = "Please input start date"
+        }
+    }
+    if (data.endDate !== null && data.endDate !== undefined) {
+        if (validator.isEmpty(data.endDate)) {
+            msg.endDate = "Please input end date"
+        }
+    }
+    if (data.percent !== null && data.percent !== undefined) {
+        if (data.percent === 0) {
+            msg.percent = "Please input percent"
+        } else if (data.percent < 0) {
+            msg.percent = "Please input percent > 0"
+        } else if (data.percent > 50) {
+            msg.percent = "Please input percent <= 50"
+        }
+    }
     if (Object.keys(msg).length > 0) return msg
     return false
 }
@@ -252,4 +286,5 @@ export {
     validateSupplier,
     validateCategories,
     validateBrand,
+    validateSalecode,
 }

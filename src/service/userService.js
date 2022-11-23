@@ -159,5 +159,6 @@ export {
     updateUserService,
     deleteUserService,
     changePositionService,
-    unLockUserService
+    unLockUserService,
+    ChangePasswordAdminService
 };
