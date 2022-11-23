@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import Banner from "~/components/Layout/DefaultLayout/Banner"
 
 function Home() {
-    const limit = 10
+    const limit = 8
     const navigate = useNavigate();
     const [showAlertCf, setShowAlertCf] = useState(false);
     const [productnew, setProductnew] = useState({

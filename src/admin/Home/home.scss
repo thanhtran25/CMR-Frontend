@@ -301,7 +301,7 @@
 }
 
 .carousel-inner {
-    border-radius: 0.7rem;
+    // border-radius: 0.7rem;
 }
 
 .carousel-caption h5 {
@@ -921,7 +921,6 @@
 .sidebar-wrapper {
     width: 300px;
     height: 100vh;
-    position: fixed;
     top: 0;
     z-index: 10;
     overflow-y: auto;
