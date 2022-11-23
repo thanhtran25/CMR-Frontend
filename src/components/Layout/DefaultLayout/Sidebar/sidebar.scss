@@ -53,3 +53,11 @@
 .header-menu .fa-icon {
     margin-right: 8px;
 }
+
+.nav-tabs .nav-link.active:after {
+    background-color: white !important;
+}
+
+.nav-tabs {
+    --bs-nav-tabs-link-active-bg: none !important;
+}
