@@ -1,16 +1,18 @@
 import './productbody.scss'
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faShoppingBasket, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { getProductsService, getProductByIdService } from '~/service/productService';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { choseCategories } from '~/store/action/productAction';
 import { changeCart } from '~/store/action/cartAction';
-import { getBrandsService, getBrandByIdService } from '~/service/brandService';
-import Select from 'react-select'
-import { current } from '@reduxjs/toolkit';
-import Addcart from '~/core/utils/changecart';
+import { getBrandsService } from '~/service/brandService';
+
+import Tooltip from 'react-bootstrap/Tooltip';
+import Badge from 'react-bootstrap/Badge';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Select from 'react-select';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
@@ -235,7 +237,7 @@ const ProductBody = () => {
                 style={{ maxHeight: '300px' }}
             />
             <div >
-                <div className='container' style={{ backgroundColor: '#ffffff' }}>
+                <div className='container' style={{ backgroundColor: 'rgba(227, 227, 227, 0.804)' }}>
                     <div className='row'>
                         <div className='col-12 mt-4 mb-2'>
                             <div className='row' >
@@ -289,49 +291,56 @@ const ProductBody = () => {
 
                     </div>
 
-                    <div className="row">
+                    <div className="row mt-3">
 
                         {
                             products && products.length > 0 &&
                             products.map((item, index) => {
                                 return (
-                                    <div className="offset-md-0 col-md-6 col-lg-4 col-2-4 mt-4">
-                                        <div className="product">
-
-                                            <div class="picture1">
-                                                <img className="product-img img" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Canon" width="90%" />
+                                    <div className="col-12 col-sm-6 col-md-4 col-lg-3">
+                                        <div className="wsk-cp-product" role="button" onClick={() => handleSwitchDetail(item.id)}>
+                                            <div className="wsk-cp-img">
+                                                <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
                                             </div>
-                                            <div class="picture2">
-                                                <img className="product-img img" src={process.env.REACT_APP_URL_IMG + item.img2} alt="Canon" width="90%" />
+                                            <div className="wsk-cp-text">
+                                                <div className="wsk-buy">
+                                                    <span onClick={() => handleAddcart(item.id, 1, 'buy')}>Mua ngay</span>
+                                                </div>
+                                                <div className="title-product">
+                                                    <h6>{item.name}</h6>
+                                                </div>
+                                                <div className="card-footer">
+                                                    <div className="wcf-left">
+                                                        <span className="price">
+                                                            <span>{VND(item.price * (100 - item.percent) / 100)} </span>
+                                                            {item.percent && <Badge bg="danger" className='percent'>-{item.percent}%</Badge>}
+                                                            <br></br>
+                                                            <p style={{ height: '12px', marginTop: '5px' }}><del className='text-secondary' style={{ textDecoration: 'line-through', fontStyle: 'italic' }}> {oldPrice(item.price, item.percent)}</del></p>
+                                                        </span>
+                                                    </div>
+                                                    <div className="wcf-right">
+                                                        <OverlayTrigger
+                                                            key={'add-to-cart'}
+                                                            placement='bottom'
+                                                            overlay={
+                                                                <Tooltip style={{ fontSize: '10px' }}>
+                                                                    Thêm Vào Giỏ Hàng
+                                                                </Tooltip>
+                                                            }
+                                                        >
+                                                            <button onClick={() => handleAddcart(item.id, 1, 'add')} href="#" className="buy-btn" data-tip="Mua Ngay">
+                                                                <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                                            </button>
+                                                        </OverlayTrigger>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="product-info">
-                                                <p>{item.name}</p>
-                                                <span>{VND(item.price * (100 - item.percent) / 100)} </span> <br></br>
-                                                <p style={{ height: "20px" }}><del> {oldPrice(item.price, item.percent)}</del>  {path}</p>
-                                            </div>
-                                            <ul className="product-action-icon-front">
-                                                <li>
-                                                    <button onClick={() => handleSwitchDetail(item.id)} className="tooltip" href="#" data-tip="Chi Tiết">
-                                                        <FontAwesomeIcon icon={faSearch} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li >
-                                                    <button onClick={() => handleAddcart(item.id, 1, 'add')} className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                                        <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button onClick={() => handleAddcart(item.id, 1, 'buy')} className="tooltip" href="#" data-tip="Mua Ngay">
-                                                        <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                                    </button>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </div>
                                 )
                             })}
                     </div>
-                    <nav className="mt-4">
+                    <nav className="mb-3">
                         <ul id="pagination" className="pagination justify-content-center">
                             {
                                 pagination && pagination.length > 0 &&
