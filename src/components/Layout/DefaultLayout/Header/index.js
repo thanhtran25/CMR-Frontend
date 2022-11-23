@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '~/store/action/userAction';
 import validator from 'validator';
 import { ChangePasswordUserService } from '~/service/userService';
+import Cartbox from '~/pages/cartbox.js/Cartbox';
 
 function Header() {
     const user = useSelector(state => state.user.user);
@@ -193,8 +194,9 @@ function Header() {
 
                     <div className='col-4 col-xl-3'>
                         <div className='row'>
-                            <Link to='/cart' className='shop-card offset-6 col-xl-1'>
-                                <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} />
+                            <Link className='shop-card offset-6 col-xl-1'>
+                                <Cartbox></Cartbox>
+                                {/* <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} /> */}
                                 <span className='cart-count'>{amount}</span>
                             </Link>
                             <div className='col-1'></div>
