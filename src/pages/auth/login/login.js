@@ -10,7 +10,7 @@ import validator from 'validator';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { userLogin } from '~/store/action/userAction';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cookies from 'react-cookies'
 
 const Login = () => {
@@ -44,7 +44,7 @@ const Login = () => {
         const isValid = validateAll()
         if (!isValid) return
         try {
-           
+
             let response = await loginService(login);
             const data = response && response.data ? response.data : '';
             if (data.information.role !== 'customer') {
@@ -56,11 +56,11 @@ const Login = () => {
                 navigate('/');
             }
         } catch (e) {
-            if (e.response.data.error && Array.isArray(e.response.data.error) &&  e.response.data.error[0] && e.response.data.error[0].field) {
+            if (e.response.data.error && Array.isArray(e.response.data.error) && e.response.data.error[0] && e.response.data.error[0].field) {
                 toast.error(e.response.data.error[0].message, toastOptions)
             }
             else {
-                const message = e.response.data.error === 'Email or password is incorrect' ? 'Email hoặc mật khẩu không chính xác' :  e.response.data.error
+                const message = e.response.data.error === 'Email or password is incorrect' ? 'Email hoặc mật khẩu không chính xác' : e.response.data.error
                 toast.error(message, toastOptions)
             }
         }
@@ -92,46 +92,46 @@ const Login = () => {
     }
     return (
         <>
-            <ToastContainer/>
-            <div class="container"  style={{paddingTop: '100px'}}>
-            <div class="row m-5 no-gutters shadow-lg">
-                <div class="col-md-6 d-none d-md-block">
-                    <img src={require('~/assets/images/login-banner.jpg')} class="img-fluid" style={{minHeight:'100%'}} alt=''/>
-                </div>
-                <div class="col-md-6 bg-white p-5">
-                    <h3 class="pb-3">Đăng nhập</h3>
-                    <div class="form-style">
-                        <form onSubmit={handleOnclick}>
-                            <div class="form-group pb-3">
-                                <input type="email" placeholder="Email" class="form-control" name='email' onChange={handleChange} aria-describedby="emailHelp" />
-                                <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
-
-                            </div>
-                            <div class="form-group pb-3">
-                                <input type="password" placeholder="Mật khẩu" class="form-control" name='password' onChange={handleChange} />
-                                <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <div><Link class="link-primary" to='/forgotpassword'>Quên mật khẩu?</Link></div>
-                            </div>
-                            <div class="pb-2">
-                                <button type="submit" class="btn btn-dark w-100 font-weight-bold mt-2" >Đăng nhập</button>
-                            </div>
-                        </form>
-                        <div class="sideline">Hoặc</div>
-                        <div>
-                            <button type="button" class="btn btn-danger w-100 font-weight-bold mt-2" onClick={handleOnclickGg}> <FontAwesomeIcon icon={faGooglePlusG} /> Đăng nhập với Google</button>
-                        </div>
-                        <div class="pt-4 text-center">
-                        Hãy trở thành thành viên để nhận thêm ưu đãi <Link to='/signup'>Đăng ký</Link>
-                        </div>
+            <ToastContainer />
+            <div class="container" style={{ paddingTop: '80px' }}>
+                <div class="row m-5 no-gutters shadow-lg login-form">
+                    <div class="col-md-6 d-none d-md-block">
+                        <img src={require('~/assets/images/login-banner.jpg')} class="img-fluid" style={{ minHeight: '100%' }} alt='' />
                     </div>
+                    <div class="col-md-6 bg-white p-5">
+                        <h2 class="pb-3 fw-bold">Đăng nhập</h2>
+                        <div class="form-style">
+                            <form onSubmit={handleOnclick}>
+                                <div class="form-group pb-3">
+                                    <input type="email" placeholder="Email" class="form-control" name='email' onChange={handleChange} aria-describedby="emailHelp" />
+                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
 
+                                </div>
+                                <div class="form-group pb-3">
+                                    <input type="password" placeholder="Mật khẩu" class="form-control" name='password' onChange={handleChange} />
+                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <div><Link class="link-primary" to='/forgotpassword'>Quên mật khẩu?</Link></div>
+                                </div>
+                                <div class="pb-2">
+                                    <button type="submit" class="btn btn-dark w-100 font-weight-bold mt-2" >Đăng nhập</button>
+                                </div>
+                            </form>
+                            <div class="sideline">Hoặc</div>
+                            <div>
+                                <button type="button" class="btn btn-danger w-100 font-weight-bold mt-2" onClick={handleOnclickGg}> <FontAwesomeIcon icon={faGooglePlusG} /> Đăng nhập với Google</button>
+                            </div>
+                            <div class="pt-4 text-center">
+                                Hãy trở thành thành viên để nhận thêm ưu đãi <Link to='/signup'>Đăng ký</Link>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
         </>
-        
+
     )
 }
 
