@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 function Footer() {
     return (
         <>
-            <section className={cx("contact-area")} id="contact">
+            <section style={{ background: '#1a1e25', color: '#868c96' }} className={cx("contact-area")} id="contact">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-6 offset-lg-3">
