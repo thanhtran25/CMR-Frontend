@@ -29,6 +29,7 @@ import Guarantee from '~/pages/guarantee/guarantee';
 import cookies from 'react-cookies';
 import RequestOTP from '~/pages/auth/signup/requestOTP';
 import Error404 from '~/pages/404/B404';
+import UserManager from '~/manager/UserManager';
 
 
 const publicRoutes = [
@@ -84,6 +85,7 @@ const privateRoutesSt = [
     { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
     { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
+    { path: '/store/user', component: UserManager, layout: ManagerLayout },
     { path: '/store/*', component: ProductManager, layout: ManagerLayout },
 ]
 

@@ -1,0 +1,443 @@
+.ModalThemHeader {
+    background-color: #0d6efd;
+}
+
+.ModalSuaHeader {
+    background-color: #0ec40e;
+}
+
+.nav-tabs .nav-link.active {
+    border: none;
+    position: relative;
+    color: #435ebe;
+}
+
+.nav-tabs .nav-link.active:after {
+    content: "";
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: #435ebe;
+    left: 0;
+    box-shadow: 0 2px 5px rgb(67 94 190 / 50%);
+}
+
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+body {
+    margin-top: 20px;
+    background: #eee;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+.text-navy {
+    color: #1ab394;
+}
+
+.cart-product1-imitation {
+    text-align: center;
+    padding-top: 30px;
+    height: 80px;
+    width: 80px;
+    background-color: #f8f8f9;
+}
+
+.product1-imitation.xl {
+    padding: 120px 0;
+}
+
+.product1-desc {
+    padding: 20px;
+    position: relative;
+}
+
+.ecommerce .tag-list {
+    padding: 0;
+}
+
+.ecommerce .fa-star {
+    color: #d1dade;
+}
+
+.ecommerce .fa-star.active {
+    color: #f8ac59;
+}
+
+.ecommerce .note-editor {
+    border: 1px solid #e7eaec;
+}
+
+table.shoping-cart-table {
+    margin-bottom: 0;
+}
+
+table.shoping-cart-table tr td {
+    border: none;
+    text-align: right;
+}
+
+table.shoping-cart-table tr td.desc,
+table.shoping-cart-table tr td:first-child {
+    text-align: left;
+}
+
+table.shoping-cart-table tr td:last-child {
+    width: 80px;
+}
+
+.ibox {
+    clear: both;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+}
+
+.ibox.collapsed .ibox-content {
+    display: none;
+}
+
+.ibox:after,
+.ibox:before {
+    display: table;
+}
+
+.ibox-title {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #ffffff;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 3px 0 0;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 14px 15px 7px;
+    min-height: 48px;
+}
+
+.ibox-content {
+    background-color: #ffffff;
+    color: inherit;
+    padding: 15px 20px 20px 20px;
+    border-color: #e7eaec;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0;
+}
+
+.ibox-footer {
+    color: inherit;
+    border-top: 1px solid #e7eaec;
+    font-size: 90%;
+    background: #ffffff;
+    padding: 10px 15px;
+}
+
+
+/*
+I wanted to go with a mobile first approach, but it actually lead to more verbose CSS in this case, so I've gone web first. Can't always force things...
+
+Side note: I know that this style of nesting in SASS doesn't result in the most performance efficient CSS code... but on the OCD/organizational side, I like it. So for CodePen purposes, CSS selector performance be damned.
+*/
+
+/* Global settings */
+$color-border: #eee;
+$color-label: #aaa;
+$font-default: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-bold: 'HelveticaNeue-Medium', 'Helvetica Neue Medium';
+
+
+/* Global "table" column settings */
+.product1-image {
+    float: left;
+    width: 20%;
+}
+
+.product1-details {
+    float: left;
+    width: 37%;
+}
+
+.product1-price {
+    float: left;
+    width: 12%;
+}
+
+.product1-quantity {
+    float: left;
+    width: 10%;
+}
+
+.product1-removal {
+    float: left;
+    width: 9%;
+}
+
+.product1-line-price {
+    float: left;
+    width: 12%;
+    text-align: right;
+}
+
+
+/* This is used as the traditional .clearfix class */
+.group:before,
+.group:after {
+    content: '';
+    display: table;
+}
+
+.group:after {
+    clear: both;
+}
+
+.group {
+    zoom: 1;
+}
+
+
+/* Apply clearfix in a few places */
+.shopping-cart,
+.column-labels,
+.product1,
+.totals-item {
+    @extend .group;
+}
+
+
+/* Apply dollar signs */
+.product1 .product1-price:before,
+.product1 .product1-line-price:before,
+.totals-value:before {
+    content: '$';
+}
+
+
+/* Body/Header stuff */
+
+.tabelBill {
+
+    h1 {
+        font-weight: 100;
+    }
+
+    label {
+        color: $color-label;
+    }
+
+    .shopping-cart {
+        margin-top: -45px;
+    }
+
+
+    /* Column headers */
+    .column-labels {
+        label {
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid $color-border;
+        }
+
+        .product1-image,
+        .product1-details,
+        .product1-removal {
+            text-indent: -9999px;
+        }
+    }
+
+
+    /* product1 entries */
+    .product {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $color-border;
+
+        .product1-image {
+            text-align: center;
+
+            img {
+                width: 100px;
+            }
+        }
+
+        .product1-details {
+            .product1-title {
+                margin-right: 20px;
+                font-family: $font-bold;
+            }
+
+            .product1-description {
+                margin: 5px 20px 5px 0;
+                line-height: 1.4em;
+            }
+        }
+
+        .product1-quantity {
+            input {
+                width: 40px;
+
+            }
+        }
+
+        .remove-product1 {
+            border: 0;
+            padding: 4px 8px;
+            background-color: #c66;
+            color: #fff;
+            font-family: $font-bold;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .remove-product1:hover {
+            background-color: #a44;
+        }
+    }
+
+
+    /* Totals section */
+    .totals {
+        .totals-item {
+            float: right;
+            clear: both;
+            width: 100%;
+            margin-bottom: 10px;
+
+            label {
+                float: left;
+                clear: both;
+                width: 79%;
+                text-align: right;
+            }
+
+            .totals-value {
+                float: right;
+                width: 21%;
+                text-align: right;
+            }
+        }
+
+        .totals-item-total {
+            font-family: $font-bold;
+        }
+    }
+
+    .checkout {
+        float: right;
+        border: 0;
+        margin-top: 20px;
+        padding: 6px 25px;
+        background-color: #6b6;
+        color: #fff;
+        font-size: 15px;
+        border-radius: 3px;
+    }
+
+    .checkout:hover {
+        background-color: #494;
+    }
+
+    /* Make adjustments for tablet */
+    @media screen and (max-width: 650px) {
+
+        .shopping-cart {
+            margin: 0;
+            padding-top: 20px;
+            border-top: 1px solid $color-border;
+        }
+
+        .column-labels {
+            display: none;
+        }
+
+        .product1-image {
+            float: right;
+            width: auto;
+
+            img {
+                margin: 0 0 10px 10px;
+            }
+        }
+
+        .product1-details {
+            float: none;
+            margin-bottom: 10px;
+            width: auto;
+        }
+
+        .product1-price {
+            clear: both;
+            width: 70px;
+        }
+
+        .product1-quantity {
+            width: 100px;
+
+            input {
+                margin-left: 20px;
+            }
+        }
+
+        .product1-quantity:before {
+            content: 'x';
+        }
+
+        .product1-removal {
+            width: auto;
+        }
+
+        .product1-line-price {
+            float: right;
+            width: 70px;
+        }
+
+    }
+
+
+    /* Make more adjustments for phone */
+    @media screen and (max-width: 350px) {
+
+        .product1-removal {
+            float: right;
+        }
+
+        .product1-line-price {
+            float: right;
+            clear: left;
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .product .product1-line-price:before {
+            content: 'Item Total: $';
+        }
+
+        .totals {
+            .totals-item {
+                label {
+                    width: 60%;
+                }
+
+                .totals-value {
+                    width: 40%;
+                }
+            }
+        }
+    }
+}
+
+.showdetail {
+    display: none;
+}

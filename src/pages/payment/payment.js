@@ -25,6 +25,7 @@ const Payment = () => {
     const navigate = useNavigate();
     const [userPay, setUserPay] = useState('');
     const checked = useSelector(state => state.cart.check);
+    const cart = useSelector(state => state.cart.cart);
     const total = useSelector(state => state.cart.total);
     const [showAlertCf, setShowAlertCf] = useState(false);
     const [shippingFee, setShippingFee] = useState('');
@@ -79,6 +80,18 @@ const Payment = () => {
         try {
             const res = await paymentService(pay)
             const data = res && res.data ? res.data : '';
+            let array = [...cart]
+            handelNotify('success', 'Thanh toán thành công')
+            details.map((item, index) => {
+                cart.map((item1, index1) => {
+                    if (item.productId == item1.productId) {
+                        array.splice(index1, 1)
+                        return
+                    }
+                })
+            })
+            dispatch(changeCart(array))
+            sessionStorage.setItem('cart', JSON.stringify(array))
             navigate('/cart')
         } catch (error) {
 
@@ -105,10 +118,11 @@ const Payment = () => {
         let details = []
         checked && checked.length > 0 &&
             checked.map((item, index) => {
+                console.log(checked)
                 const product = {
                     productId: item.productId,
                     count: item.count,
-                    price: item.total
+                    price: item.total - ((item.price * (item.percent / 100)) * item.count)
                 }
                 details.push(product)
             })
