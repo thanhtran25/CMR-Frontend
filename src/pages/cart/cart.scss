@@ -42,10 +42,6 @@
         display: block
     }
 
-    .text-muted {
-        color: #969696 !important
-    }
-
     a {
         text-decoration: none !important
     }
@@ -95,10 +91,10 @@
         border-radius: 2px;
         text-transform: capitalize;
         font-size: 15px;
-        padding: 10px 19px;
         cursor: pointer;
-        color: #fff;
-        width: 100%
+        width: 100%;
+        border: 2px solid;
+        font-weight: 500;
     }
 
     .btn-light {
@@ -137,8 +133,7 @@
     }
 
     .amount-plus {
-        background: #5fa857;
-        color: #fff;
+        background: rgb(190, 190, 190);
         font-family: Courier;
         height: 20px;
         width: 20px;
@@ -149,11 +144,11 @@
         text-align: center;
         line-height: 20px;
         font-size: 16px;
+        font-weight: bold;
     }
 
     .amount-minus {
-        background: #d55555;
-        color: #fff;
+        background: rgb(190, 190, 190);
         font-family: Courier;
         height: 20px;
         width: 20px;
@@ -164,8 +159,21 @@
         text-align: center;
         line-height: 20px;
         font-size: 16px;
+
+        font-weight: bold;
+    }
+
+    .amount-plus:hover {
+        background: #5e5e5e;
+        color: rgb(255, 255, 255);
+    }
+
+    .amount-minus:hover {
+        background: #5e5e5e;
+        color: rgb(255, 255, 255);
     }
 }
+
 
 .titleGiohang {
     justify-content: center;

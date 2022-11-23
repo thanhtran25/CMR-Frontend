@@ -304,7 +304,7 @@ const ProductBody = () => {
                                             </div>
                                             <div className="wsk-cp-text">
                                                 <div className="wsk-buy">
-                                                    <span onClick={() => handleAddcart(item.id, 1, 'buy')}>Mua ngay</span>
+                                                    <span onClick={(e) => { e.stopPropagation(); handleAddcart(item.id, 1, 'buy') }}>Mua ngay</span>
                                                 </div>
                                                 <div className="title-product">
                                                     <h6>{item.name}</h6>
@@ -328,7 +328,7 @@ const ProductBody = () => {
                                                                 </Tooltip>
                                                             }
                                                         >
-                                                            <button onClick={() => handleAddcart(item.id, 1, 'add')} href="#" className="buy-btn" data-tip="Mua Ngay">
+                                                            <button onClick={(e) => { e.stopPropagation(); handleAddcart(item.id, 1, 'add') }} href="#" className="buy-btn" data-tip="Mua Ngay">
                                                                 <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
                                                             </button>
                                                         </OverlayTrigger>
