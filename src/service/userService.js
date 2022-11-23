@@ -161,5 +161,4 @@ export {
     deleteUserService,
     changePositionService,
     unLockUserService,
-    ChangePasswordAdminService
 };
