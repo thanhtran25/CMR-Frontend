@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './login.scss'
+
+import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGooglePlusG } from '@fortawesome/free-brands-svg-icons';
 import { useState } from 'react'
@@ -8,6 +10,7 @@ import validator from 'validator';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { userLogin } from '~/store/action/userAction';
+import {Link} from 'react-router-dom';
 import cookies from 'react-cookies'
 
 const Login = () => {
@@ -26,14 +29,26 @@ const Login = () => {
             [e.target.name]: value
         });
     };
-    const handleOnclick = async () => {
+    const handleOnclick = async (e) => {
+        e.preventDefault();
+        const toastOptions = {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+        }
         const isValid = validateAll()
         if (!isValid) return
         try {
+           
             let response = await loginService(login);
             const data = response && response.data ? response.data : '';
             if (data.information.role !== 'customer') {
-                alert('Đăng nhập thất bại')
+                toast.error('Đăng nhập thất bại', toastOptions)
             } else {
                 cookies.save("Token", data.accessToken)
                 cookies.save("user", data.information)
@@ -41,30 +56,31 @@ const Login = () => {
                 navigate('/');
             }
         } catch (e) {
-            if (e.response.data.error[0].field) {
-                alert(e.response.data.error[0].message)
+            if (e.response.data.error && Array.isArray(e.response.data.error) &&  e.response.data.error[0] && e.response.data.error[0].field) {
+                toast.error(e.response.data.error[0].message, toastOptions)
             }
             else {
-                alert(e.response.data.error)
+                const message = e.response.data.error === 'Email or password is incorrect' ? 'Email hoặc mật khẩu không chính xác' :  e.response.data.error
+                toast.error(message, toastOptions)
             }
         }
     }
     const validateAll = () => {
         const msg = {}
         if (validator.isEmpty(login.email)) {
-            msg.email = "Please input your Email"
+            msg.email = "Vui lòng nhập email"
         } else {
             if (!validator.isEmail(login.email)) {
-                msg.email = "Incorrect data in email"
+                msg.email = "Email không hợp lệ"
             }
         }
 
         if (validator.isEmpty(login.password)) {
-            msg.password = "Please input your Password"
+            msg.password = "Vui lòng nhập mật khẩu"
         }
         else {
             if (login.password.length < 8) {
-                msg.password = '"password" length must be at least 8 characters'
+                msg.password = 'Mật khẩu phải có ít nhất 8 ký tự'
             }
         }
         setValidate(msg)
@@ -74,55 +90,48 @@ const Login = () => {
     const handleOnclickGg = () => {
         window.location = `${process.env.REACT_APP_SERVER_URL}/auth/google/login`;
     }
-    const handleOnclickSignup = () => {
-        navigate('/signup');
-    }
-    const handleOnclickForgot = () => {
-        navigate('/forgotpassword');
-    }
     return (
+        <>
+            <ToastContainer/>
+            <div class="container"  style={{paddingTop: '100px'}}>
+            <div class="row m-5 no-gutters shadow-lg">
+                <div class="col-md-6 d-none d-md-block">
+                    <img src={require('~/assets/images/login-banner.jpg')} class="img-fluid" style={{minHeight:'100%'}} alt=''/>
+                </div>
+                <div class="col-md-6 bg-white p-5">
+                    <h3 class="pb-3">Đăng nhập</h3>
+                    <div class="form-style">
+                        <form onSubmit={handleOnclick}>
+                            <div class="form-group pb-3">
+                                <input type="email" placeholder="Email" class="form-control" name='email' onChange={handleChange} aria-describedby="emailHelp" />
+                                <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
 
-        <div>
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                        <div className="card border-0 shadow rounded-3 my-5">
-                            <div className="card-body p-4 p-sm-5">
-                                <h5 className="card-title text-center mb-5 fw-light fs-5">Sign In</h5>
-                                <form>
-                                    <div className="form-floating mb-2">
-                                        <input type="email" className="form-control" name="email" onChange={handleChange} id="floatingInput" placeholder="name@example.com" />
-                                        <label htmlFor="floatingInput">Email address:</label>
-                                        <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
-                                    </div>
-                                    <div className="form-floating mb-3">
-                                        <input type="password" className="form-control" name="password" onChange={handleChange} id="floatingPassword" placeholder="Password" />
-                                        <label htmlFor="floatingPassword">Password:</label>
-                                        <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
-                                    </div>
-                                    <div className='mb-3'>
-                                        <a onClick={handleOnclickForgot} className="d-block text-left mt-2 small" href="#">Forgot Password?</a>
-                                    </div>
-                                    <div className="d-grid mb-3">
-                                        <button className="btn btn-primary btn-login text-uppercase fw-bold" onClick={handleOnclick} type="button">Sign
-                                            in</button>
-                                    </div>
-                                    <hr className="mt-3" />
-                                    <div className="d-grid mb-2">
-                                        <button className="btn btn-danger" onClick={handleOnclickGg} type="button">
-                                            <FontAwesomeIcon icon={faGooglePlusG} />
-
-                                        </button>
-                                    </div>
-                                    <a onClick={handleOnclickSignup} className="d-block text-center mt-2 small" href="#">Don't have an account? Sign Up</a>
-
-                                </form>
                             </div>
+                            <div class="form-group pb-3">
+                                <input type="password" placeholder="Mật khẩu" class="form-control" name='password' onChange={handleChange} />
+                                <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <div><Link class="link-primary" to='/forgotpassword'>Quên mật khẩu?</Link></div>
+                            </div>
+                            <div class="pb-2">
+                                <button type="submit" class="btn btn-dark w-100 font-weight-bold mt-2" >Đăng nhập</button>
+                            </div>
+                        </form>
+                        <div class="sideline">Hoặc</div>
+                        <div>
+                            <button type="button" class="btn btn-danger w-100 font-weight-bold mt-2" onClick={handleOnclickGg}> <FontAwesomeIcon icon={faGooglePlusG} /> Đăng nhập với Google</button>
+                        </div>
+                        <div class="pt-4 text-center">
+                        Hãy trở thành thành viên để nhận thêm ưu đãi <Link to='/signup'>Đăng ký</Link>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        </>
+        
     )
 }
 
