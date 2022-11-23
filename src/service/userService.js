@@ -153,6 +153,7 @@ const changePositionService = (user, id, token) => {
 
 export {
     ChangePasswordUserService,
+    ChangePasswordAdminService,
     getUsersService,
     createUserService,
     getUserbyIdService,

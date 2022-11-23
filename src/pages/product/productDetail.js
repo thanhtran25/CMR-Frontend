@@ -147,7 +147,7 @@ const ProductDetail = () => {
                         <div className="row">
                             <div className="tab-pane wrapper preview col-md-5">
                                 <div className="preview-pic tab-content">
-                                    <div className=" active" id="pic-1"><img className="img-fluid" src={'http://localhost:1912/static/product/image/' + images} /></div>
+                                    <div className=" active" id="pic-1"><img className="img-fluid" src={process.env.REACT_APP_URL_IMG + images} alt="" /></div>
                                 </div>
                             </div>
                             <div className="wrapper details col-md-7">
@@ -175,12 +175,25 @@ const ProductDetail = () => {
                             </div>
                             <div className='wrapper tab-pane2 preview col-md-5 mt-2 py-2'>
                                 <ul className="preview-thumbnail nav nav-tabs">
-                                    <li><a data-target="#pic-1" data-toggle="tab"><img onClick={(e) => handleClickImage(product.img1, e)}
-                                        className={!isActive ? 'my-img-thumbnail my-img-thumbnail-active' : 'my-img-thumbnail'}
-                                        src={'http://localhost:1912/static/product/image/' + product.img1} /></a></li>
-                                    <li><a data-target="#pic-2" className='ml-3' data-toggle="tab"><img onClick={() => handleClickImage(product.img2)}
-                                        className={isActive ? 'my-img-thumbnail my-img-thumbnail-active' : 'my-img-thumbnail'}
-                                        src={'http://localhost:1912/static/product/image/' + product.img2} /></a></li>
+                                    <li>
+                                        <a href='#pic-1' data-target="#pic-1" data-toggle="tab">
+                                            <img
+                                                onClick={(e) => handleClickImage(product.img1, e)}
+                                                className={!isActive ? 'my-img-thumbnail my-img-thumbnail-active' : 'my-img-thumbnail'}
+                                                src={process.env.REACT_APP_URL_IMG + product.img1}
+                                                alt="" />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href='#pic-2' data-target="#pic-2" className='ml-3' data-toggle="tab">
+                                            <img
+                                                onClick={() => handleClickImage(product.img2)}
+                                                className={isActive ? 'my-img-thumbnail my-img-thumbnail-active' : 'my-img-thumbnail'}
+                                                src={process.env.REACT_APP_URL_IMG + product.img2}
+                                                alt=""
+                                            />
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div className="wrapper preview col-md-7"><div className="action">
@@ -195,7 +208,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 

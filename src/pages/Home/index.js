@@ -1,5 +1,8 @@
 import React from 'react'
 import Button from 'react-bootstrap/Button';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
 import './home.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -75,7 +78,7 @@ function Home() {
         path = ''
         if (percent != 0) {
             const x = price;
-            path = <a href='#' className='percent'>{percent}%</a>
+            path = <span href='#' className='percent'>-{percent}%</span>
             return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
         }
         return '';
@@ -163,7 +166,7 @@ function Home() {
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className='col-0 col-xl-4'>
                         <img className="section-mid-img" src={require('~/assets/images/mayanh-gioithieu.jpg')} width="90%"
-                            alt="Generic placeholder image" />
+                            alt="Generic placeholder" />
                     </div>
                     <div className='col-0 col-xl-8'>
                         <h2> Máy ảnh tuyệt đỉnh. Hình ảnh tuyệt đẹp.</h2>
@@ -181,14 +184,15 @@ function Home() {
                             mắt. Chất lượng âm thanh bắt âm thanh cực xa.</p>
                     </div>
                     <div className='col-0 col-xl-4'>
-                        <img className="section-mid-img" src={require('~/assets/images/mayquay-gioithieu.jpg')} width="90%"
-                            alt="Generic placeholder image" />
+                        <img className="section-mid-img"
+                            src={require('~/assets/images/mayquay-gioithieu.jpg')} width="90%"
+                            alt="Generic placeholder" />
                     </div>
                 </div>
                 <div className="row section-row" style={{ paddingTop: '2%', alignItems: 'center' }}>
                     <div className='col-0 col-xl-4'>
                         <img className="section-mid-img" src={require('~/assets/images/phukien-gioithieu.jpg')} width="90%"
-                            alt="Generic placeholder image" />
+                            alt="Generic placeholder" />
                     </div>
                     <div className='col-0 col-xl-8'>
                         <h2> Phụ kiện tuyệt vời.Tạo nên thiết bị hoàn hảo.</h2>
@@ -204,39 +208,51 @@ function Home() {
                     {products && products.length > 0 &&
                         products.map((item, index) => {
                             return (
-                                <div className=' col-10 offset-1 offset-md-0 col-md-6 col-lg-4 col-2-4 mt-4'>
-                                    <div className="product">
 
-                                        <div class="picture1">
-                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" width="90%" />
+                                <div className="col-md-3">
+                                    <div className="wsk-cp-product" role="button" onClick={() => handleClickDetail(item.id)}>
+                                        <div className="wsk-cp-img">
+                                            <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
                                         </div>
-                                        <div class="picture2">
-                                            <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
+                                        <div className="wsk-cp-text">
+                                            <div className="wsk-buy">
+                                                <span>Mua ngay</span>
+                                            </div>
+                                            <div className="title-product">
+                                                <h6>{item.name}</h6>
+                                            </div>
+                                            <div className="card-footer">
+                                                <div className="wcf-left">
+                                                    <span className="price">
+                                                        <span>{VND(item.price * (100 - item.percent) / 100)} </span>
+                                                        <br></br>
+                                                        <p style={{height: '12px', marginTop: '5px'}}><del style={{textDecoration: 'line-through', fontStyle: 'italic', color: "#B2B2B2"}}> {oldPrice(item.price, item.percent)}</del>  {path}</p>
+                                                    </span>
+                                                </div>
+                                                <div className="wcf-right">
+                                                    <OverlayTrigger
+                                                        key={'add-to-cart'}
+                                                        placement='bottom'
+                                                        overlay={
+                                                            <Tooltip style={{ fontSize: '10px' }}>
+                                                                Thêm Vào Giỏ Hàng
+                                                            </Tooltip>
+                                                        }
+                                                    >
+                                                        <button href="#" className="buy-btn" data-tip="Mua Ngay">
+                                                            <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
+                                                        </button>
+
+                                                    </OverlayTrigger>
+
+
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="product-info">
-                                            <p>{item.name}</p>
-                                            <span>{VND(item.price * (100 - item.percent) / 100)} </span> <br></br>
-                                            <p style={{ height: "20px" }}><del> {oldPrice(item.price, item.percent)}</del>  {path}</p>
-                                        </div>
-                                        <ul className="product-action-icon-front product-action-a">
-                                            <li>
-                                                <button className="tooltip" href="#" data-tip="Chi Tiết">
-                                                    <FontAwesomeIcon onClick={() => handleClickDetail(item.id)} icon={faSearch} className='fa-icon' />
-                                                </button>
-                                            </li>
-                                            <li >
-                                                <button className="tooltip" href="#" data-tip="Thêm Vào Giỏ Hàng">
-                                                    <FontAwesomeIcon icon={faShoppingBasket} className='fa-icon' />
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button className="tooltip" href="#" data-tip="Mua Ngay">
-                                                    <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
-                                                </button>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
+
+
                             )
                         })
                     }
