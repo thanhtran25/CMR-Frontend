@@ -199,7 +199,7 @@ const Cart = () => {
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="aside"><img src={'http://localhost:1912/static/product/image/' + item.img1} className="img-thumbnail" /></div>
+                                                            <div className="aside"><img src={process.env.REACT_APP_URL_IMG + item.img1} className="img-thumbnail" /></div>
 
                                                         </td>
                                                         <td><p className="text-break">{item.name}</p></td>

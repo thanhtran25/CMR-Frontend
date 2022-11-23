@@ -72,7 +72,7 @@ const Login = () => {
         return true
     }
     const handleOnclickGg = () => {
-        window.location = "http://localhost:1912/auth/google/login";
+        window.location = `${process.env.REACT_APP_SERVER_URL}/auth/google/login`;
     }
     const handleOnclickSignup = () => {
         navigate('/signup');

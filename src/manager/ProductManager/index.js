@@ -471,12 +471,12 @@ function ProductManager() {
                                                                 <td className='text-break'>{item.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</td>
                                                                 <td className='text-break'>
                                                                     <div className="productmanager">
-                                                                        <img className="imgmanager" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" />
+                                                                        <img className="imgmanager" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Canon" />
                                                                     </div>
                                                                 </td>
                                                                 <td className='text-break'>
                                                                     <div className="productmanager">
-                                                                        <img className="imgmanager" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" />
+                                                                        <img className="imgmanager" src={process.env.REACT_APP_URL_IMG + item.img2} alt="Canon" />
                                                                     </div>
                                                                 </td>
                                                                 <td className='text-break'>
@@ -803,11 +803,11 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 1</Form.Label>
-                                        <img src={'http://localhost:1912/static/product/image/' + repairProduct.img1} width='100px' height='100px' />
+                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img1} width='100px' height='100px' alt='image1'/>
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 2</Form.Label>
-                                        <img src={'http://localhost:1912/static/product/image/' + repairProduct.img2} width='100px' height='100px' />
+                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img2} width='100px' height='100px' alt='image2'/>
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>

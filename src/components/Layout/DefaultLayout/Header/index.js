@@ -84,7 +84,7 @@ function Header() {
         if (!isValid) return
         try {
             let token = cookies.load('Token');
-            let response = await ChangePasswordUserService(change, token);
+            await ChangePasswordUserService(change, token);
         } catch (e) {
             console.log(e);
         }

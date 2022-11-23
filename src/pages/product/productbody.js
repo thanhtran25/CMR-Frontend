@@ -299,10 +299,10 @@ const ProductBody = () => {
                                         <div className="product">
 
                                             <div class="picture1">
-                                                <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img1} alt="Canon" width="90%" />
+                                                <img className="product-img img" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Canon" width="90%" />
                                             </div>
                                             <div class="picture2">
-                                                <img className="product-img img" src={'http://localhost:1912/static/product/image/' + item.img2} alt="Canon" width="90%" />
+                                                <img className="product-img img" src={process.env.REACT_APP_URL_IMG + item.img2} alt="Canon" width="90%" />
                                             </div>
                                             <div className="product-info">
                                                 <p>{item.name}</p>
