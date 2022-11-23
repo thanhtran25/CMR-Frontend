@@ -1,6 +1,6 @@
 import request from '~/core/utils/axios';
 
-const getBillsService = (bill, token) => {
+const getBillsService = async (bill, token) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -22,13 +22,34 @@ const getBillsService = (bill, token) => {
     if (bill.numberPhone) {
         s += '&numberPhone=' + bill.numberPhone + '';
     }
+    if (bill.states) {
+        s += '&states=' + bill.states + '';
+    }
 
 
-    return request.get(
+    return await request.get(
         'bills' + s + '',
         config
     )
 }
+const updateBillsService = async (bill, action, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    const id = bill.id;
+    delete bill.id
+    const bodyParameters = {
+        ...bill
+    };
+
+    return await request.put(
+        'bills/' + action + '/' + id,
+        bodyParameters,
+        config
+    )
+}
+
 export {
-    getBillsService
+    getBillsService,
+    updateBillsService
 }
