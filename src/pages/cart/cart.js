@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './cart.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHistory, faCircleXmark, faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHistory, faTrashCan, faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
@@ -164,31 +164,28 @@ const Cart = () => {
                 pauseOnHover
                 theme="colored"
             />
-            <div class="container cartbody">
+            <div className="container cartbody">
                 <div className='row'>
-                    <h4 className='switchPage'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span class='cartText'>Giỏ Hàng</span></h4>
-                </div>
-                <div className='row'>
-                    <h3 className='titleGiohang'>Chi tiết đơn hàng</h3>
+                    <h4 className='switchPage'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span className='cartText'>Giỏ Hàng</span></h4>
                 </div>
                 {/* <div className='row'></div>
             <div className='col-lg-9'>
                 <FontAwesomeIcon icon={faHistory} className='fa-icon iconHistory' />
             </div> */}
-                <div class="row mt-2">
-                    <aside class="col-lg-9">
-                        <div class="card">
-                            <div class="table-responsive">
-                                <table class="table table-borderless table-shopping-cart">
-                                    <thead class="text-muted">
-                                        <tr class="small">
+                <div className="row mt-2">
+                    <aside className="col-lg-9">
+                        <div className="card">
+                            <div className="table-responsive">
+                                <table className="table table-borderless table-shopping-cart">
+                                    <thead className="text-muted">
+                                        <tr className="small">
                                             <th scope="col" width="50">Chọn</th>
-                                            <th scope="col" width="250">Hình ảnh</th>
-                                            <th scope="col" width="250">Tên sản phẩm</th>
+                                            <th scope="col" width="200">Hình ảnh</th>
+                                            <th scope="col" width="300">Tên sản phẩm</th>
                                             <th scope="col" width="120">Số lượng</th>
                                             <th scope="col" width="250" >Đơn giá</th>
                                             <th scope="col" width="250">Tổng cộng</th>
-                                            <th scope="col" class="" width="50">Xóa</th>
+                                            <th scope="col" className="" width="50">Xóa</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,12 +194,12 @@ const Cart = () => {
                                                 return (
                                                     <tr>
                                                         <td>
-                                                            <div class="form-check">
-                                                                <input onChange={handleCheck} value={JSON.stringify(item)} class="form-check-input" type="checkbox" id="check1" name="option1" />
+                                                            <div className="form-check">
+                                                                <input onChange={handleCheck} value={JSON.stringify(item)} className="form-check-input" type="checkbox" id="check1" name="option1" />
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="aside"><img src={'http://localhost:1912/static/product/image/' + item.img1} class="img-thumbnail" /></div>
+                                                            <div className="aside"><img src={'http://localhost:1912/static/product/image/' + item.img1} className="img-thumbnail" /></div>
 
                                                         </td>
                                                         <td><p className="text-break">{item.name}</p></td>
@@ -221,8 +218,8 @@ const Cart = () => {
                                                             <div className="price-wrap"><p className="text-break">{VND(item.price)}</p></div>
 
                                                         </td>
-                                                        <td><div className="price-wrap"><p className="text-break">{VND(item.total)}</p></div></td>
-                                                        <td><button onClick={() => deleteCart(item.productId)}><FontAwesomeIcon icon={faCircleXmark} className='fa-icon' /></button></td>
+                                                        <td><div className="price-wrap"><p className="text-danger">{VND(item.total)}</p></div></td>
+                                                        <td><FontAwesomeIcon button onClick={() => deleteCart(item.productId)} icon={faTrashCan} className='fa-trash' /></td>
                                                     </tr>
                                                 )
                                             })
@@ -232,31 +229,23 @@ const Cart = () => {
                             </div>
                         </div>
                     </aside>
-                    <aside class="col-lg-3">
-                        {/* <div class="card mb-3">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group"> <label>Have coupon?</label>
-                                    <div class="input-group"> <input type="text" class="form-control coupon" name="" placeholder="Coupon code" /> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div> */}
-                        <div class="card">
-                            <div class="card-body">
-                                <dl class="dlist-align">
+                    <aside className="col-lg-3">
+
+                        <div className="card">
+                            <div className="card-body">
+                                <dl className="dlist-align row">
                                     <dt>Tạm tính: </dt>
-                                    <dd class="text-right ml-3">{total && VND(total.totalPrice)}</dd>
+                                    <dd className="text-right ml-3">{total && VND(total.totalPrice)}</dd>
                                 </dl>
-                                <dl class="dlist-align">
+                                <dl className="dlist-align">
                                     <dt>Giảm giá: </dt>
-                                    <dd class="text-right text-danger ml-3">- {total && VND(total.totalSale)}</dd>
+                                    <dd className="text-right text-danger ml-3">- {total && VND(total.totalSale)}</dd>
                                 </dl>
-                                <dl class="dlist-align">
+                                <dl className="dlist-align">
                                     <dt>Tổng cộng: </dt>
-                                    <dd class="text-right text-dark b ml-3"><strong>{total && VND(total.total)}</strong></dd>
+                                    <dd className="text-right text-dark b ml-3"><strong>{total && VND(total.total)}</strong></dd>
                                 </dl>
-                                <hr /> <a onClick={handleSwitchPaymet} class="btn btn-out btn-primary btn-square btn-main" data-abc="true"> Tiến hành thanh toán </a> <a onClick={handleSwitchShopping} class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</a>
+                                <hr /> <a onClick={handleSwitchPaymet} className="btn btn-out btn-danger btn-square btn-main" data-abc="true"> Tiến hành thanh toán </a> <a onClick={handleSwitchShopping} className="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Tiếp tục mua hàng</a>
                             </div>
                         </div>
                     </aside>
