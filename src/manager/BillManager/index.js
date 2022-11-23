@@ -2,18 +2,20 @@ import React, { useState, useEffect } from 'react';
 import './billManager.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import cookies from 'react-cookies';
 import { getBillsService, updateBillsService } from '~/service/billsService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faScrewdriverWrench, faCalendar, faSearch, faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faTrashCan, faScrewdriverWrench, faCalendar, faSearch, faLock, faUnlock } from '@fortawesome/free-solid-svg-icons';
 import Nav from 'react-bootstrap/Nav';
 import { OrderStates } from '~/core/constant';
 import { handelNotify } from '~/core/utils/req';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
+import { Notify } from '~/core/constant';
 
 function BillManager() {
     const limit = 10
@@ -28,6 +30,7 @@ function BillManager() {
         numberPhone: '',
         states: ''
     });
+    const [showAlertCf, setShowAlertCf] = useState(false);
     const [states, setStates] = useState();
     const [billsDetail, setBillsDetail] = useState(-1);
     const [bills, setBills] = useState('')
@@ -96,22 +99,81 @@ function BillManager() {
     }
     const handleAccept = async (action, bill) => {
         if (action == 'accepted') {
-            const states = {
-                states: 'accepted',
+            let s
+            if (states === OrderStates.WAITING) {
+                s = OrderStates.ACCEPTED;
+            }
+            if (states === OrderStates.ACCEPTED) {
+                s = OrderStates.SHIPPING
+            }
+            const state = {
+                states: s,
                 id: bill
             }
             console.log(states)
             try {
-                const res = await updateBillsService(states, 'accept', token)
+                const res = await updateBillsService(state, 'accept', token)
                 const data = res && res.data ? res.data : '';
-                console.log(data)
+                setSearchBills({
+                    ...searchBills,
+                    sort: '',
+                    sortBy: '',
+                    numberPhone: '',
+                })
                 handelNotify('success', 'Xác nhận đơn hàng thành công')
+                setShowAlertCf({
+                    open: false
+                })
             } catch (error) {
-                console.log(error)
+                handelNotify('erorr', 'Xác nhận đơn hàng thất bại')
             }
         }
     }
-
+    const showCf = (action, bill) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có muốn xác nhận đơn hàng này>',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleAccept(action, bill)
+        })
+    }
+    const showdeleCf = (action, bill) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có muốn huỷ đơn hàng này?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleCancel(action, bill)
+        })
+    }
+    const handleCancel = async (action, bill) => {
+        if (action == 'accepted') {
+            const state = {
+                states: OrderStates.CANCEL,
+                id: bill
+            }
+            console.log(states)
+            try {
+                const res = await updateBillsService(state, 'accept', token)
+                const data = res && res.data ? res.data : '';
+                setSearchBills({
+                    ...searchBills,
+                    sort: '',
+                    sortBy: '',
+                    numberPhone: '',
+                })
+                handelNotify('success', 'Huỷ đơn hàng thành công')
+                setShowAlertCf({
+                    open: false
+                })
+            } catch (error) {
+                handelNotify('erorr', 'Hủy đơn hàng thất bại')
+            }
+        }
+    }
     let price = 0, total = 0
     useEffect(() => {
         getListBills(searchBills)
@@ -119,6 +181,40 @@ function BillManager() {
     }, [searchBills])
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
+            <Modal
+                show={showAlertCf.open}
+                onHide={() => setShowAlertCf({ open: false })}
+                backdrop={showAlertCf.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
+                    <Modal.Title>{showAlertCf.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        variant="secondary"
+                        onClick={() => setShowAlertCf({ open: false })}
+                    >
+                        Hủy
+                    </Button>
+                    <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
@@ -223,8 +319,8 @@ function BillManager() {
                                                                     }
                                                                     {states === 'waiting' || states === 'accepted' ? (
                                                                         <td className='text-break'>
-                                                                            <button onClick={() => handleAccept('accepted', item.id)} type="button" class="btn btn-success">Xác nhận</button>
-                                                                            <button type="button" class="btn btn-danger">Hủy đơn</button>
+                                                                            <button onClick={() => showCf('accepted', item.id)} type="button" class="btn btn-success">Xác nhận</button>
+                                                                            <span>  </span><button onClick={() => showdeleCf('accepted', item.id)} type="button" class="btn btn-danger ">Hủy</button>
                                                                         </td>
                                                                     )
                                                                         : ''
@@ -236,45 +332,82 @@ function BillManager() {
                                                                 <tr className={billsDetail === item.id ? 'table-light' : 'table-light showdetail'}>
                                                                     <td colspan={6}>
                                                                         <div className='container'>
-                                                                            <div className="shopping-cart">
-                                                                                {item.billDetails.length > 0 && item.billDetails.map((item1, index1) => {
-                                                                                    total += item1.price;
-                                                                                    return (
-                                                                                        <>
-                                                                                            <div style={{ backgroundColor: 'white' }} className={index1 === 0 ? 'product mt-5' : 'product mt-2'}>
-                                                                                                <div className="product1-image">
-                                                                                                    <img src={'http://localhost:1912/static/product/image/' + item1.product.img1} />
-                                                                                                </div>
-                                                                                                <div className="product1-details">
-                                                                                                    <div className="product1-title">{item1.product.name}</div>
-                                                                                                    <p className="product1-description">{'x ' + item1.count}</p>
-                                                                                                </div>
-                                                                                                <div className="product1-quantity">{VND(item1.product.price)}</div>
 
-                                                                                                <div className="product1-line-price">{VND(item1.price)}</div>
+                                                                            {item.billDetails.length > 0 && item.billDetails.map((item1, index1) => {
+                                                                                total += item1.price;
+                                                                                return (
+                                                                                    <>
+                                                                                        <aside className="col-lg-12">
+                                                                                            <div className="card rounded" >
+                                                                                                <div className="">
+                                                                                                    <table className="table table-borderless table-shopping-cart">
+                                                                                                        <thead className="text-muted">
+                                                                                                            <tr className="small">
+                                                                                                                <th scope="col" width="150">Sản phẩm</th>
+                                                                                                                <th scope="col" width="300"></th>
+                                                                                                                <th scope="col" width="200">Số lượng</th>
+                                                                                                                <th scope="col" width="200" >Đơn giá</th>
+                                                                                                                <th scope="col" width="200">Tổng cộng</th>
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody>
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <div className="aside"><img src={process.env.REACT_APP_URL_IMG + item1.product.img1} width={'90%'} /></div>
+                                                                                                                </td>
+                                                                                                                <td><p className="text-break">{item1.product.name}</p></td>
+                                                                                                                <td>
+                                                                                                                    <div className='product-amount'>
+                                                                                                                        <input type='number' readOnly value={item1.count} name='' step="1" min="1" max="999" />
+                                                                                                                        <button value='1' className='amount-plus'>
+                                                                                                                            +
+                                                                                                                        </button>
+                                                                                                                        <button value='-1' className='amount-minus'>
+                                                                                                                            -
+                                                                                                                        </button>
+                                                                                                                    </div>
+                                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    <div className="price-wrap"><p className="text-break">{VND(item1.product.price)} </p>
+
+                                                                                                                        <Badge bg="danger" className='percent'></Badge>
+                                                                                                                    </div>
+
+                                                                                                                </td>
+                                                                                                                <td><div className="price-wrap"><p className="text-danger fw-bold">{VND(item1.price)}</p></div></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </div>
                                                                                             </div>
+                                                                                        </aside>
 
-                                                                                        </>
-                                                                                    )
-                                                                                })
+                                                                                    </>
+                                                                                )
+                                                                            })
+                                                                            }
+                                                                            <aside className="col-lg-4">
 
-                                                                                }
-                                                                                <div className="totals">
-                                                                                    <div className="totals-item">
-                                                                                        <label>Tổng cộng:</label>
-                                                                                        <div id="cart-subtotal">{' ' + VND(total)}</div>
-                                                                                    </div>
-                                                                                    <div className="totals-item">
-                                                                                        <label>Phí Ship:</label>
-                                                                                        <div id="cart-shipping">{' ' + VND(item.shippingFee)}</div>
-                                                                                    </div>
-                                                                                    <div className="totals-item totals-item-total">
-                                                                                        <label>Thành tiền:</label>
-                                                                                        <div id="cart-total">{' ' + VND(total + item.shippingFee)}</div>
+                                                                                <div className="card rounded">
+                                                                                    <div className="card-body">
+                                                                                        <dl className="dlist-align row">
+                                                                                            <dt>Tổng cộng: {VND(total)}</dt>
+                                                                                            <dd className="text-right ml-3 "></dd>
+                                                                                        </dl>
+                                                                                        <dl className="dlist-align">
+                                                                                            <dt>Phí ship: {VND(item.shippingFee)}</dt>
+                                                                                            <dd className="text-right text-danger ml-3"></dd>
+                                                                                        </dl>
+                                                                                        <dl className="dlist-align">
+                                                                                            <dt>Thành tiền: {VND(total + item.shippingFee)}</dt>
+                                                                                            <dd className="text-right text-dark b ml-3"><strong></strong></dd>
+                                                                                        </dl>
+                                                                                        <hr />
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            </aside>
                                                                         </div>
+
                                                                     </td>
                                                                 </tr>
 

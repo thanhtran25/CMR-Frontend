@@ -1,0 +1,149 @@
+@mixin triangle-up() {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+}
+
+.popup-box {
+    position: relative;
+}
+
+.btn-popup {
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    padding: 0;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    background-color: white;
+
+    &:hover {
+        background-color: #b73e3e;
+    }
+
+    &:hover svg {
+        color: white;
+    }
+}
+
+.box-content {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.box-triangle {
+    @include triangle-up();
+    position: absolute;
+    z-index: 1;
+    transition: all ease-in-out 0.4s;
+    right: 0.5rem;
+    top: -0.5rem
+}
+
+.box-body {
+    top: 3rem;
+    right: 0;
+    position: absolute;
+    z-index: 5;
+    box-shadow: rgb(0 0 0 / 15%) 0px 2px 8px;
+    transition: all ease 0.3s;
+    visibility: visible;
+    opacity: 1;
+}
+
+.box-hiden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.box-header {
+    display: inline-flexbox;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(240, 240, 240);
+}
+
+.box-btn-close {
+    border: none;
+    float: right;
+    border-radius: 5px;
+    background-color: white;
+    transition: all ease-out 0.3s;
+
+    &:hover {
+        background-color: #F5F5F5;
+    }
+}
+
+.box-title {
+    display: inline;
+
+    font: {
+        weight: bold
+    }
+
+    color: #000080;
+}
+
+.box-list-item {
+    max-height: 20rem;
+    width: 18rem;
+    overflow: auto;
+}
+
+.box-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+    border-bottom: 1px solid rgb(240, 240, 240);
+
+    .box-icon {
+        width: 2rem;
+        height: 2rem;
+        padding: 0;
+        border-radius: 5px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &:hover {
+        background-color: #F5F5F5;
+    }
+
+    &-content {
+        margin-left: 1rem;
+        width: 60%;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+.box-footer {
+    padding: 1rem;
+    text-align: center;
+    color: #3e6d9c;
+
+    &:hover {
+        background-color: #F5F5F5;
+        cursor: pointer;
+    }
+}
