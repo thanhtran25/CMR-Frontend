@@ -37,7 +37,7 @@ function Header() {
     const handleShow = () => setShow(true);
 
 
-    let path = <Button onClick={handleOnclickLogin} variant='warning' className='col-7 col-xl-4 btn-sm mt-1'>Đăng Nhập</Button>;
+    let path = <Button onClick={handleOnclickLogin} className='col-7 col-xl-4 btn btn-warning btn-sm my-1'>Đăng Nhập</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
         let arrName = user.fullname.split(' ');
