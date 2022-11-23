@@ -529,7 +529,7 @@ function UserAdmin() {
                             <Form.Label>Mật Khẩu:</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="PassWord"
+                                placeholder="Password"
                                 name="password"
                                 onChange={handleChangeAdduser}
                             />

@@ -9,6 +9,7 @@ function DefaultLayout({ children }) {
         position: 'fixed',
         display: 'block',
         zIndex: '15',
+        top: 0,
     }
     return (
         <div style={{ fontFamily: 'Verdana, Geneva, Tahoma, sans-serif', }}>

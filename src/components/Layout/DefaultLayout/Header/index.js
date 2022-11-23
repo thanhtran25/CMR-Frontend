@@ -132,7 +132,7 @@ function Header() {
                             <Form.Label>Mật khẩu cũ:</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="PassWord"
+                                placeholder="Password"
                                 name="currentPassword"
                                 defaultValue={change.currentPassword}
                                 onChange={handleChangePassword}
@@ -144,7 +144,7 @@ function Header() {
                             <Form.Label>Mật khẩu mới:</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="PassWord"
+                                placeholder="Password"
                                 name="newPassword"
                                 onChange={handleChangePassword}
                                 defaultValue={change.newPassword}
@@ -159,7 +159,7 @@ function Header() {
                             <Form.Label>Nhập lại mật khẩu:</Form.Label>
                             <Form.Control
                                 type="password"
-                                placeholder="PassWord"
+                                placeholder="Password"
                                 name="repass"
                                 defaultValue={confirmPass.repass}
                                 onChange={RePassword}
