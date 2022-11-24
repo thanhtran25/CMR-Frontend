@@ -70,8 +70,8 @@ const privateRoutesM = [
     { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
     { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
-    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
-    { path: '/store/*', component: ProductManager, layout: ManagerLayout },
+    { path: '/store/user', component: UserManager, layout: ManagerLayout },
+    { path: '/store/*', component: UserManager, layout: ManagerLayout },
 ]
 
 const privateRoutesSt = [
@@ -83,26 +83,13 @@ const privateRoutesSt = [
     { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
     { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
     { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
-    { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
-    { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
-    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
-    { path: '/store/user', component: UserManager, layout: ManagerLayout },
     { path: '/store/*', component: ProductManager, layout: ManagerLayout },
 ]
 
 const privateRoutesSh = [
-    { path: '/store/bill', component: BillManager, layout: ManagerLayout },
-    { path: '/store/brand', component: BrandManager, layout: ManagerLayout },
-    { path: '/store/categories', component: CategoriesManager, layout: ManagerLayout },
-    { path: '/store/inventories', component: InventoriesManager, layout: ManagerLayout },
-    { path: '/store/product', component: ProductManager, layout: ManagerLayout },
-    { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
-    { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
-    { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
     { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
-    { path: '/store/statistic', component: StatisticManager, layout: ManagerLayout },
-    { path: '/store/*', component: ProductManager, layout: ManagerLayout },
+    { path: '/store/*', component: ShipperNew, layout: ManagerLayout },
 ]
 
 const privateRoutesU = [

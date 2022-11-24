@@ -75,12 +75,6 @@ function Sidebar() {
                                 <span>Quản lý đơn nhập hàng</span>
                             </span>
                         </NavLink>
-                        <NavLink to="/store/statistic" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
-                            <span className="sidebar-link">
-                                <FontAwesomeIcon icon={faSignal} />
-                                <span>Thống kê</span>
-                            </span>
-                        </NavLink>
                         <NavLink to="/store/shippernew" className={(navData) => "sidebar-item" + (navData.isActive ? " active" : " link")} >
                             <span className="sidebar-link">
                                 <FontAwesomeIcon icon={faTruckFast} />
