@@ -57,7 +57,7 @@ const createSalecodeService = (sale_code, token) => {
     )
 }
 
-const updateSalecodeService = (sale_code, token) => {
+const updateSalecodeService = (sale_code, token, newProductIds, removeProductIds) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -67,10 +67,33 @@ const updateSalecodeService = (sale_code, token) => {
     delete sale_code.updatedAt
     delete sale_code.deletedAt
 
+    let bodyParameters;
 
-    const bodyParameters = {
-        ...sale_code
-    };
+    if (newProductIds.length <= 0) {
+        if (removeProductIds.length <= 0) {
+            bodyParameters = {
+                ...sale_code,
+            };
+        } else {
+            bodyParameters = {
+                ...sale_code,
+                removeProductIds
+            };
+        }
+    } else {
+        if (removeProductIds.length <= 0) {
+            bodyParameters = {
+                ...sale_code,
+                newProductIds,
+            };
+        } else {
+            bodyParameters = {
+                ...sale_code,
+                newProductIds,
+                removeProductIds
+            };
+        }
+    }
     return request.put(
         'sale-codes/' + id + '',
         bodyParameters,
