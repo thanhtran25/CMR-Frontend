@@ -47,11 +47,11 @@ const LoginAdmin = () => {
                     if (cookies.load('admin').role === 'admin') {
                         navigate('/admin/user');
                     } else if (cookies.load('admin').role === 'manager') {
-                        navigate('/store/product');
+                        navigate('/store/user');
                     } else if (cookies.load('admin').role === 'staff') {
                         navigate('/store/product');
                     } else if (cookies.load('admin').role === 'shipper') {
-                        navigate('/store/product');
+                        navigate('/store/shippernew');
                     }
                 }
             } else {
