@@ -96,7 +96,7 @@ const createUserService = (user, token) => {
     )
 }
 
-const updateUserService = (user, token) => {
+const updateUserService = async (user, token) => {
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -107,12 +107,12 @@ const updateUserService = (user, token) => {
     delete user.createdAt
     delete user.updatedAt
     delete user.deletedAt
-
+    delete user.verify
 
     const bodyParameters = {
         ...user
     };
-    return request.put(
+    return await request.put(
         'users/me',
         bodyParameters,
         config
