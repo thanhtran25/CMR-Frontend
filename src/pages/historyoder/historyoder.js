@@ -107,7 +107,7 @@ const HistoryOder = () => {
                         <div className='btn-shake'>
                             <img src={require('~/assets/images/history-2.jpg')}></img>
                         </div>
-                        <Link to='/products' className='btn btn-danger' style={{ width: '35%', marginTop: "5%", marginLeft: '30%' }}>
+                        <Link to='/camera' className='btn btn-danger' style={{ width: '35%', marginTop: "5%", marginLeft: '30%' }}>
                             Mua Ngay
                         </Link>
                     </div>

@@ -112,7 +112,7 @@ const Cart = () => {
 
     }
     const handleSwitchShopping = () => {
-        navigate('/products')
+        navigate('/camera')
     }
     const deleteCart = (e) => {
         let array = [...cart]; // make a separate copy of the array
