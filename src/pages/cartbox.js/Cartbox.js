@@ -57,7 +57,8 @@ const CartBox = () => {
                                     <div className="box-icon">
                                         <img src={process.env.REACT_APP_URL_IMG + element.img1} alt="" />
                                     </div>
-                                    <div className="box-item-content">{element.name}</div>
+                                    <div className="box-item-content"><span className="count-item">{element.count}x </span>{element.name}
+                                    </div>
                                     <div className="box-item-content-2">
                                         <p>{VND(element.price * (100 - element.percent) / 100)}</p>
                                         {element.percent > 0 && <del className="box-item-del">{VND(element.price)}</del>}
