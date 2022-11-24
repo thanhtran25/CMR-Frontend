@@ -18,7 +18,6 @@ const CartBox = () => {
         return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
     useEffect(() => {
-        console.log(cart)
         const handleClickOutside = (event) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
                 setisOpen(false);
@@ -29,7 +28,6 @@ const CartBox = () => {
             document.removeEventListener("mousedown", handleClickOutside)
         };
     }, []);
-    console.log(cart);
     return (
         <div className="popup-box" ref={wrapperRef}>
             <button className={isOpen === true ? "btn-click btn-popup" : "btn-popup"} onClick={() => showBox()}>

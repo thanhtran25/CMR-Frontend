@@ -1,15 +1,12 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { faBasketShopping } from '@fortawesome/free-solid-svg-icons';
 import { Link, NavLink } from 'react-router-dom'
 import './header.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import cookies from 'react-cookies';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '~/store/action/userAction';
@@ -21,9 +18,15 @@ function Header() {
     const user = useSelector(state => state.user.user);
     const amount = useSelector(state => state.cart.amount)
     const navigate = useNavigate();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const handleOnclickLogin = () => {
         navigate('/Login');
+    }
+
+    const wrapperRef = useRef();
+    const [isOpen, setisOpen] = useState(false);
+    const showBox = () => {
+        setisOpen(!isOpen);
     }
     const handleOnclickLogout = () => {
         cookies.remove("Token")
@@ -38,6 +41,18 @@ function Header() {
     const handleShow = () => setShow(true);
 
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+                setisOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+        };
+    }, []);
+
     let path = <Button onClick={handleOnclickLogin} className='col-7 col-xl-4 btn btn-warning btn-sm my-1'>Đăng Nhập</Button>;
     if (user !== undefined && user !== null) {
         let name = "";
@@ -47,14 +62,22 @@ function Header() {
         } else {
             name += arrName[arrName.length - 1];
         }
-        path = (<NavDropdown title={name} id="basic-nav-dropdown" className='col-7 col-xl-3 navNav btn btn-sm btn-warning mt-1'>
-            <NavDropdown.Item as={Link} to={'/Profile'}>Thông tin tài khoản</NavDropdown.Item>
-            <NavDropdown.Item onClick={handleShow}>
-                Đổi mật khẩu
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item onClick={handleOnclickLogout}>Đăng xuất</NavDropdown.Item>
-        </NavDropdown>)
+        path = (<div onClick={() => showBox()} ref={wrapperRef}
+            className='col-7 col-xl-3 profile-box btn btn-sm btn-warning my-1'>{name}
+            <div className={isOpen === true ? 'box-profile-body' : "box-profile-body box-hiden-profile"}>
+                <div className='box-content-profile'>
+                    <div className='box-profile-list'>
+                        <div className='box-profile-item' as={Link} to={'/Profile'}>Thông tin tài khoản</div>
+                        <div className='box-profile-item' onClick={handleShow}>
+                            Đổi mật khẩu
+                        </div>
+                        <div />
+                        <div className='box-profile-item' onClick={handleOnclickLogout}>Đăng xuất</div>
+                    </div>
+                </div>
+                <div className="profile-triangle"></div>
+            </div>
+        </div>)
     }
     const [change, setChange] = useState({
         currentPassword: "",
