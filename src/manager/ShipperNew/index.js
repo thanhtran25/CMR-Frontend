@@ -77,12 +77,12 @@ function ShipperNew() {
                 sortBy: '',
                 numberPhone: '',
             })
-            handelNotify('success', 'Xác nhận đơn hàng thành công')
+            handelNotify('success', 'Nhận đơn hàng thành công')
             setShowAlertCf({
                 open: false
             })
         } catch (error) {
-            handelNotify('erorr', 'Xác nhận đơn hàng thất bại')
+            handelNotify('erorr', 'Nhận đơn hàng thất bại')
         }
     }
     const hadleUpdateMuti = async (action) => {
@@ -94,10 +94,14 @@ function ShipperNew() {
             handleUpdateStates(action, item.id)
         })
     }
+    function VND(x) {
+        return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
     useEffect(() => {
         getListBills(searchBills)
         console.log(bills)
     }, [searchBills])
+    let total = 0
     return (
         <>
             <ToastContainer
@@ -127,72 +131,41 @@ function ShipperNew() {
 
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-12 ">
-                                <div >
-                                    <button onClick={() => hadleUpdateMuti('ship')} id='btn-createaccount' className="btn btn-primary">
-                                        Nhận đơn
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <section className="section">
-                            <div className="card">
-                                <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table mb-0 table-danger" id="table1">
-                                            <thead>
-                                                <tr>
-                                                    <th>Chọn</th>
-                                                    <th>Thông tin đơn hàng</th>
-                                                    <th>Nhận đơn</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {bills && bills.length > 0 &&
-                                                    bills.map((item, index) => {
-                                                        let s = 'table-info';
-                                                        if ((index + 1) % 2 !== 0) {
-                                                            s = 'table-light';
-                                                        }
-                                                        return (
-                                                            <tr className={s}>
-                                                                <td>
-                                                                    <div className="form-check">
-                                                                        <input onChange={handleCheck} value={JSON.stringify(item)} className="form-check-input" type="checkbox" id="check1" name="option1" />
-                                                                    </div>
-                                                                </td>
-                                                                <td className='text-break'>
-                                                                    <div>
-                                                                        <p style={{ fontWeight: 'bold' }}>{'Tên: ' + item.customerName}</p>
-                                                                        <p>{'Địa chỉ: ' + item.address}</p>
-                                                                        <p>{'Sđt: ' + item.numberPhone}</p>
-                                                                        <p>{'Phí ship: ' + item.shippingFee}</p>
-                                                                    </div>
-                                                                </td>
-                                                                <td className='text-break'>
-                                                                    <button onClick={() => handleUpdateStates('ship', item.id)} type="button" class="btn btn-success">Nhận đơn</button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </tbody>
-                                        </table>
-                                        <nav className="mt-5">
-                                            <ul id="pagination" className="pagination justify-content-center">
-                                                {
-                                                    pagination && pagination.length > 0 &&
-                                                    pagination.map(item => {
-                                                        return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
-                                                    })
-                                                }
-                                            </ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                        {bills && bills.length > 0 &&
+                            bills.map((item, index) => {
+                                total = 0
+                                return (
+                                    <>
+                                        <div className="card border-success mb-3 col-8 offset-2">
+                                            <div className="card-header">
+                                                <div onClick={() => handleUpdateStates('ship', item.id, OrderStates.DELIVERING)} className='btn btn-success'>
+                                                    Nhận đơn
+                                                </div>
+                                            </div>
+                                            <div className="card-body text-success row">
+                                                <h5 className="card-title col-12">Tên Khách: {item.customerName}</h5>
+                                                <p className="card-text col-12">{item.address}</p>
+                                                <div className='col-6'>
+                                                    <p className="card-text">{
+                                                        item.billDetails && item.billDetails.length > 0 &&
+                                                        item.billDetails.map((item1, index) => {
+                                                            total += item1.price
+                                                            return (
+                                                                item1.count + 'x ' + item1.product.name + ' '
+                                                            )
+                                                        })
+                                                    }</p>
+                                                </div>
+                                                <div className='col-6'>
+                                                    <p className="card-text">Số tiền thu hộ: {VND(total)}</p>
+                                                    <p className="card-text">Phí ship: {VND(item.shippingFee)}</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </>
+                                )
+                            })}
                     </div>
                 </div>
             </div >
