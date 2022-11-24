@@ -14,12 +14,6 @@ const getSuppliersService = (supplier, token) => {
     if (supplier.name && supplier.name !== '') {
         s += '&name=' + supplier.name + '';
     }
-    if (supplier.address && supplier.address !== '') {
-        s += '&address=' + supplier.address + '';
-    }
-    if (supplier.numberPhone && supplier.numberPhone !== '') {
-        s += '&numberPhone=' + supplier.numberPhone + '';
-    }
     if (supplier.sortBy) {
         s += '&sortBy=' + supplier.sortBy + '';
     }
