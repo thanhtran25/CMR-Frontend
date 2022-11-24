@@ -291,7 +291,7 @@ const ProductBody = () => {
 
                     </div>
 
-                    <div className="row mt-3">
+                    <div className="row p-5">
 
                         {
                             products && products.length > 0 &&
@@ -313,7 +313,7 @@ const ProductBody = () => {
                                                     <div className="wcf-left">
                                                         <span className="price">
                                                             <span>{VND(item.price * (100 - item.percent) / 100)} </span>
-                                                            {item.percent && <Badge bg="danger" className='percent'>-{item.percent}%</Badge>}
+                                                            {item.percent > 0 && <Badge bg="danger" className='percent'>-{item.percent}%</Badge>}
                                                             <br></br>
                                                             <p style={{ height: '12px', marginTop: '5px' }}><del className='text-secondary' style={{ textDecoration: 'line-through', fontStyle: 'italic' }}> {oldPrice(item.price, item.percent)}</del></p>
                                                         </span>
