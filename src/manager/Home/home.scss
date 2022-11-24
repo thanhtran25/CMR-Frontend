@@ -308,7 +308,7 @@
     color: #fff;
 }
 
-.card {
+.card2 {
     margin-bottom: 2.2rem;
     border: none;
 }
@@ -346,111 +346,46 @@
     height: 100px;
 }
 
-.card .card-header {
+.card2.card-header {
     border: none;
 }
 
-.card .card-header h4 {
+.card2.card-header h4 {
     font-size: 1.2rem;
     font-weight: 700;
 }
 
-.card .card-header~.card-body {
+.card2.card-header~.card-body {
     padding-top: 0;
 }
 
-.card .card-content {
+.card2.card-content {
     position: relative;
 }
 
-.card .card-title {
+.card2.card-title {
     font-size: 1.2rem;
 }
 
-.card .card-body {
+.card2.card-body {
     padding: 1.5rem;
 }
 
-.card .card-heading {
+.card2.card-heading {
     color: #555;
     font-size: 1.5rem;
 }
 
-.card .card-img-overlay {
+.card2.card-img-overlay {
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-.card .card-img-overlay p {
+.card2.card-img-overlay p {
     color: #eee;
 }
 
-.card .card-img-overlay .card-title {
+.card2.card-img-overlay .card-title {
     color: #fff;
-}
-
-.pricing .card {
-    box-shadow: none;
-    border-right: 1px solid #e9ecef;
-    box-shadow: 0 10px 10px #e9ecef;
-    margin-bottom: 0.5rem;
-}
-
-.pricing h1 {
-    text-align: center;
-    font-size: 4rem;
-    margin-bottom: 3rem;
-}
-
-.pricing .card-header .card-title {
-    font-size: 2rem !important;
-    margin-bottom: 0;
-}
-
-.pricing .card-header p {
-    font-size: 0.8rem;
-}
-
-.pricing ul li {
-    list-style: none;
-    margin-bottom: 0.5rem;
-}
-
-.pricing ul li i,
-.pricing ul li svg {
-    width: 1rem;
-    color: #198754;
-    font-size: 1rem;
-    margin-right: 7px;
-}
-
-.pricing .card-highlighted {
-    background-color: #435ebe;
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.pricing .card-highlighted .card-body,
-.pricing .card-highlighted .card-header {
-    background-color: #435ebe;
-    color: #fff;
-}
-
-.pricing .card-highlighted ul li {
-    color: #fff;
-}
-
-.pricing .card-highlighted ul li i,
-.pricing .card-highlighted ul li svg {
-    color: #479f76;
-}
-
-.pricing .card-highlighted .card-footer {
-    background-color: #435ebe;
-}
-
-.pricing .card-highlighted .card-title {
-    color: #fff;
-    font-size: 1.8rem;
 }
 
 .divider {

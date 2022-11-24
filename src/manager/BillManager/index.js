@@ -494,7 +494,7 @@ function BillManager() {
                             <Modal.Body>
                                 <Form>
                                     <Form.Group className="mb-3" >
-                                        <Form.Label>ID hóa đơnw:</Form.Label>
+                                        <Form.Label>ID hóa đơn:</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder=""
