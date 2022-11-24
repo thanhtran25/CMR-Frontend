@@ -1,13 +1,11 @@
 import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import './Cartbox.scss'
-import { useNavigate } from "react-router-dom";
+import './Cartbox.scss';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 const CartBox = () => {
-    const navigate = useNavigate();
     const [isOpen, setisOpen] = useState(false);
     const cart = useSelector(state => state.cart.cart);
     const wrapperRef = useRef();
