@@ -40,7 +40,12 @@ function Header() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-
+    const handleOnclickProfile = () => {
+        navigate('/Profile');
+    }
+    const handleOnclickHistory = () => {
+        navigate('/history');
+    }
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -54,20 +59,20 @@ function Header() {
     }, []);
 
     let path = <Button onClick={handleOnclickLogin} className='col-7 col-xl-4 btn btn-warning btn-sm my-1'>Đăng Nhập</Button>;
-    if (user !== undefined && user !== null) {
-        let name = "";
-        let arrName = user.fullname.split(' ');
-        if (arrName.length < 1) {
-            name = user.fullname
-        } else {
-            name += arrName[arrName.length - 1];
+    if (user) {
+        let name = user.fullname
+        if (user.fullname.length > 10) {
+            name = user.fullname.substr(0, 5) + '...'
         }
         path = (<div onClick={() => showBox()} ref={wrapperRef}
             className='col-7 col-xl-3 profile-box btn btn-sm btn-warning my-1'>{name}
             <div className={isOpen === true ? 'box-profile-body' : "box-profile-body box-hiden-profile"}>
                 <div className='box-content-profile'>
                     <div className='box-profile-list'>
-                        <div className='box-profile-item' as={Link} to={'/Profile'}>Thông tin tài khoản</div>
+                        <div className='box-profile-item' onClick={handleOnclickProfile}>Thông tin tài khoản</div>
+                        <div className='box-profile-item' onClick={handleOnclickHistory}>
+                            Lịch sử đơn hàng
+                        </div>
                         <div className='box-profile-item' onClick={handleShow}>
                             Đổi mật khẩu
                         </div>

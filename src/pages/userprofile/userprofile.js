@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './userprofile.scss'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Gender } from '~/core/constant'
 import { useDispatch, useSelector } from "react-redux"
 import Modal from 'react-bootstrap/Modal';
@@ -9,8 +9,11 @@ import cookies from 'react-cookies';
 import { updateUserService } from '~/service/userService';
 import { userLogin } from '~/store/action/userAction';
 import { Notify } from '~/core/constant';
+import { handelNotify } from '~/core/utils/req';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const UserProfile = () => {
-    const user = useSelector(state => state.user.user);
+    const user = useSelector(state => state.user.user)
     const token = cookies.load('Token')
     const dispatch = useDispatch()
     const [userProfile, setUserProfile] = useState({
@@ -51,12 +54,30 @@ const UserProfile = () => {
             const res = await updateUserService(userProfile, token)
             const data = res && res.data ? res.data : '';
             console.log(data)
-            // dispatch(userLogin({...user}))
+            cookies.save('user', data)
+            dispatch(userLogin(data))
             setRepair(true)
+            setShowAlertCf({ open: false })
+            handelNotify('success', 'Sửa thông tin thành công')
         } catch (error) {
 
         }
     }
+    const handleCancelUpdate = () => {
+        setUserProfile({
+            id: user.id,
+            email: user.email,
+            fullname: user.fullname,
+            birthday: user.birthday,
+            gender: user.gender,
+            numberPhone: user.numberPhone,
+            address: user.address
+        })
+        setShowAlertCf({ open: false })
+        setRepair(true)
+    }
+    useEffect(() => {
+    }, [user])
     let pathBtn = <input type="button" className="btn btn-secondary" onClick={handleOnclickEdit} name="btnAddMore" value="Edit Profile" />
     let pathFullname = <p>{userProfile.fullname}</p>
     let pathBirthday = <p>{userProfile.birthday}</p>
@@ -92,9 +113,21 @@ const UserProfile = () => {
     }
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <Modal
                 show={showAlertCf.open}
-                onHide={() => setShowAlertCf({ open: false })}
+                onHide={handleCancelUpdate}
                 backdrop={showAlertCf.backdrop}
                 keyboard={false}
             >
@@ -107,7 +140,7 @@ const UserProfile = () => {
                 <Modal.Footer>
                     <Button
                         variant="secondary"
-                        onClick={() => setShowAlertCf({ open: false })}
+                        onClick={handleCancelUpdate}
                     >
                         trở lại
                     </Button>
