@@ -4,7 +4,7 @@ import cookies from 'react-cookies';
 import Nav from 'react-bootstrap/Nav';
 import { OrderStates } from '~/core/constant';
 import { getBillsService, updateBillsService } from '~/service/billsService';
-import { format } from 'date-fns'
+import moment from 'moment'
 const HistoryOder = () => {
     const limit = 10
     const token = cookies.load('Token')
@@ -111,13 +111,13 @@ const HistoryOder = () => {
                     {
                         bills && bills.length > 0 &&
                         bills.map((item1, index) => {
-                            console.log(bills)
+                            const day = moment(item1.createdAt).format('DD/MM/YYYY')
                             total = 0;
                             return (
                                 <>
                                     <div className='col-12'>
                                         <p>
-                                            Ngày mua: {item1.createdAt}
+                                            Ngày mua: {day}
                                         </p>
                                     </div>
                                     <div className='col-12'>
