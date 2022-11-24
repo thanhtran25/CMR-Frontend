@@ -139,6 +139,13 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+
+}
+
+.count-item {
+    color: #2a52d3;
+    font-size: 11px;
+    font-style: italic;
 }
 
 .box-footer {
@@ -162,6 +169,7 @@
     font-style: italic;
     line-height: 10px;
     text-align: right;
+    margin-left: 10px;
     color: rgba(214, 5, 5, 0.897);
 }
 
