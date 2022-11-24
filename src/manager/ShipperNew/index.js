@@ -1,55 +1,138 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './shippernew.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '~/components/Layout/AdminLayout/Header';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import { getBillsService, updateBillsService } from '~/service/billsService';
+import cookies from 'react-cookies';
+import { OrderStates } from '~/core/constant';
+import { Notify } from '~/core/constant';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { handelNotify } from '~/core/utils/req';
 
 function ShipperNew() {
-    const [showAdd, setShowAdd] = useState(false);
-    const [showRepair, setShowRepair] = useState(false);
-    const [showDetail, setShowDetail] = useState(false);
+    const limit = 10;
+    const token = cookies.load('Tokenadmin');
+    const user = cookies.load('admin');
+    const [bills, setBills] = useState('')
+    const [pagination, SetPagination] = useState('')
+    const [searchBills, setSearchBills] = useState({
+        page: 1,
+        limit: limit,
+        sort: '',
+        sortBy: '',
+        numberPhone: '',
+        states: OrderStates.SHIPPING
+    });
+    const [checked, setChecked] = useState([])
+    const [showAlertCf, setShowAlertCf] = useState(false);
+    const getListBills = async (list) => {
+        try {
+            const res = await getBillsService(list, token)
+            const data = (res && res.data) ? res.data : [];
+            SetPagination(selectPagination(data.totalPage))
+
+            setBills(data.bills)
+        } catch (error) {
+        }
+    }
+    const selectPagination = (page) => {
+        let content = [];
+        for (let i = 1; i <= page; i++) {
+            content.push({
+                pageNumber: i,
+            });
+        }
+
+        return content
+    }
+    const handelChange = (i) => {
+        setSearchBills({
+            ...searchBills,
+            page: i
+        })
+    }
+    const handleCheck = (event) => {
+        const value = JSON.parse(event.target.value)
+        var updatedList = [...checked];
+        if (event.target.checked) {
+            updatedList = [...checked, value];
+        } else {
+            updatedList.splice(checked.indexOf(value), 1);
+        }
+        setChecked(updatedList);
+    }
+    const handleUpdateStates = async (action, id) => {
+        try {
+            let satesupdate = {
+                states: OrderStates.DELIVERING,
+                shipperId: user.id,
+                id: id
+            }
+            const res = await updateBillsService(satesupdate, action, token)
+            const data = res && res.data ? res.data : '';
+            setSearchBills({
+                ...searchBills,
+                sort: '',
+                sortBy: '',
+                numberPhone: '',
+            })
+            handelNotify('success', 'Xác nhận đơn hàng thành công')
+            setShowAlertCf({
+                open: false
+            })
+        } catch (error) {
+            handelNotify('erorr', 'Xác nhận đơn hàng thất bại')
+        }
+    }
+    const hadleUpdateMuti = async (action) => {
+        if (checked.length < 0) {
+            handelNotify('erorr', 'Chọn đơn hàng để nhận đơn')
+            return
+        }
+        checked.map((item, index) => {
+            handleUpdateStates(action, item.id)
+        })
+    }
+    useEffect(() => {
+        getListBills(searchBills)
+        console.log(bills)
+    }, [searchBills])
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
                     <div className="page-heading">
-                        <div className="col-sm-6">
-                            <h6>Tìm Kiếm</h6>
-                            <div id="search-shippernew-form" name="search-shippernew-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-shippernew-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div className="page-title">
                             <div className="row">
                                 <div className="col-12 col-md-7 order-md-1 order-last">
                                     <label>
-                                        <h3>Danh sách nhà cung cấp</h3>
+                                        <h3>Danh sách đơn hàng</h3>
                                     </label>
-                                    <label>
-                                        <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
-                                    </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
-                                    </select>
                                 </div>
-                                <div className="col-12 col-md-5 order-md-2 order-first">
 
-                                    <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-shippernew' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa nhà cung cấp
-                                        </button>
-                                        <button id='btn-createshipper' className="btn btn-primary" onClick={() => setShowAdd(true)}>
-                                            <i className="bi bi-plus"></i> Thêm nhà cung cấp
-                                        </button>
-                                    </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12 ">
+                                <div >
+                                    <button onClick={() => hadleUpdateMuti('ship')} id='btn-createaccount' className="btn btn-primary">
+                                        Nhận đơn
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -61,136 +144,55 @@ function ShipperNew() {
                                             <thead>
                                                 <tr>
                                                     <th>Chọn</th>
-                                                    <th>Tên nhà cung cấp</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th>Số điện thoại</th>
-                                                    <th>Ngày thêm</th>
-                                                    <th>Ngày sửa gần nhất</th>
-                                                    <th>Tác vụ</th>
+                                                    <th>Thông tin đơn hàng</th>
+                                                    <th>Nhận đơn</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {bills && bills.length > 0 &&
+                                                    bills.map((item, index) => {
+                                                        let s = 'table-info';
+                                                        if ((index + 1) % 2 !== 0) {
+                                                            s = 'table-light';
+                                                        }
+                                                        return (
+                                                            <tr className={s}>
+                                                                <td>
+                                                                    <div className="form-check">
+                                                                        <input onChange={handleCheck} value={JSON.stringify(item)} className="form-check-input" type="checkbox" id="check1" name="option1" />
+                                                                    </div>
+                                                                </td>
+                                                                <td className='text-break'>
+                                                                    <div>
+                                                                        <p style={{ fontWeight: 'bold' }}>{'Tên: ' + item.customerName}</p>
+                                                                        <p>{'Địa chỉ: ' + item.address}</p>
+                                                                        <p>{'Sđt: ' + item.numberPhone}</p>
+                                                                        <p>{'Phí ship: ' + item.shippingFee}</p>
+                                                                    </div>
+                                                                </td>
+                                                                <td className='text-break'>
+                                                                    <button onClick={() => handleUpdateStates('ship', item.id)} type="button" class="btn btn-success">Nhận đơn</button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
                                             </tbody>
                                         </table>
                                         <nav className="mt-5">
                                             <ul id="pagination" className="pagination justify-content-center">
+                                                {
+                                                    pagination && pagination.length > 0 &&
+                                                    pagination.map(item => {
+                                                        return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
+                                                    })
+                                                }
                                             </ul>
                                         </nav>
                                     </div>
                                 </div>
                             </div>
                         </section>
-                    </div>
-                    <div>
-                        <Modal show={showAdd} onHide={() => setShowAdd(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Thêm nhà cung cấp</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Địa chỉ:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Số điện thoai:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowAdd(false)}>
-                                    Đóng
-                                </Button>
-                                <Button variant="primary" onClick={() => setShowAdd(false)}>
-                                    Thêm
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </div>
-
-                    <div>
-                        <Modal show={showRepair} onHide={() => setShowRepair(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Sửa thông tin nhà cung cấp</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>ID nhà cung cấp:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Tên nhà cung cấp:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Địa chỉ:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Số điện thoai:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Ngày thêm:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowRepair(false)}>
-                                    Đóng
-                                </Button>
-                                <Button variant="primary" onClick={() => setShowRepair(false)}>
-                                    Sửa
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
                     </div>
                 </div>
             </div >

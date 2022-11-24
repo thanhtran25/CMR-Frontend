@@ -232,7 +232,7 @@ function BillManager() {
                                 </select>
                             </div>
                             <div className="row">
-                                <div style={{ backgroundColor: 'white' }} className='row mb-2'>
+                                <div className='row mb-2'>
                                     <Nav justify variant="tabs" defaultActiveKey="/home">
                                         <Nav.Item>
                                             <Nav.Link onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>

@@ -30,6 +30,7 @@ import cookies from 'react-cookies';
 import RequestOTP from '~/pages/auth/signup/requestOTP';
 import Error404 from '~/pages/404/B404';
 import UserManager from '~/manager/UserManager';
+import HistoryOder from '~/pages/historyoder/historyoder';
 
 
 const publicRoutes = [
@@ -114,6 +115,7 @@ const privateRoutesU = [
     { path: '/products', component: ProductBody },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
+    { path: '/history', component: HistoryOder },
     { path: '*', component: Error404, layout: null },
 ]
 

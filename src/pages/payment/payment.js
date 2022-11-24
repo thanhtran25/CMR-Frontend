@@ -17,6 +17,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 const Payment = () => {
+    const token = cookies.load('Token');
     const refname = useRef(null);
     const refaddress = useRef(null);
     const refphone = useRef(null);
@@ -78,18 +79,17 @@ const Payment = () => {
             shippingFee: shippingFee.shippingFee
         }
         try {
-            const res = await paymentService(pay)
+            const res = await paymentService(pay, token)
             const data = res && res.data ? res.data : '';
             let array = [...cart]
-            handelNotify('success', 'Thanh toán thành công')
             details.map((item, index) => {
                 cart.map((item1, index1) => {
                     if (item.productId == item1.productId) {
                         array.splice(index1, 1)
-                        return
                     }
                 })
             })
+            alert('thanh toán thánh công')
             dispatch(changeCart(array))
             sessionStorage.setItem('cart', JSON.stringify(array))
             navigate('/cart')
@@ -207,7 +207,7 @@ const Payment = () => {
                 address: userPay.address
             }
             try {
-                const res = await shippingService(address)
+                const res = await shippingService(address, token)
                 const data = res && res.data ? res.data : '';
                 handelNotify('success', 'Tính phí ship thành công')
                 setShippingFee(data.result)
