@@ -80,10 +80,6 @@ function ProductManager() {
     }
 
     const [brand, setBrand] = useState({
-        page: 1,
-        limit: 4,
-        sort: '',
-        sortBy: '',
         name: '',
     });
     const getListBrand = async () => {
@@ -96,10 +92,6 @@ function ProductManager() {
         }
     }
     const [categories, setCategories] = useState({
-        page: 1,
-        limit: 4,
-        sort: '',
-        sortBy: '',
         name: '',
     });
     const getListCategories = async () => {
@@ -803,11 +795,11 @@ function ProductManager() {
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 1</Form.Label>
-                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img1} width='100px' height='100px' alt='image1'/>
+                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img1} width='100px' height='100px' alt='image1' />
                                     </Form.Group>
                                     <Form.Group controlId="formFileMultiple" className="mb-3" >
                                         <Form.Label>Hình ảnh 2</Form.Label>
-                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img2} width='100px' height='100px' alt='image2'/>
+                                        <img src={process.env.REACT_APP_URL_IMG + repairProduct.img2} width='100px' height='100px' alt='image2' />
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Thời hạn bảo hành:</Form.Label>

@@ -130,6 +130,7 @@ function SalecodeManager() {
             const data = (res && res.data) ? res.data : [];
             setSalecode(data.saleCodes);
             SetPagination(selectPagination(data.totalPage))
+            console.log(data)
         } catch {
 
         }
@@ -242,7 +243,7 @@ function SalecodeManager() {
     }
 
     const handleShowCfRepairSalecode = (e) => {
-        console.log(removeProduct)
+        console.log(repairSalecodeDetails)
         const isValid = validateSalecode(repairSalecode)
         SetRepairValidate(isValid)
         if (Object.keys(isValid).length > 0) return
@@ -285,6 +286,17 @@ function SalecodeManager() {
                 });
 
                 return newState;
+            });
+            setSearchProductDetails({
+                page: 1,
+                limit: 20,
+                sort: '',
+                sortBy: '',
+                description: '',
+                name: '',
+                brandId: '',
+                categoryId: '',
+                saleCodeId: '',
             });
         } catch (e) {
             const req = handleError(e.request);

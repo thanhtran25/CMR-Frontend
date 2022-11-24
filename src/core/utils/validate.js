@@ -278,6 +278,40 @@ const validateSalecode = (data) => {
     if (Object.keys(msg).length > 0) return msg
     return false
 }
+const validatePurchase = (data) => {
+    const msg = {};
+    if (data.supplierId !== null && data.supplierId !== undefined) {
+        if (data.supplierId == 0) {
+            msg.supplierId = "Please input name supplier"
+        }
+    }
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
+const validatePurchaseDetails = (data) => {
+    const msg = {};
+    if (data.productId !== null && data.productId !== undefined) {
+        if (data.productId == 0) {
+            msg.productId = "Please choose product"
+        }
+    }
+    if (data.price !== null && data.price !== undefined) {
+        if (data.price == 0) {
+            msg.price = "Please input price"
+        } else if (data.price < 0) {
+            msg.price = "Please input price > 0"
+        }
+    }
+    if (data.count !== null && data.count !== undefined) {
+        if (data.count == 0) {
+            msg.count = "Please input count"
+        } else if (data.count < 0) {
+            msg.count = "Please input count > 0"
+        }
+    }
+    if (Object.keys(msg).length > 0) return msg
+    return false
+}
 export {
     validateFull,
     isVietnamesePhoneNumber,
@@ -287,4 +321,6 @@ export {
     validateCategories,
     validateBrand,
     validateSalecode,
+    validatePurchase,
+    validatePurchaseDetails
 }
