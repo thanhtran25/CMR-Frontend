@@ -42,6 +42,7 @@ import Accessory from '~/pages/product/accessory';
 
 const publicRoutes = [
     { path: '/', component: Home },
+    { path: '/Home', component: Home },
     { path: '/login', component: Login },
     { path: '/signup', component: Signup },
     { path: '/forgotpassword', component: Forgotpassword },
@@ -51,7 +52,6 @@ const publicRoutes = [
     { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '/admin/*', component: loginAdmin, layout: null },
     { path: '/product/:id', component: productDetail },
-    { path: '/products', component: ProductBody },
     { path: '/camera', component: Camera },
     { path: '/videocam', component: Videocam },
     { path: '/accessory', component: Accessory },
@@ -109,12 +109,15 @@ const privateRoutesSh = [
 
 const privateRoutesU = [
     { path: '/', component: Home },
+    { path: '/Home', component: Home },
     { path: '/Profile', component: UserProfile },
     { path: '/productdetail', component: productDetail },
     { path: '/Payment', component: Payment },
     { path: '/Cart', component: cart },
     { path: '/product/:id', component: productDetail },
-    { path: '/products', component: ProductBody },
+    { path: '/camera', component: Camera },
+    { path: '/videocam', component: Videocam },
+    { path: '/accessory', component: Accessory },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/history', component: HistoryOder },
@@ -127,6 +130,7 @@ const publicRoutesU = [
 ]
 const publicRoutesMASS = [
     { path: '/', component: Home },
+    { path: '/Home', component: Home },
     { path: '/login', component: Login },
     { path: '/signup', component: Signup },
     { path: '/forgotpassword', component: Forgotpassword },
@@ -134,7 +138,9 @@ const publicRoutesMASS = [
     { path: '/Payment', component: Payment },
     { path: '/Cart', component: cart },
     { path: '/product/:id', component: productDetail },
-    { path: '/products', component: ProductBody },
+    { path: '/camera', component: Camera },
+    { path: '/videocam', component: Videocam },
+    { path: '/accessory', component: Accessory },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/signup/otp/:emailurl', component: RequestOTP },

@@ -61,3 +61,7 @@
 .nav-tabs {
     --bs-nav-tabs-link-active-bg: none !important;
 }
+
+.menu-item.active span:before {
+    right: 0;
+}

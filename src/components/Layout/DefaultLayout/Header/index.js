@@ -33,7 +33,7 @@ function Header() {
         cookies.remove("user")
         cookies.remove("hasPassword")
         dispatch(userLogout());
-        navigate('/');
+        navigate('/Home');
     }
     const [show, setShow] = useState(false);
     const [validate, setValidate] = useState('')
@@ -211,7 +211,7 @@ function Header() {
                 <div className='header-topbar row' >
 
                     <div className='header-topbar-content col-12 offset-0 col-xl-4 offset-xl-4'>
-                        <NavLink to="/" style={{ textDecoration: 'none', color: 'yellow' }}>
+                        <NavLink to="/Home" style={{ textDecoration: 'none', color: 'yellow' }}>
                             <pre>
 
                                 G O L D    D U C K    C A M E R A

@@ -32,13 +32,13 @@ function Sidebar() {
             <Container>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ borderColor: 'yellow' }}><FontAwesomeIcon icon={faBars} className='fa-icon' style={{ marginLeft: '10px' }} /></Navbar.Toggle>
                 <Navbar.Collapse id="basic-navbar-nav" className='row'>
-                    <Nav variant='tabs' defaultActiveKey="link-1" className="me-auto" style={{ width: '100%' }}>
-                        <Nav.Link exact={true} eventKey="link-1" as={Link} to="/" className='menu-item col-xl-2' ><span><FontAwesomeIcon icon={faHouse} className='fa-icon' />Home</span></Nav.Link>
-                        <Nav.Link eventKey="link-2" as={Link} to="/camera" value='camera' className='menu-item col-xl-2' ><span><FontAwesomeIcon icon={faCameraRetro} className='fa-icon' />Máy ảnh</span></Nav.Link>
-                        <Nav.Link eventKey="link-3" as={Link} to="/videocam" value='video cam' className='menu-item col-xl-2' ><span><FontAwesomeIcon icon={faVideo} className='fa-icon' />Máy quay</span></Nav.Link>
-                        <Nav.Link eventKey="link-4" as={Link} to="/accessory" value='accessories' className='menu-item col-xl-2' ><span><FontAwesomeIcon icon={faEmpire} className='fa-icon' />phụ kiện</span></Nav.Link>
-                        <Nav.Link eventKey="link-5" as={Link} to="/guarantee" className='menu-item col-xl-2'><span><FontAwesomeIcon icon={faWrench} className='fa-icon' />bảo hành</span></Nav.Link>
-                        <Nav.Link eventKey="link-6" as={Link} to="/contact" className='menu-item col-xl-2' ><span><FontAwesomeIcon icon={faPhone} className='fa-icon' />liên hệ</span></Nav.Link>
+                    <Nav className="me-auto" style={{ width: '100%' }}>
+                        <NavLink exact={true} to="/Home" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")} ><span><FontAwesomeIcon icon={faHouse} className='fa-icon' />Home</span></NavLink>
+                        <NavLink to="/camera" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")} ><span><FontAwesomeIcon icon={faCameraRetro} className='fa-icon' />Máy ảnh</span></NavLink>
+                        <NavLink to="/videocam" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")} ><span><FontAwesomeIcon icon={faVideo} className='fa-icon' />Máy quay</span></NavLink>
+                        <NavLink to="/accessory" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")} ><span><FontAwesomeIcon icon={faEmpire} className='fa-icon' />phụ kiện</span></NavLink>
+                        <NavLink to="/guarantee" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")}><span><FontAwesomeIcon icon={faWrench} className='fa-icon' />bảo hành</span></NavLink>
+                        <NavLink to="/contact" className={(navData) => "menu-item col-xl-2" + (navData.isActive ? " active" : " link")} ><span><FontAwesomeIcon icon={faPhone} className='fa-icon' />liên hệ</span></NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
