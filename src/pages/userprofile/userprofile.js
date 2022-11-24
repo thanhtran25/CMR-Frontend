@@ -16,15 +16,7 @@ const UserProfile = () => {
     const user = useSelector(state => state.user.user)
     const token = cookies.load('Token')
     const dispatch = useDispatch()
-    const [userProfile, setUserProfile] = useState({
-        id: user.id,
-        email: user.email,
-        fullname: user.fullname,
-        birthday: user.birthday,
-        gender: user.gender,
-        numberPhone: user.numberPhone,
-        address: user.address
-    });
+    const [userProfile, setUserProfile] = useState(user);
     const [repair, setRepair] = useState(true)
     const [showAlertCf, setShowAlertCf] = useState(false);
     const handleChange = e => {
@@ -54,8 +46,8 @@ const UserProfile = () => {
             const res = await updateUserService(userProfile, token)
             const data = res && res.data ? res.data : '';
             console.log(data)
-            cookies.save('user', data)
-            dispatch(userLogin(data))
+            cookies.save('user', userProfile)
+            dispatch(userLogin(userProfile))
             setRepair(true)
             setShowAlertCf({ open: false })
             handelNotify('success', 'Sửa thông tin thành công')
@@ -64,15 +56,7 @@ const UserProfile = () => {
         }
     }
     const handleCancelUpdate = () => {
-        setUserProfile({
-            id: user.id,
-            email: user.email,
-            fullname: user.fullname,
-            birthday: user.birthday,
-            gender: user.gender,
-            numberPhone: user.numberPhone,
-            address: user.address
-        })
+        setUserProfile(user)
         setShowAlertCf({ open: false })
         setRepair(true)
     }
