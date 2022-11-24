@@ -22,7 +22,82 @@ import validator from 'validator';
 import cookies from 'react-cookies'
 
 function ProductManager() {
+
     const token = cookies.load('Tokenadmin');
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'name', label: 'Tên sản phẩm' },
+        { value: 'description', label: 'Mô tả' },
+        { value: 'brandId', label: 'Id thương hiệu' },
+        { value: 'categoryId', label: 'Id Danh mục' }
+    ]
+    const [searchInput, setSearchInput] = useState({
+        limit: limit,
+        page: 1,
+        name: '',
+        desciption: '',
+        brandId: '',
+        categoryId: '',
+        sort: '',
+        sortBy: ''
+    })
+    const [search, setSearch] = useState('name')
+    const [productSearch, setProductSearch] = useState({
+        limit: limit,
+        page: 1,
+        sort: '',
+        sortBy: ''
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setProductSearch({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+    }
+    const handelProductSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        if (tmp == 'categoryId' || tmp == 'brandId') {
+            if (validator.isNumeric(value) == true) {
+                setProductSearch({
+                    [tmp]: value,
+                    limit: limit,
+                    page: 1,
+                    sort: '',
+                    sortBy: ''
+                });
+            } else {
+                alert('Vui lòng nhập ' + tmp + ' là số!!')
+            }
+        } else {
+            setProductSearch({
+                [tmp]: value,
+                limit: limit,
+                page: 1,
+                sort: '',
+                sortBy: ''
+            });
+        }
+        console.log(value)
+    }
+    const HandleClickSearch = async () => {
+        try {
+            console.log(productSearch)
+            const res = await getProductsService(productSearch);
+            const data = (res && res.data) ? res.data : [];
+            setProduct(data.products);
+            SetPagination(selectPagination(data.totalPage))
+        } catch {
+
+        }
+    }
+
     const [showAdd, setShowAdd] = useState(false);
     const handleshowAdd = () => {
         SetAddValidate('')
@@ -42,7 +117,7 @@ function ProductManager() {
     const [showDetail, setShowDetail] = useState(false);
     const [searchProduct, setSearchProduct] = useState({
         page: 1,
-        limit: 1,
+        limit: limit,
         sort: '',
         sortBy: '',
         description: '',
@@ -52,9 +127,9 @@ function ProductManager() {
         saleCodeId: '',
     });
     const [pagination, SetPagination] = useState('')
-    const getListProduct = async () => {
+    const getListProduct = async (list) => {
         try {
-            const res = await getProductsService(searchProduct);
+            const res = await getProductsService(list);
             const data = (res && res.data) ? res.data : [];
             setProduct(data.products);
             SetPagination(selectPagination(data.totalPage))
@@ -73,8 +148,8 @@ function ProductManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchProduct({
-            ...searchProduct,
+        setProductSearch({
+            ...productSearch,
             page: i
         })
     }
@@ -105,10 +180,10 @@ function ProductManager() {
     }
 
     useEffect(() => {
-        getListProduct();
+        getListProduct(productSearch);
         getListBrand();
         getListCategories();
-    }, [searchProduct])
+    }, [productSearch])
     const [product, setProduct] = useState();
     const [files, setFile] = useState([]);
     const [addProduct, setAddProduct] = useState({
@@ -160,7 +235,6 @@ function ProductManager() {
         for (let key in files.files) {
             count = count + 1;
             bodyFormData.append('images', files.files[key]);
-            console.log(files.files[key])
             if (count == files.files.length) {
                 count = 0;
                 break;
@@ -296,7 +370,6 @@ function ProductManager() {
                             img2: repairProduct.img2,
                         };
                     }
-                    console.log(obj)
                     return obj;
                 });
 
@@ -313,7 +386,6 @@ function ProductManager() {
     const handleShowDetail = async (e) => {
         try {
             let data = await getProductByIdService(e)
-            // console.log(data)
             setRepairProduct(data.data)
         } catch (error) {
 
@@ -336,8 +408,8 @@ function ProductManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchProduct({
-                ...searchProduct,
+            setProductSearch({
+                ...productSearch,
                 sort: '',
                 sortBy: '',
                 description: '',
@@ -397,12 +469,9 @@ function ProductManager() {
                     <div className="page-heading">
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
-                            <div id="search-product-form" name="search-product-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
-                                    </div>
+                            <div id="search-product-form" name="search-product-form" className='row'>
+                                <div className="form-group position-relative has-icon-right col-9">
+                                    <input onChange={handelProductSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                 </div>
                             </div>
                         </div>
@@ -415,16 +484,21 @@ function ProductManager() {
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                     </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
                                     <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-product' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa sản phẩm
-                                        </button>
+
                                         <button id='btn-createproduct' className="btn btn-primary" onClick={handleshowAdd}>
                                             <i className="bi bi-plus"></i> Thêm sản phẩm
                                         </button>
@@ -452,7 +526,6 @@ function ProductManager() {
                                                 {
                                                     product && product.length > 0 &&
                                                     product.map(item => {
-                                                        console.log(item)
                                                         let s = 'table-info';
                                                         if ((product.indexOf(item) + 1) % 2 !== 0) {
                                                             s = 'table-light';

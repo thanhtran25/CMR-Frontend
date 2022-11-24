@@ -43,7 +43,6 @@ const publicRoutes = [
     { path: '/Cart', component: cart },
     { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '/admin/*', component: loginAdmin, layout: null },
-    { path: '/store/login', component: LoginManager, layout: null },
     { path: '/product/:id', component: productDetail },
     { path: '/products', component: ProductBody },
     { path: '/contact', component: Contact },
@@ -57,13 +56,14 @@ const privateRoutesA = [
     { path: '/admin/user', component: userAdmin, layout: AdminLayout },
     { path: '/admin/role', component: RolesAdmin, layout: AdminLayout },
     { path: '/admin/*', component: userAdmin, layout: AdminLayout },
+    { path: '/store/*', component: userAdmin, layout: AdminLayout },
+    { path: '/admin/login', component: loginAdmin, layout: null },
 ]
 
 const privateRoutesM = [
     { path: '/store/bill', component: BillManager, layout: ManagerLayout },
     { path: '/store/brand', component: BrandManager, layout: ManagerLayout },
     { path: '/store/categories', component: CategoriesManager, layout: ManagerLayout },
-    { path: '/store/inventories', component: InventoriesManager, layout: ManagerLayout },
     { path: '/store/product', component: ProductManager, layout: ManagerLayout },
     { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
     { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
@@ -72,24 +72,29 @@ const privateRoutesM = [
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
     { path: '/store/user', component: UserManager, layout: ManagerLayout },
     { path: '/store/*', component: UserManager, layout: ManagerLayout },
+    { path: '/admin/*', component: UserManager, layout: ManagerLayout },
+    { path: '/admin/login', component: loginAdmin, layout: null },
 ]
 
 const privateRoutesSt = [
     { path: '/store/bill', component: BillManager, layout: ManagerLayout },
     { path: '/store/brand', component: BrandManager, layout: ManagerLayout },
     { path: '/store/categories', component: CategoriesManager, layout: ManagerLayout },
-    { path: '/store/inventories', component: InventoriesManager, layout: ManagerLayout },
     { path: '/store/product', component: ProductManager, layout: ManagerLayout },
     { path: '/store/purchase', component: PurchaseorderManager, layout: ManagerLayout },
     { path: '/store/salecode', component: SalecodeManager, layout: ManagerLayout },
     { path: '/store/supplier', component: SupplierManager, layout: ManagerLayout },
     { path: '/store/*', component: ProductManager, layout: ManagerLayout },
+    { path: '/admin/*', component: ProductManager, layout: ManagerLayout },
+    { path: '/admin/login', component: loginAdmin, layout: null },
 ]
 
 const privateRoutesSh = [
     { path: '/store/shipper', component: Shipper, layout: ManagerLayout },
     { path: '/store/shippernew', component: ShipperNew, layout: ManagerLayout },
     { path: '/store/*', component: ShipperNew, layout: ManagerLayout },
+    { path: '/admin/*', component: ShipperNew, layout: ManagerLayout },
+    { path: '/admin/login', component: loginAdmin, layout: null },
 ]
 
 const privateRoutesU = [
@@ -124,6 +129,7 @@ const publicRoutesMASS = [
     { path: '/guarantee', component: Guarantee },
     { path: '/signup/otp/:emailurl', component: RequestOTP },
     { path: '/productdetail', component: productDetail },
+    { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '*', component: Error404, layout: null },
 ]
 const xulyRoutes = () => {

@@ -14,8 +14,8 @@ const getPurchasesService = (purchase, token) => {
     if (purchase.staffId && purchase.staffId !== '') {
         s += '&staffId=' + purchase.staffId + '';
     }
-    if (purchase.purchaseId && purchase.purchaseId !== '') {
-        s += '&purchaseId=' + purchase.purchaseId + '';
+    if (purchase.supplierId && purchase.supplierId !== '') {
+        s += '&supplierId=' + purchase.supplierId + '';
     }
     if (purchase.sortBy) {
         s += '&sortBy=' + purchase.sortBy + '';
