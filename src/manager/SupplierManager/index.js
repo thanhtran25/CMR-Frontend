@@ -18,6 +18,44 @@ import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
 import cookies from 'react-cookies'
 function SupplierManager() {
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'name', label: 'Tên nhà cung cấp' },
+    ]
+
+    const [search, setSearch] = useState('name')
+    const [supplierSearch, setSupplierSearch] = useState({
+        limit: limit,
+        page: 1,
+        sort: '',
+        sortBy: ''
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setSupplierSearch({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+    }
+    const handelSupplierSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setSupplierSearch({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+
+    }
+
+
     const token = cookies.load('Tokenadmin')
     const [showAdd, setShowAdd] = useState(false);
     const handleshowAdd = () => {
@@ -32,15 +70,15 @@ function SupplierManager() {
     const [showRepair, setShowRepair] = useState(false);
     const [searchSupplier, setSearchSupplier] = useState({
         page: 1,
-        limit: 1,
+        limit: limit,
         sort: '',
         sortBy: '',
         name: '',
     });
     const [pagination, SetPagination] = useState('')
-    const getListSupplier = async () => {
+    const getListSupplier = async (list) => {
         try {
-            const res = await getSuppliersService(searchSupplier, token);
+            const res = await getSuppliersService(list, token);
             const data = (res && res.data) ? res.data : [];
             console.log(data.suppliers)
             setSupplier(data.suppliers);
@@ -60,15 +98,15 @@ function SupplierManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchSupplier({
-            ...searchSupplier,
+        setSupplierSearch({
+            ...supplierSearch,
             page: i
         })
     }
 
     useEffect(() => {
-        getListSupplier();
-    }, [searchSupplier])
+        getListSupplier(supplierSearch);
+    }, [supplierSearch])
     const [supplier, setSupplier] = useState();
     const [addSupplier, setAddSupplier] = useState({
         name: '',
@@ -193,13 +231,13 @@ function SupplierManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchSupplier({
-                ...searchSupplier,
+            setSupplierSearch({
+                ...supplierSearch,
                 sort: '',
                 sortBy: '',
                 name: '',
                 page: 1,
-                limit: 1,
+                limit: limit,
             })
             const req = handleError(data.request)
             handelNotify('success', 'Xóa nhà cung cấp ' + req)
@@ -255,9 +293,8 @@ function SupplierManager() {
                             <h6>Tìm Kiếm</h6>
                             <div id="search-supplier-form" name="search-supplier-form">
                                 <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-supplier-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelSupplierSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
                                 </div>
                             </div>
@@ -271,16 +308,21 @@ function SupplierManager() {
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                     </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
                                     <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-supplier' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa nhà cung cấp
-                                        </button>
+
                                         <button id='btn-createsupplier' className="btn btn-primary" onClick={handleshowAdd}>
                                             <i className="bi bi-plus"></i> Thêm nhà cung cấp
                                         </button>

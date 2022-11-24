@@ -27,7 +27,45 @@ import {
 function UserManager() {
     const token = cookies.load('Tokenadmin');
 
-    const limit = 10;
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'fullname', label: 'Họ và tên' },
+        { value: 'gender', label: 'Giới tính' },
+        { value: 'address', label: 'Địa chỉ' },
+        { value: 'role', label: 'Vai trò' },
+    ]
+
+    const [search, setSearch] = useState('fullname')
+    const [userSearch, setUserSearch] = useState({
+        limit: limit,
+        page: 1,
+        sort: '',
+        sortBy: ''
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setUserSearch({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+    }
+    const handelUserSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setUserSearch({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+
+    }
     const [showAdd, setshowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setshowDetail] = useState(false);
@@ -44,12 +82,6 @@ function UserManager() {
     ]
     const optionsRoles = [
         { value: Roles.STAFF, label: Roles.STAFF },
-    ]
-    const optionsSearch = [
-        { value: '', label: 'Tất cả' },
-        { value: 'fullname', label: 'Tên' },
-        { value: 'address', label: 'Địa chỉ' },
-        { value: 'gender', label: 'Giới tính' }
     ]
     const [users, setUsers] = useState();
     const [adduser, setAdduser] = useState({
@@ -103,21 +135,13 @@ function UserManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchUser({
-            ...searchUser,
+        setUserSearch({
+            ...userSearch,
             page: i
         })
     }
 
-    const handelChangeSearch = (e) => {
-        const value = e.target.value
-        console.log(e)
-        setSearchInput({
-            ...searchInput,
-            role: e.value
-        });
-        console.log(adduser)
-    }
+
 
     const handleChangeRole = (e) => {
         setAdduser({
@@ -153,8 +177,8 @@ function UserManager() {
             handleClodeAdd()
             handelNotify('success', 'Thêm tài khoản thành công')
             // setUsers(prevState => [...prevState, data.data]);
-            setSearchUser({
-                ...searchUser,
+            setUserSearch({
+                ...userSearch,
                 limit: limit,
                 page: 1,
             })
@@ -284,8 +308,8 @@ function UserManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchUser({
-                ...searchUser,
+            setUserSearch({
+                ...userSearch,
                 fullname: '',
                 gender: '',
                 address: '',
@@ -308,8 +332,8 @@ function UserManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchUser({
-                ...searchUser,
+            setUserSearch({
+                ...userSearch,
                 fullname: '',
                 gender: '',
                 address: '',
@@ -328,9 +352,8 @@ function UserManager() {
         }
     }
     useEffect(() => {
-        getListUser(searchUser)
-        console.log(searchUser)
-    }, [searchUser])
+        getListUser(userSearch)
+    }, [userSearch])
     return (
         <>
             {/* Modal Thông báo */}
@@ -374,10 +397,9 @@ function UserManager() {
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
                             <div id="search-user-form" name="search-user-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-user-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSearch} className='fa-icon' />
+                                <div className="form-group position-relative has-icon-right row ">
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelUserSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
                                 </div>
                             </div>
@@ -388,8 +410,15 @@ function UserManager() {
                                     <label>
                                         <h6 style={{ marginLeft: '20px', marginRight: '10px' }}> Lọc Theo:</h6>
                                     </label>
-                                    <select options={optionsSearch} defaultValue={optionsSearch[0]} onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
-
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                     <div className='row'>
                                         <label>
@@ -472,7 +501,7 @@ function UserManager() {
                                                                 <td className='text-break'>
                                                                     <pre><button onClick={e => handleshowDetail(item.id)}><FontAwesomeIcon icon={faEye} className='fa-icon pr-2' /></button><span>  </span>
                                                                         <button onClick={e => handleShowRepair(item.id)}><FontAwesomeIcon icon={faScrewdriverWrench} className='fa-icon' /></button><span>  </span>
-                                                                        {searchUser.locked && searchUser.locked == 'locked'
+                                                                        {userSearch.locked && userSearch.locked == 'locked'
                                                                             ? <button onClick={e => handelShowUnDelete(item.id)}><FontAwesomeIcon icon={faUnlock} className='fa-icon' /></button>
                                                                             : <button onClick={e => handelShowCfDelete(item.id)}><FontAwesomeIcon icon={faLock} className='fa-icon' /></button>
                                                                         }
