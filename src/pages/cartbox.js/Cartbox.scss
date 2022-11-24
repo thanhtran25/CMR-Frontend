@@ -13,23 +13,24 @@
 .btn-popup {
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-left: 10px;
+    width: 30px;
+    height: 30px;
     padding: 0;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
-    background-color: white;
+    background-color: #b3b3b3;
 
     &:hover {
-        background-color: #b73e3e;
+        background-color: #ffc107;
+        color: #fff;
     }
+}
 
-    &:hover svg {
-        color: white;
-    }
+.btn-click {
+    background-color: #ffc107 !important;
+    color: #fff !important;
 }
 
 .box-content {
@@ -39,6 +40,8 @@
     z-index: 1;
     overflow: hidden;
     border-radius: 5px;
+    width: 400px;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .box-triangle {
@@ -51,14 +54,15 @@
 }
 
 .box-body {
-    top: 3rem;
-    right: 0;
+    top: 2.5rem;
+    right: -25px;
     position: absolute;
     z-index: 5;
-    box-shadow: rgb(0 0 0 / 15%) 0px 2px 8px;
     transition: all ease 0.3s;
     visibility: visible;
     opacity: 1;
+
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .box-hiden {
@@ -91,12 +95,12 @@
         weight: bold
     }
 
-    color: #000080;
+    color: #2b2b2b;
 }
 
 .box-list-item {
     max-height: 20rem;
-    width: 18rem;
+    width: 100%;
     overflow: auto;
 }
 
@@ -146,4 +150,25 @@
         background-color: #F5F5F5;
         cursor: pointer;
     }
+}
+
+.box-item-content {
+    color: #000;
+    font-size: 13px;
+}
+
+.box-item-content-2 {
+    font-size: 12px;
+    font-style: italic;
+    line-height: 10px;
+    text-align: right;
+    color: rgba(214, 5, 5, 0.897);
+}
+
+.box-item-content-2 p {
+    margin-bottom: 0px !important;
+}
+
+.box-item-del {
+    font-size: 10px !important;
 }
