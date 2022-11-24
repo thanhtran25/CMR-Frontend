@@ -63,6 +63,7 @@ function UserAdmin() {
         numberPhone: '',
         role: 'manager',
         gender: 'male',
+        verify: 1
     });
     const [addValidate, SetAddValidate] = useState('');
     const [repairValidate, SetRepairValidate] = useState('');

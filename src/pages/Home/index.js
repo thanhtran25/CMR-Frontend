@@ -172,7 +172,7 @@ function Home() {
             />
             <Modal
                 show={showAlertCf.open}
-                onHide={() => setShowAlertCf({ open: false })}
+                onHide={() => handelCloseCheck()}
                 backdrop={showAlertCf.backdrop}
                 keyboard={false}
             >
