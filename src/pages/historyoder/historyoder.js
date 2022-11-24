@@ -8,10 +8,11 @@ import moment from 'moment'
 const HistoryOder = () => {
     const limit = 10
     const token = cookies.load('Token')
-    const [states, setStates] = useState();
     const action = 'history'
     const [bills, setBills] = useState('')
     const [pagination, SetPagination] = useState('')
+    const [billsDetail, setBillsDetail] = useState(-1);
+    const [showDetail, setShowDetail] = useState(false);
     const [searchBills, setSearchBills] = useState({
         page: 1,
         limit: limit,
@@ -23,6 +24,16 @@ const HistoryOder = () => {
     });
     function VND(x) {
         return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
+    }
+
+    const handleshowDetail = (id) => {
+        // console.log(id)
+        if (id === billsDetail) {
+            setBillsDetail(-1)
+        }
+        else {
+            setBillsDetail(id)
+        }
     }
     const getListBills = async (list) => {
         try {
@@ -71,6 +82,14 @@ const HistoryOder = () => {
             })
         }
     }
+    const statesMessage = {
+        'waiting': 'Đang chờ xác nhận',
+        'accepted': 'Đã xác nhận',
+        'shipping': 'Đã giao cho đơn vị vận chuyển',
+        'delivering': 'Đang giao',
+        'delivered': 'Đã giao',
+        'cancel': 'Đã hủy'
+    }
     let total = 0
     useEffect(() => {
         getListBills(searchBills)
@@ -78,128 +97,117 @@ const HistoryOder = () => {
     }, [searchBills])
     return (
         <>
-            <div className="container mt-5 cartbody">
-                <div className='row mt-5'>
-                    <div style={{ backgroundColor: 'white' }} className='col-12 mt-5'>
-                        <Nav justify variant="tabs" defaultActiveKey="/home">
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState(OrderStates.SHIPPING)} eventKey="link-4">
-                                    Đang giao
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERED)} eventKey="link-5">
-                                    Đã giao
-                                </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                                <Nav.Link onClick={() => handleOnclickState(OrderStates.CANCEL)} eventKey="link-6">
-                                    Đã hủy
-                                </Nav.Link>
-                            </Nav.Item>
-                        </Nav>
+            <div className="container">
+                <div className='row mb-3'>
+                    <div className='text-center' style={{ marginTop: "8%" }}>
+                        <p className='text-dark fw-bold h3'>Đơn Mua</p>
                     </div>
-                    {
-                        bills && bills.length > 0 &&
-                        bills.map((item1, index) => {
-                            const day = moment(item1.createdAt).format('DD/MM/YYYY')
-                            total = 0;
-                            return (
-                                <>
+                    <div className="card p-0 col-8 offset-2" style={{ backgroundColor: 'rgba(200, 200, 200, 0.01)' }}>
+                        <div className="card-header " >
+                            <div className='col-12'>
+                                <div className='row' style={{ backgroundColor: '#ffc107', borderRadius: '5px' }}>
                                     <div className='col-12'>
-                                        <p>
-                                            Ngày mua: {day}
-                                        </p>
+                                        <Nav variant="tabs" defaultActiveKey="/home" className='nav nav-tabs card-header-tabs m-0'>
+                                            <Nav.Item className='nav-item'>
+                                                <Nav.Link className={`text-dark fw-bold`} onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.SHIPPING)} eventKey="link-4">
+                                                    Đang giao
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.DELIVERED)} eventKey="link-5">
+                                                    Đã giao
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                            <Nav.Item>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.CANCEL)} eventKey="link-6">
+                                                    Đã hủy
+                                                </Nav.Link>
+                                            </Nav.Item>
+                                        </Nav>
                                     </div>
-                                    <div className='col-12'>
-                                        <div className="row mt-2">
-                                            <aside className="col-lg-9">
-                                                <div className="card">
-                                                    <div className="table-responsive">
-                                                        <table className="table table-borderless table-shopping-cart">
-                                                            <thead className="text-muted">
-                                                                <tr className="small">
-                                                                    <th scope="col" width="200">Hình ảnh</th>
-                                                                    <th scope="col" width="300">Tên sản phẩm</th>
-                                                                    <th scope="col" width="120">Số lượng</th>
-                                                                    <th scope="col" width="250" >Đơn giá</th>
-                                                                    <th scope="col" width="250">Tổng cộng</th>
-                                                                    <th scope="col" className="" width="50">Xóa</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
+                                    <div className='bg-white col-12' style={{ minHeight: '500px' }}>
+                                        {
+                                            !bills.length && <img src={require('~/assets/images/bills.png')}
+                                                className="rounded mx-auto pt-5 d-block m-0" width={'200px'}>
+                                            </img>
+                                        }
+                                        {
+                                            bills && bills.length > 0 &&
+                                            bills.map((item1, index) => {
+                                                const day = moment(item1.createdAt).format('DD/MM/YYYY')
+                                                total = 0;
+                                                return (
+                                                    <>
+                                                        <div className="card-body">
+                                                            <div className="card border-success col-12">
+                                                                <div className="card-body row">
+                                                                    <div className='col-4'>
+                                                                        <p className="card-text">Ngày mua: {day}</p>
+                                                                        <div className='text-danger text-detail' onClick={e => handleshowDetail(item1.id)} >
+                                                                            {billsDetail === item1.id ? 'Thu gọn' : 'Chi tiết'}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className='col-6'>
+                                                                        <p className="card-text">Địa chỉ: {item1.address}, Hồ Chí Minh, Việt nam</p>
+                                                                        <p className="card-text">{statesMessage[item1.states]}</p>
+                                                                    </div>
+                                                                    <div className='col-2'>
+                                                                        {item1.billDetails.length > 0 &&
+                                                                            <img width={'70%'} src={process.env.REACT_APP_URL_IMG + item1.billDetails[0].product.img2} />}
+                                                                    </div>
 
-                                                                {item1.billDetails.length > 0 && item1.billDetails.map((item, index1) => {
-                                                                    console.log(item)
-                                                                    total += item.price;
-                                                                    return (
-                                                                        <tr>
-                                                                            <td>
-                                                                                <div className="aside"><img src={'http://localhost:1912/static/product/image/' + item.product.img1} className="img-thumbnail" /></div>
+                                                                    <div className={billsDetail === item1.id ? '' : 'showdetail'}>
+                                                                        {item1.billDetails.length > 0 && item1.billDetails.map((item1, index1) => {
+                                                                            total += item1.price;
+                                                                            return (
+                                                                                <>
+                                                                                    {total === item1.price && <hr></hr>}
+                                                                                    <div className="row">
+                                                                                        <div className="col-1 offset-1"><img src={process.env.REACT_APP_URL_IMG + item1.product.img1} /></div>
+                                                                                        <div className='col-8'>
+                                                                                            <p className="text-product-detail">{item1.product.name}
+                                                                                            </p>
+                                                                                            <p className="text-count-product">X{item1.count}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                        <div className="price-wrap col-2">
+                                                                                            <p className="text-danger">{VND(item1.price)}</p></div>
+                                                                                    </div>
+                                                                                    <hr></hr>
+                                                                                </>
+                                                                            )
 
-                                                                            </td>
-                                                                            <td><p className="text-break">{item.product.name}</p></td>
-                                                                            <td>
-                                                                                <div className='product-amount'>
-                                                                                    <input type='number' value={item.product.count} step="1" min="1" max="999" />
-                                                                                    <button value='1' className='amount-plus'>
-                                                                                        +
-                                                                                    </button>
-                                                                                    <button value='-1' className='amount-minus'>
-                                                                                        -
-                                                                                    </button>
-                                                                                </div>
-                                                                            </td>
-                                                                            <td>
-                                                                                <div className="price-wrap"><p className="text-break">{VND(item.product.price)}</p></div>
+                                                                        })
+                                                                        }
+                                                                        {total > 0 && <div className='row'>
 
-                                                                            </td>
-                                                                            <td><div className="price-wrap"><p className="text-danger">{VND(item.price)}</p></div></td>
-                                                                        </tr>
-                                                                    )
-                                                                })
-                                                                }
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </aside>
-                                            <aside className="col-lg-3">
+                                                                            <div className='col-3 offset-9 text-danger fw-bold'>Tổng cộng: {VND(total)}</div>
+                                                                        </div>
+                                                                        }
 
-                                                <div className="card">
-                                                    <div className="card-body">
-                                                        <dl className="dlist-align row">
-                                                            <dt>Tổng cộng: </dt>
-                                                            <dd className="text-right ml-3">{VND(total)}</dd>
-                                                        </dl>
-                                                        <dl className="dlist-align">
-                                                            <dt>Phí ship: </dt>
-                                                            <dd className="text-right text-danger ml-3">+ {VND(item1.shippingFee)}</dd>
-                                                        </dl>
-                                                        <dl className="dlist-align">
-                                                            <dt>Thành tiền: </dt>
-                                                            <dd className="text-right text-dark b ml-3"><strong>{VND(total + item1.shippingFee)}</strong></dd>
-                                                        </dl>
-                                                    </div>
-                                                </div>
-                                            </aside>
-                                        </div>
-                                        <hr />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                )
+
+                                            })
+                                        }
                                     </div>
-                                </>
-                            )
-
-                        })
-                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
