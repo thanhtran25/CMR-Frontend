@@ -24,7 +24,6 @@ const ProductBody = () => {
     const [products, setProducts] = useState('')
     const [brand, setBrand] = useState('')
     const [pagination, SetPagination] = useState('')
-    const [banner, SetBanner] = useState('')
     const limit = 24
     const selectPagination = (page) => {
         let content = [];
@@ -44,9 +43,6 @@ const ProductBody = () => {
         dispatch(choseCategories(searchPdt));
     }
     const getListProducts = async (list) => {
-        const limit = {
-            limit: 24
-        }
         try {
             const res = await getProductsService(list)
             const data = (res && res.data) ? res.data : [];
@@ -175,12 +171,9 @@ const ProductBody = () => {
     function VND(x) {
         return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
-    let path = <div></div>
     function oldPrice(price, percent) {
-        path = ''
-        if (percent != 0) {
+        if (percent !== 0) {
             const x = price;
-            path = <a href='#' className='percent'>{percent}%</a>
             return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
         }
         return '';
@@ -220,9 +213,8 @@ const ProductBody = () => {
     useEffect(() => {
         setOptionsbrands([{ value: '', label: 'Thượng hiệu' },])
         if (brand) {
-            brand.brands.map((item, index) => {
-                setOptionsbrands(current => [...current, { value: item.id, label: item.name }]);
-            }
+            brand.brands.map((item, index) => 
+                setOptionsbrands(current => [...current, { value: item.id, label: item.name }])
             )
         }
     }, [brand])
@@ -235,6 +227,7 @@ const ProductBody = () => {
                 className="d-block w-100"
                 src={require('~/assets/images/banner-1.jpg')}
                 style={{ maxHeight: '300px' }}
+                alt=''
             />
             <div >
                 <div className='container' style={{ backgroundColor: 'rgba(227, 227, 227, 0.804)' }}>
@@ -345,13 +338,13 @@ const ProductBody = () => {
                             {
                                 pagination && pagination.length > 0 &&
                                 pagination.map((item, index) => {
-                                    return (<li class="page-item" active><button onClick={e => handelChange(item.pageNumber)} class="page-link">{item.pageNumber}</button></li>)
+                                    return (<li className="page-item" active><button onClick={e => handelChange(item.pageNumber)} className="page-link">{item.pageNumber}</button></li>)
                                 })
                             }
 
                         </ul>
                     </nav>
-                </div >
+                </div>
             </div>
 
         </>

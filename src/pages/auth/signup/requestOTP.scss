@@ -23,6 +23,13 @@
 }
 
 .forgotbutton {
-    display: flex;
-    float: left;
+    text-align: right;
+}
+
+.otp {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-weight: bold;
+    font-size: larger;
 }

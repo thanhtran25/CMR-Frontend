@@ -1,5 +1,5 @@
 import './guarantee.scss'
-import { faHistory, faHouse, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Guarantee = () => {
@@ -9,10 +9,11 @@ const Guarantee = () => {
                 className="d-block w-100 slide"
                 src={require('~/assets/images/banner-suachua.jpg')}
                 style={{ maxHeight: '450px' }}
+                alt=''
             />
             <div className='container'>
                 <div className='row'>
-                    <h4 className='mt-3'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span class='cartText'>Sửa chữa</span></h4>
+                    <h4 className='mt-3'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span className='cartText'>Sửa chữa</span></h4>
                 </div>
                 <div className='row'>
                     <h4 className='address mt-4'>ĐỊA CHỈ CỬA HÀNG TP. HỒ CHÍ MINH</h4>

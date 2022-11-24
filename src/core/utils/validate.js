@@ -3,56 +3,56 @@ const validateFull = (data) => {
     const msg = {};
     if (data.email !== null && data.email !== undefined) {
         if (validator.isEmpty(data.email)) {
-            msg.email = "Please input your Email"
+            msg.email = "Vui lòng nhập email"
         } else {
             if (!validator.isEmail(data.email)) {
-                msg.email = "Incorrect data in email"
+                msg.email = "Email không hợp lệ"
             }
         }
     }
     if (data.password !== null && data.password !== undefined) {
         if (validator.isEmpty(data.password)) {
-            msg.password = "Please input your Password"
+            msg.password = "Vui lòng nhập mật khẩu"
         }
         else {
             if (data.password.length < 8) {
-                msg.password = '"password" length must be at least 8 characters'
+                msg.password = 'Mật khẩu phải có ít nhất 8 ký tự'
             }
         }
     }
     if (data.fullname !== null && data.fullname !== undefined) {
         if (validator.isEmpty(data.fullname)) {
-            msg.fullname = "Please input Fullname"
+            msg.fullname = "Vui lòng nhập tên"
         }
         else {
             if (validator.isNumeric(data.fullname)) {
-                msg.fullname = "Fullname is letter"
+                msg.fullname = "Tên không hợp lệ"
             }
         }
     }
     if (data.customerName !== null && data.customerName !== undefined) {
         if (validator.isEmpty(data.customerName)) {
-            msg.customerName = "Please input Fullname"
+            msg.customerName = "Vui lòng nhập tên"
         }
         else {
             if (validator.isNumeric(data.customerName)) {
-                msg.customerName = "Fullname is letter"
+                msg.customerName = "Tên không hợp lệ"
             }
         }
     }
     if (data.birthday !== null && data.birthday !== undefined) {
         if (validator.isEmpty(data.birthday)) {
-            msg.birthday = "Please input birthday"
+            msg.birthday = "Vui lòng nhập ngày sinh"
         }
     }
     if (data.address !== null && data.address !== undefined) {
         if (validator.isEmpty(data.address)) {
-            msg.address = "Please input Address"
+            msg.address = "Vui lòng nhập địa chỉ"
         }
     }
     if (data.gender !== null && data.gender !== undefined) {
         if (validator.isEmpty(data.gender)) {
-            msg.gender = "Please input Gender"
+            msg.gender = "Vui lòng nhập giới tính"
         }
     }
     if (data.role !== null && data.role !== undefined) {
@@ -62,21 +62,21 @@ const validateFull = (data) => {
     }
     if (data.numberPhone !== null && data.numberPhone !== undefined) {
         if (validator.isEmpty(data.numberPhone)) {
-            msg.numberPhone = "Please input Phone number"
+            msg.numberPhone = "Vui lòng nhập số điện thoại"
         }
         else {
             if (!isVietnamesePhoneNumber(data.numberPhone)) {
-                msg.numberPhone = "Incorrect Phone number"
+                msg.numberPhone = "Số điện thoại không hợp lệ"
             }
         }
     }
     if (data.confirmPassword !== null && data.confirmPassword !== undefined)
         if (validator.isEmpty(data.confirmPassword)) {
-            msg.confirmPassword = "Please input your Confirm password"
+            msg.confirmPassword = "Vui lòng nhập lại mật khẩu"
         }
         else {
             if (data.password !== data.confirmPassword) {
-                msg.confirmPassword = "Confirm password is not valid"
+                msg.confirmPassword = "Mật khẩu không khớp"
             }
         }
 
@@ -109,24 +109,24 @@ const validateProduct = (data) => {
         }
     }
     if (data.get('description') !== null && data.get('brandId') !== undefined) {
-        if (data.get('brandId') == 0) {
+        if (data.get('brandId') === 0) {
             msg.brandId = "Please choose brandId"
         }
     }
     if (data.get('categoryId') !== null && data.get('categoryId') !== undefined) {
-        if (data.get('categoryId') == 0) {
+        if (data.get('categoryId') === 0) {
             msg.categoryId = "Please choose categoryId"
         }
     }
     if (data.get('warrantyPeriod') !== null && data.get('warrantyPeriod') !== undefined) {
-        if (data.get('warrantyPeriod') == 0) {
+        if (data.get('warrantyPeriod') === 0) {
             msg.warrantyPeriod = "Please choose warrantyPeriod"
         }
     }
     if (data.getAll('images') !== null && data.getAll('images') !== undefined) {
-        if (data.getAll('images').length == 0) {
+        if (data.getAll('images').length === 0) {
             msg.images = "Please choose images"
-        } else if (data.getAll('images').length != 2) {
+        } else if (data.getAll('images').length !== 2) {
             msg.images = "Please only choose 2 images"
         }
     }
@@ -155,24 +155,24 @@ const validateProductR = (data) => {
         }
     }
     if (data.get('description') !== null && data.get('brandId') !== undefined) {
-        if (data.get('brandId') == 0) {
+        if (data.get('brandId') === 0) {
             msg.brandId = "Please choose brandId"
         }
     }
     if (data.get('categoryId') !== null && data.get('categoryId') !== undefined) {
-        if (data.get('categoryId') == 0) {
+        if (data.get('categoryId') === 0) {
             msg.categoryId = "Please choose categoryId"
         }
     }
     if (data.get('warrantyPeriod') !== null && data.get('warrantyPeriod') !== undefined) {
-        if (data.get('warrantyPeriod') == 0) {
+        if (data.get('warrantyPeriod') === 0) {
             msg.warrantyPeriod = "Please choose warrantyPeriod"
         }
     }
     if (data.getAll('images') !== null && data.getAll('images') !== undefined) {
-        if (data.getAll('images').length == 0) {
+        if (data.getAll('images').length === 0) {
 
-        } else if (data.getAll('images').length != 2) {
+        } else if (data.getAll('images').length !== 2) {
             msg.images = "Please only choose 2 images"
         }
     }
@@ -281,7 +281,7 @@ const validateSalecode = (data) => {
 const validatePurchase = (data) => {
     const msg = {};
     if (data.supplierId !== null && data.supplierId !== undefined) {
-        if (data.supplierId == 0) {
+        if (data.supplierId === 0) {
             msg.supplierId = "Please input name supplier"
         }
     }
@@ -291,19 +291,19 @@ const validatePurchase = (data) => {
 const validatePurchaseDetails = (data) => {
     const msg = {};
     if (data.productId !== null && data.productId !== undefined) {
-        if (data.productId == 0) {
+        if (data.productId === 0) {
             msg.productId = "Please choose product"
         }
     }
     if (data.price !== null && data.price !== undefined) {
-        if (data.price == 0) {
+        if (data.price === 0) {
             msg.price = "Please input price"
         } else if (data.price < 0) {
             msg.price = "Please input price > 0"
         }
     }
     if (data.count !== null && data.count !== undefined) {
-        if (data.count == 0) {
+        if (data.count === 0) {
             msg.count = "Please input count"
         } else if (data.count < 0) {
             msg.count = "Please input count > 0"

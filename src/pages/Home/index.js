@@ -28,13 +28,13 @@ function Home() {
     const cart = useSelector(state => state.cart.cart);
     const [showAlertCf, setShowAlertCf] = useState(false);
     const dispatch = useDispatch()
-    const [productnew, setProductnew] = useState({
+    const productnew = {
         limit: limit,
         page: 1,
         sortBy: 'desc',
         sort: 'createdAt',
         sale: '',
-    });
+    }
     const [products, setProducts] = useState()
     const getListProducts = async (list) => {
         try {
@@ -80,7 +80,7 @@ function Home() {
         return x = x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
     }
     function oldPrice(price, percent) {
-        if (percent != 0) {
+        if (percent !== 0) {
             const x = price;
             return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
         }
@@ -155,7 +155,7 @@ function Home() {
     useEffect(() => {
         getListProducts(productnew)
         console.log(products)
-    }, [productnew])
+    }, [])
     return (
         <>
             <ToastContainer
@@ -237,7 +237,7 @@ function Home() {
                     {products && products.length > 0 &&
                         products.map((item, index) => {
                             return (
-                                <div className="col-12 col-sm-6 col-md-4 col-lg-3">
+                                <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={item.id}>
                                     <div className="wsk-cp-product" role="button" onClick={() => handleClickDetail(item.id)}>
                                         <div className="wsk-cp-img">
                                             <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
