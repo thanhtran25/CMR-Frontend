@@ -34,21 +34,21 @@ body {
     background: #c9ccd1;
 }
 
-.form-style input {
+.login-form .form-style input {
     border: 0;
     height: 50px;
     border-radius: 0;
     border-bottom: 1px solid #ebebeb;
 }
 
-.form-style input:focus {
+.login-form .form-style input:focus {
     border-bottom: 1px solid #007bff;
     box-shadow: none;
     outline: 0;
     background-color: #ebebeb;
 }
 
-.sideline {
+.login-form .sideline {
     display: flex;
     width: 100%;
     justify-content: center;
@@ -61,14 +61,14 @@ body {
     height: 50px;
 }
 
-.sideline:before,
-.sideline:after {
+.login-form .sideline:before,
+.login-form .sideline:after {
     content: "";
     border-top: 1px solid #ebebeb;
     margin: 0 20px 0 0;
     flex: 1 0 20px;
 }
 
-.sideline:after {
+.login-form .sideline:after {
     margin: 0 0 0 20px;
 }

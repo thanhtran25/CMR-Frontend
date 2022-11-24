@@ -93,36 +93,36 @@ const Login = () => {
     return (
         <>
             <ToastContainer />
-            <div class="container" style={{ paddingTop: '80px' }}>
-                <div class="row m-5 no-gutters shadow-lg login-form">
-                    <div class="col-md-6 d-none d-md-block">
-                        <img src={require('~/assets/images/login-banner.jpg')} class="img-fluid" style={{ minHeight: '100%' }} alt='' />
+            <div className="container" style={{ paddingTop: '80px' }}>
+                <div className="row m-5 no-gutters shadow-lg login-form">
+                    <div className="col-md-6 d-none d-md-block">
+                        <img src={require('~/assets/images/login-banner.jpg')} className="img-fluid" style={{ minHeight: '100%' }} alt='' />
                     </div>
-                    <div class="col-md-6 bg-white p-5">
-                        <h2 class="pb-3 fw-bold">Đăng nhập</h2>
-                        <div class="form-style">
+                    <div className="col-md-6 bg-white p-5">
+                        <h2 className="pb-3 fw-bold">Đăng nhập</h2>
+                        <div className="form-style">
                             <form onSubmit={handleOnclick}>
-                                <div class="form-group pb-3">
-                                    <input type="email" placeholder="Email" class="form-control" name='email' onChange={handleChange} aria-describedby="emailHelp" />
+                                <div className="form-group pb-3">
+                                    <input type="email" placeholder="Email" className="form-control" name='email' onChange={handleChange} aria-describedby="emailHelp" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.email}</p>
 
                                 </div>
-                                <div class="form-group pb-3">
-                                    <input type="password" placeholder="Mật khẩu" class="form-control" name='password' onChange={handleChange} />
+                                <div className="form-group pb-3">
+                                    <input type="password" placeholder="Mật khẩu" className="form-control" name='password' onChange={handleChange} />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.password}</p>
                                 </div>
-                                <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <div><Link class="link-primary" to='/forgotpassword'>Quên mật khẩu?</Link></div>
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                    <div><Link className="link-primary" to='/forgotpassword'>Quên mật khẩu?</Link></div>
                                 </div>
-                                <div class="pb-2">
-                                    <button type="submit" class="btn btn-dark w-100 font-weight-bold mt-2" >Đăng nhập</button>
+                                <div className="pb-2">
+                                    <button type="submit" className="btn btn-dark w-100 font-weight-bold mt-2" >Đăng nhập</button>
                                 </div>
                             </form>
-                            <div class="sideline">Hoặc</div>
+                            <div className="sideline">Hoặc</div>
                             <div>
-                                <button type="button" class="btn btn-danger w-100 font-weight-bold mt-2" onClick={handleOnclickGg}> <FontAwesomeIcon icon={faGooglePlusG} /> Đăng nhập với Google</button>
+                                <button type="button" className="btn btn-danger w-100 font-weight-bold mt-2" onClick={handleOnclickGg}> <FontAwesomeIcon icon={faGooglePlusG} /> Đăng nhập với Google</button>
                             </div>
-                            <div class="pt-4 text-center">
+                            <div className="pt-4 text-center">
                                 Hãy trở thành thành viên để nhận thêm ưu đãi <Link to='/signup'>Đăng ký</Link>
                             </div>
                         </div>

@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { requestOtpService } from '~/service/authService'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { handelNotify, handleError } from '~/core/utils/req';
+import { handelNotify } from '~/core/utils/req';
 import { useParams } from 'react-router-dom';
 import { Notify } from '~/core/constant';
 const RequestOTP = () => {
@@ -24,25 +24,72 @@ const RequestOTP = () => {
             emailuser = emailurl
         }
     }
-
+    const [disabled, setDisabled] = useState(false);
     const [otp, setotp] = useState({
-        otp: "",
+        otp: ['', '', '', '', '', ''],
         email: emailuser
     });
-    const [time, setTime] = useState(false)
     const [validate, setValidate] = useState('')
-    const handleChange = e => {
+    const handleInputChange = (e, i) => {
+        e.preventDefault();
+
         const value = e.target.value;
+        if (value !== '' && Number.isNaN(+value)) {
+            return;
+        }
+
+        if (+value > 9 || +value < 0) {
+            return
+        }
+
+        const update = otp.otp
+        update[i] = value
         setotp({
             ...otp,
-            [e.target.name]: value
+            otp: update
         });
+
+        if (value !== '') {
+            const form = e.target.form;
+            const index = [...form].indexOf(e.target);
+            form[index + 1].focus();
+        }
     };
-    const handleConfirm = async () => {
+    const handelOnPasteOtp = (e) => {
+        e.preventDefault();
+
+        let otpString = e.clipboardData.getData('Text');
+        otpString = otpString.replace(/\s*/, '')
+        otpString = otpString.substring(0, 6)
+        let data = otpString.split('');
+        if (data.length !== 6) {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            data[i] = +data[i]
+            if (Number.isNaN(data[i])) {
+                return;
+            }
+        }
+        setotp({
+            ...otp,
+            otp: data
+        })
+    };
+    const handleConfirm = async (e) => {
+        e.preventDefault();
+
         const isValid = validateAll()
         if (!isValid) return
+
+        const payload = {
+            otp: Object.values(otp.otp).join(''),
+            email: otp.email
+        }
+
+        console.log(payload);
         try {
-            const res = await OtpComfirmService(otp);
+            await OtpComfirmService(payload);
             setShowAlertCf({
                 open: true,
                 variant: Notify.SUCCESS,
@@ -63,7 +110,7 @@ const RequestOTP = () => {
         navigate('/login')
     }
     const handleRequire = async (e) => {
-        e.currentTarget.disabled = true;
+        setDisabled(true)
         try {
             const email1 = {
                 email: emailuser
@@ -71,25 +118,22 @@ const RequestOTP = () => {
             await requestOtpService(email1)
             handelNotify('', 'Bạn có thể yêu cầu lại sau 90s')
         } catch (error) {
-
+            handelNotify('error', 'Tài khoản đã được xác nhận từ trước')
         }
         setTimeout(() => {
-            e.currentTarget.disabled = false;
-            console.log(e)
-        }, 10000);
+            setDisabled(false)
+        }, 5000);
     }
     const validateAll = () => {
         const msg = {}
-        if (validator.isEmpty(otp.otp)) {
-            msg.otp = "Please input your otp"
+        if (!otp.otp.length || validator.isEmpty(Object.values(otp.otp).join(''),)) {
+            msg.otp = "Vui lòng nhập OTP"
         }
         setValidate(msg)
         if (Object.keys(msg).length > 0) return false
         return true
     }
-    const handleOnclickLogin = () => {
-        navigate('/login');
-    }
+
     return (
         <>
             <ToastContainer
@@ -136,18 +180,19 @@ const RequestOTP = () => {
                                                 Chúng tôi đã gửi mã OTP gồm 6 số về email của quý khách vui lòng kiểm tra và xác nhận
                                             </label>
                                         </div>
-                                        <div className="form-floating mb-3 mt-2">
-                                            <input onChange={handleChange} type="email" name='otp' value={otp.otp} className="form-control" id="floatingInput" placeholder="name@example.com" />
-                                            <label htmlFor="floatingInput">Nhập mã OTP:</label>
-                                            <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.otp}</p>
+                                        <div className="form-row row mb-3 my-5 justify-content-center align-content-center">
+                                            {
+                                                [...Array(6).keys()].map(i => (
+                                                    <div className='col-2' key={i}>
+                                                        <input className="form-control otp" type="number" min={0} max={9} name={'opt' + i} value={otp.otp[i]} onChange={(e) => handleInputChange(e, i)} onPaste={handelOnPasteOtp} />
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
-                                        <div className="forgotbutton">
-                                            <div>
-                                                <button className="mt-2 btn btn-primary" type="button" onClick={handleConfirm}>Xác nhận</button>
-                                            </div>
-                                            <div>
-                                                <button onClick={handleRequire} className="m-2 btn btn-secondary" type="button">Yêu cầu lại</button>
-                                            </div>
+                                        <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.otp}</p>
+                                        <div className='mt-5'>
+                                            <button className="btn btn-primary float-end" type="button" onClick={handleConfirm}>Xác nhận</button>
+                                            <button onClick={handleRequire} disabled={disabled} className="btn btn-secondary float-end" style={{ marginRight: '5px' }} type="button">Yêu cầu lại</button>
                                         </div>
                                     </form>
                                 </div>
@@ -155,7 +200,7 @@ const RequestOTP = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }
