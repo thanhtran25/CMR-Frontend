@@ -18,10 +18,20 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
 import cookies from 'react-cookies'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { checkedID, checkoutID } from '~/store/action/salecodeAction';
+
 function SalecodeManager() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const checkedSale = useSelector(state => state.salecode.check);
+    console.log(checkedSale)
     const token = cookies.load('Tokenadmin');
     const [showAddDetails, setShowAddDetails] = useState(false);
     const [productDetails, setProductDetails] = useState();
+    const [productChecked, setProductChecked] = useState([]);
+    const [removeProduct, setRemoveProduct] = useState([]);
     const handleshowAddDetails = () => {
         setShowAddDetails(true)
     };
@@ -43,6 +53,7 @@ function SalecodeManager() {
             const data = (res && res.data) ? res.data : [];
             setProductDetails(data.products);
             SetPaginationDetails(selectPaginationDetails(data.totalPage))
+
         } catch {
 
         }
@@ -62,6 +73,32 @@ function SalecodeManager() {
             ...searchProductDetails,
             page: i
         })
+    }
+    const handleCheck = (event) => {
+        const value = JSON.parse(event.target.value)
+        let tmp = [...productChecked]
+        if (event.target.checked) {
+            tmp = [...productChecked, value]
+        } else {
+            tmp.splice(productChecked.indexOf(value), 1);
+        }
+        setProductChecked(tmp);
+        console.log(tmp)
+    }
+    const handleClickCheck = () => {
+        if (productChecked.length > 0) {
+            dispatch(checkedID(productChecked))
+            setShowAddDetails(false);
+            let tmp = [...repairProductDetails]
+            for (let i = 0; i < productChecked.length; i++) {
+                const result = repairProductDetails.findIndex(({ id }) => id === productChecked[i].id);
+                if (result != -1) tmp.splice(result, 1)
+            }
+            console.log(checkedSale)
+            setRepairProductDetails(tmp)
+        } else {
+            handelNotify('warn', 'Chọn sản phẩm cần áp dụng khuyến mãi')
+        }
     }
 
     const [showAdd, setShowAdd] = useState(false);
@@ -164,12 +201,30 @@ function SalecodeManager() {
         title: '',
         backdrop: ''
     });
+    const [repairSalecodeDetails, setRepairSalecodeDetails] = useState();
+    const [repairProductDetails, setRepairProductDetails] = useState();
     const handleShowRepair = async (e) => {
         SetRepairValidate('')
         try {
             let data = await getSalecodeByIdService(e, token)
             setRepairSalecode(data.data)
-            console.log(data)
+            let tmp = [...productDetails]
+            let tmp1 = [...productDetails]
+            for (let i = 0; i < productDetails.length; i++) {
+                if (productDetails[i].saleCodeId == e) {
+                    tmp1.splice(tmp1.indexOf(productDetails[i]), 1)
+                } else if (productDetails[i].saleCodeId != e && productDetails[i].saleCodeId != null) {
+                    tmp1.splice(tmp1.indexOf(productDetails[i]), 1)
+                    tmp.splice(tmp.indexOf(productDetails[i]), 1)
+                } else if (productDetails[i].saleCodeId != e) {
+                    tmp.splice(tmp.indexOf(productDetails[i]), 1)
+                }
+            }
+
+            setRepairSalecodeDetails(tmp)
+            setRepairProductDetails(tmp1)
+            setRemoveProduct([])
+            dispatch(checkoutID([]))
         } catch (error) {
 
         }
@@ -187,7 +242,7 @@ function SalecodeManager() {
     }
 
     const handleShowCfRepairSalecode = (e) => {
-        console.log(repairSalecode)
+        console.log(removeProduct)
         const isValid = validateSalecode(repairSalecode)
         SetRepairValidate(isValid)
         if (Object.keys(isValid).length > 0) return
@@ -202,7 +257,12 @@ function SalecodeManager() {
     }
     const handleClickRepairSalecode = async (sale_code) => {
         try {
-            const data = await updateSalecodeService(repairSalecode, token)
+            let tmp = [];
+            for (let i = 0; i < checkedSale.length; i++) {
+                tmp.push(checkedSale[i].id)
+            }
+
+            const data = await updateSalecodeService(repairSalecode, token, tmp, removeProduct)
             const req = handleError(data.request)
             setShowRepair(false)
             setShowAlertCf({
@@ -269,7 +329,44 @@ function SalecodeManager() {
             handelNotify('error', req)
         }
     }
+    const handleShowCfDeleteDetails = (e) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm đang áp dụng khuyến mãi này không?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleDeleteDetails(e)
+        })
+    }
+    const handleDeleteDetails = async (details) => {
+        try {
+            let detail = JSON.parse(details)
+            setShowAlertCf({
+                open: false
+            })
+            console.log(detail)
+            let tmp = [...repairSalecodeDetails]
+            const result = repairSalecodeDetails.findIndex(({ id }) => id === detail.id);
+            console.log(result)
+            if (result != -1) {
+                tmp.splice(result, 1)
+                let remove = [...removeProduct]
+                remove = [...removeProduct, detail.id]
+                setRemoveProduct(remove)
+            }
+            if (checkedSale.length > 0) {
+                const result1 = checkedSale.findIndex(({ id }) => id === detail.id);
+                console.log(result1)
+                if (result1 != -1)
+                    checkedSale.splice(result1, 1)
+            }
+            setRepairSalecodeDetails(tmp)
+            handelNotify('success', 'Xóa khuyến mãi thành công')
+        } catch (error) {
 
+        }
+    }
     return (
         <>
             {/* Modal Thông báo */}
@@ -545,6 +642,44 @@ function SalecodeManager() {
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {
+                                                checkedSale && checkedSale.length > 0 &&
+                                                checkedSale.map(item => {
+                                                    let s = 'table-info';
+                                                    if ((checkedSale.indexOf(item) + 1) % 2 !== 0) {
+                                                        s = 'table-light';
+                                                    } return (
+                                                        <tr className={s}>
+                                                            <td className='text-break'>{item.id}</td>
+                                                            <td className='text-break'>
+                                                                <pre>
+                                                                    <button onClick={e => handleShowCfDeleteDetails(JSON.stringify(item))}><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
+                                                                </pre>
+                                                            </td>
+                                                        </tr>
+                                                    )
+
+                                                })
+                                            }
+                                            {
+                                                repairSalecodeDetails && repairSalecodeDetails.length > 0 &&
+                                                repairSalecodeDetails.map(item => {
+                                                    let s = 'table-info';
+                                                    if ((repairSalecodeDetails.indexOf(item) + 1) % 2 !== 0) {
+                                                        s = 'table-light';
+                                                    } return (
+                                                        <tr className={s}>
+                                                            <td className='text-break'>{item.id}</td>
+                                                            <td className='text-break'>
+                                                                <pre>
+                                                                    <button onClick={e => handleShowCfDeleteDetails(JSON.stringify(item))}><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
+                                                                </pre>
+                                                            </td>
+                                                        </tr>
+                                                    )
+
+                                                })
+                                            }
                                         </tbody>
                                     </table>
                                     <nav class="mt-5">
@@ -586,17 +721,16 @@ function SalecodeManager() {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            productDetails && productDetails.length > 0 &&
-                                                            productDetails.map(item => {
-                                                                console.log(item)
+                                                            repairProductDetails && repairProductDetails.length > 0 &&
+                                                            repairProductDetails.map(item => {
                                                                 let s = 'table-info';
-                                                                if ((productDetails.indexOf(item) + 1) % 2 !== 0) {
+                                                                if ((repairProductDetails.indexOf(item) + 1) % 2 !== 0) {
                                                                     s = 'table-light';
                                                                 } return (
                                                                     <tr className={s}>
                                                                         <td>
                                                                             <div class="custom-control custom-checkbox">
-                                                                                <input type="checkbox" class="form-check-input form-check-success form-check-glow" id={item.id} />
+                                                                                <input onChange={handleCheck} type="checkbox" class="form-check-input form-check-success form-check-glow" value={JSON.stringify(item)} />
                                                                             </div>
                                                                         </td>
                                                                         <td className='text-break'>{item.id}</td>
@@ -639,7 +773,7 @@ function SalecodeManager() {
                                 <Button variant="secondary" onClick={() => setShowAddDetails(false)}>
                                     Đóng
                                 </Button>
-                                <Button variant="primary" onClick={handleClickAddSalecode}>
+                                <Button variant="primary" onClick={handleClickCheck}>
                                     Thêm
                                 </Button>
                             </Modal.Footer>
