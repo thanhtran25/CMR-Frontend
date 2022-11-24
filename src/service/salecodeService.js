@@ -30,8 +30,20 @@ const getSalecodesService = (sale_code, token) => {
     } else {
         s += '?limit=10';
     }
-    if (sale_code.name && sale_code.name !== '') {
-        s += '&name=' + sale_code.name + '';
+    if (sale_code.percent && sale_code.percent !== '') {
+        s += '&percent=' + sale_code.percent + '';
+    }
+    if (sale_code.startDate && sale_code.startDate !== '') {
+        s += '&startDate=' + sale_code.startDate + '';
+    }
+    if (sale_code.endDate && sale_code.endDate !== '') {
+        s += '&endDate=' + sale_code.endDate + '';
+    }
+    if (sale_code.sortBy) {
+        s += '&sortBy=' + sale_code.sortBy + '';
+    }
+    if (sale_code.sort) {
+        s += '&sort=' + sale_code.sort + '';
     }
     if (sale_code.page) {
         s += '&page=' + sale_code.page + '';

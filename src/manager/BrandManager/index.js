@@ -17,6 +17,46 @@ import 'react-toastify/dist/ReactToastify.css';
 import validator from 'validator';
 import cookies from 'react-cookies'
 function BrandManager() {
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'name', label: 'Tên thương hiệu' },
+    ]
+
+    const [search, setSearch] = useState('name')
+    const [brandSearch, setBrandSearch] = useState({
+        limit: limit,
+        page: 1,
+        name: '',
+        sort: '',
+        sortBy: ''
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setBrandSearch({
+            limit: limit,
+            page: 1,
+            name: '',
+            sort: '',
+            sortBy: ''
+        });
+    }
+    const handelBrandSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setBrandSearch({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+
+    }
+
+
     const token = cookies.load('Tokenadmin');
     const [showAdd, setShowAdd] = useState(false);
     const handleshowAdd = () => {
@@ -29,15 +69,16 @@ function BrandManager() {
     const [showRepair, setShowRepair] = useState(false);
     const [searchBrand, setSearchBrand] = useState({
         page: 1,
-        limit: 1,
+        limit: limit,
         sort: '',
         sortBy: '',
         name: '',
     });
     const [pagination, SetPagination] = useState('')
-    const getListBrand = async () => {
+    const getListBrand = async (list) => {
         try {
-            const res = await getBrandsService(searchBrand);
+            console.log(brandSearch)
+            const res = await getBrandsService(list);
             const data = (res && res.data) ? res.data : [];
             setBrand(data.brands);
             SetPagination(selectPagination(data.totalPage))
@@ -56,15 +97,15 @@ function BrandManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchBrand({
-            ...searchBrand,
+        setBrandSearch({
+            ...brandSearch,
             page: i
         })
     }
 
     useEffect(() => {
-        getListBrand();
-    }, [searchBrand])
+        getListBrand(brandSearch);
+    }, [brandSearch])
     const [brand, setBrand] = useState();
     const [addBrand, setAddBrand] = useState({
         name: '',
@@ -186,8 +227,8 @@ function BrandManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchBrand({
-                ...searchBrand,
+            setBrandSearch({
+                ...brandSearch,
                 sort: '',
                 sortBy: '',
                 name: '',
@@ -245,10 +286,9 @@ function BrandManager() {
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
                             <div id="search-brand-form" name="search-brand-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-brand-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
+                                <div className="form-group position-relative has-icon-right row ">
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelBrandSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
                                 </div>
                             </div>
@@ -262,16 +302,21 @@ function BrandManager() {
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                     </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
                                     <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-brand' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa thương hiệu
-                                        </button>
+
                                         <button id='btn-createbrand' className="btn btn-primary" onClick={handleshowAdd}>
                                             <i className="bi bi-plus"></i> Thêm thương hiệu
                                         </button>
@@ -286,7 +331,7 @@ function BrandManager() {
                                         <table className="table mb-0 table-danger" id="table1">
                                             <thead>
                                                 <tr>
-                                                    <th>Chọn</th>
+                                                    <th>Id thương hiệu</th>
                                                     <th>Tên thương hiệu</th>
                                                     <th>Tác vụ</th>
                                                 </tr>

@@ -22,6 +22,12 @@ const getBrandsService = (brand) => {
     if (brand.name && brand.name !== '') {
         s += '&name=' + brand.name + '';
     }
+    if (brand.sortBy) {
+        s += '&sortBy=' + brand.sortBy + '';
+    }
+    if (brand.sort) {
+        s += '&sort=' + brand.sort + '';
+    }
     if (brand.page) {
         s += '&page=' + brand.page + '';
     }

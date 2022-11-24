@@ -23,10 +23,53 @@ import { useNavigate } from "react-router-dom";
 import { checkedID, checkoutID } from '~/store/action/salecodeAction';
 
 function SalecodeManager() {
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'startDate', label: 'Ngày bắt đầu' },
+        { value: 'endDate', label: 'Ngày kết thúc' },
+        { value: 'percent', label: '% giảm giá' },
+    ]
+
+    const [search, setSearch] = useState('startDate')
+    const [salecodeSearch, setSalecodeSearch] = useState({
+        limit: limit,
+        page: 1,
+        sort: '',
+        sortBy: ''
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setSalecodeSearch({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+        if (value == 'startDate' || value == 'endDate') {
+            document.getElementById('search-product-text').type = 'date';
+        } else {
+            document.getElementById('search-product-text').type = 'number';
+        }
+    }
+    const handelSalecodeSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setSalecodeSearch({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+    }
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const checkedSale = useSelector(state => state.salecode.check);
-    console.log(checkedSale)
     const token = cookies.load('Tokenadmin');
     const [showAddDetails, setShowAddDetails] = useState(false);
     const [productDetails, setProductDetails] = useState();
@@ -83,7 +126,6 @@ function SalecodeManager() {
             tmp.splice(productChecked.indexOf(value), 1);
         }
         setProductChecked(tmp);
-        console.log(tmp)
     }
     const handleClickCheck = () => {
         if (productChecked.length > 0) {
@@ -94,7 +136,6 @@ function SalecodeManager() {
                 const result = repairProductDetails.findIndex(({ id }) => id === productChecked[i].id);
                 if (result != -1) tmp.splice(result, 1)
             }
-            console.log(checkedSale)
             setRepairProductDetails(tmp)
         } else {
             handelNotify('warn', 'Chọn sản phẩm cần áp dụng khuyến mãi')
@@ -124,13 +165,13 @@ function SalecodeManager() {
         endDate: '',
     });
     const [pagination, SetPagination] = useState('')
-    const getListSalecode = async () => {
+    const getListSalecode = async (list) => {
         try {
-            const res = await getSalecodesService(searchSalecode, token);
+            console.log(salecodeSearch)
+            const res = await getSalecodesService(list, token);
             const data = (res && res.data) ? res.data : [];
             setSalecode(data.saleCodes);
             SetPagination(selectPagination(data.totalPage))
-            console.log(data)
         } catch {
 
         }
@@ -146,17 +187,16 @@ function SalecodeManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchSalecode({
-            ...searchSalecode,
+        setSalecodeSearch({
+            ...salecodeSearch,
             page: i
         })
     }
 
     useEffect(() => {
-        getListSalecode();
+        getListSalecode(salecodeSearch);
         getListProductDetails();
-        console.log(searchProductDetails)
-    }, [searchSalecode, searchProductDetails])
+    }, [salecodeSearch], [searchProductDetails])
     const [sale_code, setSalecode] = useState();
     const [addSalecode, setAddSalecode] = useState({
         name: '',
@@ -172,7 +212,6 @@ function SalecodeManager() {
             ...addSalecode,
             [e.target.name]: value
         });
-        console.log(addSalecode)
     }
 
     const handleClickAddSalecode = async () => {
@@ -238,12 +277,10 @@ function SalecodeManager() {
             ...repairSalecode,
             [e.target.name]: value
         });
-        console.log(value)
 
     }
 
     const handleShowCfRepairSalecode = (e) => {
-        console.log(repairSalecodeDetails)
         const isValid = validateSalecode(repairSalecode)
         SetRepairValidate(isValid)
         if (Object.keys(isValid).length > 0) return
@@ -281,7 +318,6 @@ function SalecodeManager() {
                             endDate: repairSalecode.endDate,
                         };
                     }
-                    console.log(obj)
                     return obj;
                 });
 
@@ -322,8 +358,8 @@ function SalecodeManager() {
             setShowAlertCf({
                 open: false
             })
-            setSearchSalecode({
-                ...searchSalecode,
+            setSalecodeSearch({
+                ...salecodeSearch,
                 sort: '',
                 sortBy: '',
                 name: '',
@@ -357,10 +393,8 @@ function SalecodeManager() {
             setShowAlertCf({
                 open: false
             })
-            console.log(detail)
             let tmp = [...repairSalecodeDetails]
             const result = repairSalecodeDetails.findIndex(({ id }) => id === detail.id);
-            console.log(result)
             if (result != -1) {
                 tmp.splice(result, 1)
                 let remove = [...removeProduct]
@@ -369,7 +403,6 @@ function SalecodeManager() {
             }
             if (checkedSale.length > 0) {
                 const result1 = checkedSale.findIndex(({ id }) => id === detail.id);
-                console.log(result1)
                 if (result1 != -1)
                     checkedSale.splice(result1, 1)
             }
@@ -422,9 +455,8 @@ function SalecodeManager() {
                             <h6>Tìm Kiếm</h6>
                             <div id="search-salecode-form" name="search-salecode-form">
                                 <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-salecode-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelSalecodeSearch} id="search-product-text" type="date" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
                                 </div>
                             </div>
@@ -438,16 +470,21 @@ function SalecodeManager() {
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                     </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
 
                                     <div className=" loat-start float-lg-end mb-3">
-                                        <button id='btn-delete-salecode' className="btn btn-danger">
-                                            <i className="bi bi-trash-fill"></i> Xóa khuyến mãi
-                                        </button>
+
                                         <button id='btn-createsalecode' className="btn btn-primary" onClick={handleshowAdd}>
                                             <i className="bi bi-plus"></i> Thêm khuyến mãi
                                         </button>

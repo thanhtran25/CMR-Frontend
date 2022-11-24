@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faScrewdriverWrench, faCalendar } from '@fortawesome/free-solid-svg-icons';
 
-import { createPurchaseService, getPurchasesService } from '~/service/purchaseService';
+import { createPurchaseService, getPurchasesService, getPurchaseByIdService } from '~/service/purchaseService';
 import { getSuppliersService } from '~/service/supplierService';
 import { getProductsService } from '~/service/productService';
 
@@ -22,7 +22,47 @@ import cookies from 'react-cookies'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { checkedID, checkoutID } from '~/store/action/purchaseAction';
+import { set } from 'date-fns';
 function PurchaseorderManager() {
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'staffId', label: 'Id nhân viên' },
+        { value: 'supplierId', label: 'Id nhà cung cấp' },
+    ]
+
+    const [search, setSearch] = useState('staffId')
+    const [purchaseSearch, setPurchaseSearch] = useState({
+        limit: limit,
+        page: 1,
+        sort: '',
+        sortBy: '',
+    })
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setPurchaseSearch({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+    }
+    const handelPurchaseSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setPurchaseSearch({
+            [tmp]: value,
+            page: 1,
+            limit: limit,
+            sort: '',
+            sortBy: '',
+        });
+        console.log(value)
+    }
+
+
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const checkedPurchase = useSelector(state => state.purchase.check);
@@ -30,11 +70,23 @@ function PurchaseorderManager() {
     const token = cookies.load('Tokenadmin')
     const admin = cookies.load('admin')
     const [showAddDetails, setShowAddDetails] = useState(false);
+    const [showDetails, setShowDetails] = useState(false);
     const [addDetails, setAddDetails] = useState({
         count: 0,
         price: 0,
         productId: '',
     });
+    const [purchaseDetails, setPurchaseDetails] = useState('')
+    const handleshowDetails = async (event) => {
+        try {
+            let data = await getPurchaseByIdService(event, token)
+            console.log(data.data)
+            setPurchaseDetails(data.data)
+        } catch (error) {
+
+        }
+        setShowDetails(true)
+    }
     const [purchaseChecked, setPurchaseChecked] = useState([]);
     const handleshowAddDetails = () => {
         setAddDetails({
@@ -75,7 +127,8 @@ function PurchaseorderManager() {
     const handleChangeAddDetailsProductID = (e) => {
         setAddDetails({
             ...addDetails,
-            productId: e.target.value
+            productId: e.target.value,
+            name: e.target[e.target.selectedIndex].text
         });
     }
 
@@ -125,16 +178,16 @@ function PurchaseorderManager() {
     };
     const [searchPurchase, setSearchPurchase] = useState({
         page: 1,
-        limit: 1,
+        limit: limit,
         sort: '',
         sortBy: '',
         staffId: '',
         supplierId: '',
     });
     const [pagination, SetPagination] = useState('')
-    const getListPurchase = async () => {
+    const getListPurchase = async (list) => {
         try {
-            const res = await getPurchasesService(searchPurchase, token);
+            const res = await getPurchasesService(list, token);
             const data = (res && res.data) ? res.data : [];
             console.log(data.purchaseOrders)
             setPurchase(data.purchaseOrders);
@@ -154,17 +207,17 @@ function PurchaseorderManager() {
         return content
     }
     const handelChange = (i) => {
-        setSearchPurchase({
-            ...searchPurchase,
+        setPurchaseSearch({
+            ...purchaseSearch,
             page: i
         })
     }
 
     useEffect(() => {
-        getListPurchase();
+        getListPurchase(purchaseSearch);
         getListSupplier();
         getListProduct();
-    }, [searchPurchase], [searchSupplier], [searchProduct])
+    }, [purchaseSearch], [searchSupplier], [searchProduct])
     const [purchase, setPurchase] = useState();
     const [addPurchase, setAddPurchase] = useState({
         staffId: admin.id,
@@ -202,6 +255,46 @@ function PurchaseorderManager() {
         }
 
     }
+    const handleShowCfDeleteDetails = (e) => {
+        setShowAlertCf({
+            open: true,
+            variant: Notify.WARNING,
+            text: 'Bạn có chắc chắn muốn xóa sản phẩm ra khỏi phiếu nhập không?',
+            title: 'Xác nhận',
+            backdrop: 'static',
+            onClick: () => handleDeleteDetails(e)
+        })
+    }
+    const handleDeleteDetails = async (details) => {
+        try {
+            let detail = JSON.parse(details)
+            setShowAlertCf({
+                open: false
+            })
+            let tmp = [...product]
+            console.log(detail)
+            if (checkedPurchase.length > 0) {
+                const result1 = checkedPurchase.findIndex(({ productId }) => productId === detail.productId);
+                console.log(result1)
+                if (result1 != -1) {
+                    checkedPurchase.splice(result1, 1)
+                    tmp = [...product, detail]
+                    setProduct(tmp)
+                }
+            }
+
+            handelNotify('success', 'Xóa khuyến mãi thành công')
+        } catch (error) {
+
+        }
+    }
+    const [showAlertCf, setShowAlertCf] = useState({
+        open: false,
+        valirant: '',
+        text: '',
+        title: '',
+        backdrop: ''
+    });
     return (
         <>
             {/* Modal Thông báo */}
@@ -217,7 +310,25 @@ function PurchaseorderManager() {
                 pauseOnHover
                 theme="colored"
             />
-
+            <Modal
+                show={showAlertCf.open}
+                onHide={() => setShowAlertCf({ open: false })}
+                backdrop={showAlertCf.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf.variant }} closeButton>
+                    <Modal.Title>{showAlertCf.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowAlertCf({ open: false })}>
+                        Hủy
+                    </Button>
+                    <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
@@ -225,11 +336,11 @@ function PurchaseorderManager() {
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
                             <div id="search-purchaseorder-form" name="search-purchaseorder-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-purchaseorder-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <i className="bi bi-search"></i>
+                                <div className="form-group position-relative has-icon-right row">
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelPurchaseSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -242,8 +353,15 @@ function PurchaseorderManager() {
                                     <label>
                                         <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                     </label>
-                                    <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                        <option>Tất Cả</option>
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                 </div>
                                 <div className="col-12 col-md-5 order-md-2 order-first">
@@ -279,11 +397,11 @@ function PurchaseorderManager() {
                                                         } return (
                                                             <tr className={s}>
                                                                 <td>{item.id}</td>
-                                                                <td>{item.supplierId}</td>
                                                                 <td>{item.staffId}</td>
+                                                                <td>{item.supplierId}</td>
                                                                 <td className='text-break'>
                                                                     <pre>
-                                                                        <button ><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
+                                                                        <button onClick={e => handleshowDetails(item.id)}><FontAwesomeIcon icon={faCalendar} className='fa-icon pr-2' /></button><span>  </span>
                                                                     </pre>
                                                                 </td>
                                                             </tr>
@@ -379,7 +497,7 @@ function PurchaseorderManager() {
                                                             <td className='text-break'>{item.count}</td>
                                                             <td className='text-break'>
                                                                 <pre>
-                                                                    <button ><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
+                                                                    <button onClick={e => handleShowCfDeleteDetails(JSON.stringify(item))}><FontAwesomeIcon icon={faTrash} className='fa-icon' /></button>
                                                                 </pre>
                                                             </td>
                                                         </tr>
@@ -408,27 +526,22 @@ function PurchaseorderManager() {
 
 
                     <div>
-                        <Modal >
+                        <Modal show={showDetails} onHide={() => setShowDetails(false)} size='lg'>
                             <Modal.Header closeButton>
                                 <Modal.Title>Thông tin chi tiết phiếu nhập hàng</Modal.Title>
                             </Modal.Header>
                             <Modal.Body>
                                 <Form>
                                     <Form.Group className="mb-3" >
-                                        <Form.Label>ID phiếu nhập hàng:</Form.Label>
+                                        <Form.Label>ID nhân viên:</Form.Label>
                                         <Form.Control
                                             type="text"
                                             placeholder=""
                                             autoFocus
+                                            readOnly
+                                            value={purchaseDetails.staffId}
                                         />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Tên nhân viên:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
+
                                     </Form.Group>
                                     <Form.Group className="mb-3" >
                                         <Form.Label>Tên nhà cung cấp:</Form.Label>
@@ -436,59 +549,55 @@ function PurchaseorderManager() {
                                             type="text"
                                             placeholder=""
                                             autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Tên sản phẩm:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Giá:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Số lượng:</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Ngày thêm:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            placeholder=""
-                                            autoFocus
-                                        />
-                                    </Form.Group>
-                                    <Form.Group className="mb-3" >
-                                        <Form.Label>Ngày sửa gần nhất:</Form.Label>
-                                        <Form.Control
-                                            type="date"
-                                            placeholder=""
-                                            autoFocus
+                                            readOnly
+                                            value={purchaseDetails.supplierId}
                                         />
                                     </Form.Group>
                                 </Form>
+                                <hr />
+
+                                <div className="table-responsive">
+                                    <table className="table mb-0 table-danger" id="tb2">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã sản phẩm</th>
+                                                <th>Giá sản phẩm</th>
+                                                <th>Số lượng sản phẩm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                purchaseDetails.purchaseOrderDetails && purchaseDetails.purchaseOrderDetails.length > 0 &&
+                                                purchaseDetails.purchaseOrderDetails.map(item => {
+                                                    let s = 'table-info';
+                                                    if ((purchaseDetails.purchaseOrderDetails.indexOf(item) + 1) % 2 !== 0) {
+                                                        s = 'table-light';
+                                                    } return (
+                                                        <tr className={s}>
+                                                            <td className='text-break'>{item.productId}</td>
+                                                            <td className='text-break'>{item.price}</td>
+                                                            <td className='text-break'>{item.count}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <nav className="mt-5">
+                                        <ul id="pagination" className="pagination justify-content-center">
+                                        </ul>
+                                    </nav>
+                                </div>
                             </Modal.Body>
                             <Modal.Footer>
-                                <Button variant="secondary" >
+                                <Button variant="secondary" onClick={() => setShowDetails(false)}>
                                     Đóng
                                 </Button>
                             </Modal.Footer>
                         </Modal>
                     </div>
                     <div>
-                        <Modal show={showAddDetails} onHide={() => setShowAddDetails(false)} size='xl'>
+                        <Modal show={showAddDetails} onHide={() => setShowAddDetails(false)}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Thêm sản phẩm khuyến mãi</Modal.Title>
                             </Modal.Header>
