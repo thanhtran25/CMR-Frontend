@@ -44,7 +44,8 @@ function UserAdmin() {
     const optionsRoles = [
         { value: Roles.MANAGER, label: Roles.MANAGER },
         { value: Roles.STAFF, label: Roles.STAFF },
-        { value: Roles.CUSTOMER, label: Roles.CUSTOMER }
+        { value: Roles.CUSTOMER, label: Roles.CUSTOMER },
+        { value: Roles.SHIPPER, label: Roles.SHIPPER },
     ]
     const optionsSearch = [
         { value: '', label: 'Tất cả' },

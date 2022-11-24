@@ -5,6 +5,9 @@ const getBillsService = async (bill, token) => {
         headers: { Authorization: `Bearer ${token}` }
     };
     let s = '';
+    if (bill.history) {
+        s += '/history';
+    }
     if (bill.limit) {
         s += '?limit=' + bill.limit + '';
     } else {
@@ -48,6 +51,22 @@ const updateBillsService = async (bill, action, token) => {
         config
     )
 }
+// const historySerVice = async (bill,token) =>{
+//     const config = {
+//         headers: { Authorization: `Bearer ${token}` }
+//     };
+//     const id = bill.id;
+//     delete bill.id
+//     const bodyParameters = {
+//         ...bill
+//     };
+
+//     return await request.put(
+//         'bills/' + action + '/' + id,
+//         bodyParameters,
+//         config
+//     )
+// }
 
 export {
     getBillsService,

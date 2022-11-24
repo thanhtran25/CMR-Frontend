@@ -1,30 +1,47 @@
 import request from '~/core/utils/axios';
 import cookies from 'react-cookies';
 const token = cookies.load('Token');
-const config = {
-    headers: { Authorization: `Bearer ${token}` }
-};
-const shippingService = async (address) => {
+const shippingService = async (address, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     const bodyParameters = {
         ...address
     };
-    return await request.post(
-        'bills/shipping',
-        bodyParameters,
-        config
-    )
+    if (token) {
+        return await request.post(
+            'bills/shipping',
+            bodyParameters,
+            config
+        )
+    }
+    else {
+        return await request.post(
+            'bills/shipping',
+            bodyParameters,
+        )
+    }
 
 }
-const paymentService = async (address) => {
-    console.log(config)
+const paymentService = async (address, token) => {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
     const bodyParameters = {
         ...address
     };
-    return await request.post(
-        'bills',
-        bodyParameters,
-        // config
-    )
+    if (token) {
+        return await request.post(
+            'bills',
+            bodyParameters,
+            config
+        )
+    } else {
+        return await request.post(
+            'bills',
+            bodyParameters,
+        )
+    }
 
 }
 export {
