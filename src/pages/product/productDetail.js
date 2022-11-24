@@ -242,7 +242,7 @@ const ProductDetail = () => {
                     <div className="container" style={{ marginTop: '5%' }}>
                         <div className="row tab-pane">
                             <div className=" wrapper preview col-md-5">
-                                <div className="preview-pic tab-content tab-pane2 m-3">
+                                <div className="preview-pic tab-content m-3">
                                     <div className=" active" id="pic-1"><img className="img-fluid" src={process.env.REACT_APP_URL_IMG + images} alt="" /></div>
                                 </div>
                             </div>
@@ -274,11 +274,9 @@ const ProductDetail = () => {
                                     </button>
                                 </div>
 
-
-
                             </div>
                             <div className='wrapper preview col-md-5 py-2'>
-                                <ul className="preview-thumbnail tab-pane2 mx-3 nav nav-tabs">
+                                <ul className="preview-thumbnail mx-3 nav nav-tabs">
                                     <li className='m-2'>
                                         <a href='#pic-1' data-target="#pic-1" data-toggle="tab">
                                             <img
