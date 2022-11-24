@@ -3,6 +3,9 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import './Cartbox.scss'
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 const CartBox = () => {
     const navigate = useNavigate();
     const [isOpen, setisOpen] = useState(false);
@@ -13,9 +16,6 @@ const CartBox = () => {
     }
     function VND(x) {
         return x.toLocaleString('vi', { style: 'currency', currency: 'VND' });
-    }
-    const SwitchPageCart = () => {
-        navigate('/cart')
     }
     useEffect(() => {
         console.log(cart)
@@ -29,19 +29,11 @@ const CartBox = () => {
             document.removeEventListener("mousedown", handleClickOutside)
         };
     }, []);
+    console.log(cart);
     return (
         <div className="popup-box" ref={wrapperRef}>
             <button className={isOpen === true ? "btn-click btn-popup" : "btn-popup"} onClick={() => showBox()}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    fill="currentColor"
-                    className="bi bi-cart"
-                    viewBox="0 0 16 16"
-                >
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                </svg>
+                <FontAwesomeIcon icon={faShoppingCart} className='fa-icon' />
             </button>
             <div className={isOpen === true ? "box-body" : "box-body box-hiden"}>
                 <div className="box-content">
@@ -63,22 +55,26 @@ const CartBox = () => {
                     <div className="box-list-item">
                         {cart && cart.length > 0 && cart.map((element, index) => {
                             return (
-
-                                <div className="box-item" key={index}>
+                                <Link to={`/product/${element.productId}`} className="box-item" key={index} onClick={() => showBox()}>
                                     <div className="box-icon">
-                                        <img src={'http://localhost:1912/static/product/image/' + element.img1} alt="" />
+                                        <img src={process.env.REACT_APP_URL_IMG + element.img1} alt="" />
                                     </div>
                                     <div className="box-item-content">{element.name}</div>
-                                    <div className="box-item-content-2" style={{ fontSize: '0.8rem', fontStyle: 'italic', marginLeft: '', textAlign: 'right' }}>{VND(element.price)}</div>
-                                </div>
+                                    <div className="box-item-content-2">
+                                        <p>{VND(element.price * (100 - element.percent) / 100)}</p>
+                                        {element.percent > 0 && <del className="box-item-del">{VND(element.price)}</del>}
+                                    </div>
+
+                                </Link>
                             )
                         })}
                     </div>
-                    <div onClick={SwitchPageCart} className="box-footer">Xem tất cả</div>
+                    <div className="box-footer" >
+                        <Link to='/cart' onClick={() => showBox()}>Xem tất cả</Link>
+                    </div>
                 </div>
                 <div className="box-triangle"></div>
             </div>
-            <div className="box-number">{cart && cart.length > 0 && cart.length}</div>
         </div>
     )
 }

@@ -196,7 +196,6 @@ function Header() {
                         <div className='row'>
                             <Link className='shop-card offset-6 col-xl-1'>
                                 <Cartbox></Cartbox>
-                                {/* <FontAwesomeIcon icon={faBasketShopping} className='fa-icon' style={{ fontSize: '22px', color: '#999999' }} /> */}
                                 <span className='cart-count'>{amount}</span>
                             </Link>
                             <div className='col-1'></div>
