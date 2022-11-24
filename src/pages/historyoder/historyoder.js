@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './historyoder.scss'
 import cookies from 'react-cookies';
 import Nav from 'react-bootstrap/Nav';
+import { Link } from 'react-router-dom';
 import { OrderStates } from '~/core/constant';
 import { getBillsService, updateBillsService } from '~/service/billsService';
 import moment from 'moment'
@@ -97,12 +98,20 @@ const HistoryOder = () => {
     }, [searchBills])
     return (
         <>
-            <div className="container">
+            <div className="container-fluid">
                 <div className='row mb-3'>
-                    <div className='text-center' style={{ marginTop: "8%" }}>
+                    <div className='text-center' style={{ marginTop: "6%", paddingLeft: '25%' }}>
                         <p className='text-dark fw-bold h3'>Đơn Mua</p>
                     </div>
-                    <div className="card p-0 col-8 offset-2" style={{ backgroundColor: 'rgba(200, 200, 200, 0.01)' }}>
+                    <div className='col-3 m-3'>
+                        <div className='btn-shake'>
+                            <img src={require('~/assets/images/history-2.jpg')}></img>
+                        </div>
+                        <Link to='/products' className='btn btn-danger' style={{ width: '35%', marginTop: "5%", marginLeft: '30%' }}>
+                            Mua Ngay
+                        </Link>
+                    </div>
+                    <div className="card p-0 col-8" style={{ backgroundColor: 'rgba(255, 255, 255,0.1)' }}>
                         <div className="card-header " >
                             <div className='col-12'>
                                 <div className='row' style={{ backgroundColor: '#ffc107', borderRadius: '5px' }}>
@@ -157,12 +166,12 @@ const HistoryOder = () => {
                                                                         </div>
                                                                     </div>
                                                                     <div className='col-6'>
-                                                                        <p className="card-text">Địa chỉ: {item1.address}, Hồ Chí Minh, Việt nam</p>
+                                                                        <p className="card-text">Địa chỉ: {item1.address}</p>
                                                                         <p className="card-text">{statesMessage[item1.states]}</p>
                                                                     </div>
                                                                     <div className='col-2'>
                                                                         {item1.billDetails.length > 0 &&
-                                                                            <img width={'70%'} src={process.env.REACT_APP_URL_IMG + item1.billDetails[0].product.img2} />}
+                                                                            <img width={'65%'} src={process.env.REACT_APP_URL_IMG + item1.billDetails[0].product.img2} />}
                                                                     </div>
 
                                                                     <div className={billsDetail === item1.id ? '' : 'showdetail'}>
