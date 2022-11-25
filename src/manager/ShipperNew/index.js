@@ -22,7 +22,7 @@ function ShipperNew() {
         sort: '',
         sortBy: '',
         numberPhone: '',
-        states: [OrderStates.SHIPPING]
+        states: [OrderStates.ACCEPTED]
     });
     const [checked, setChecked] = useState([])
     const [showAlertCf, setShowAlertCf] = useState(false);

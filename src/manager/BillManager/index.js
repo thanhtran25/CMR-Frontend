@@ -28,7 +28,7 @@ function BillManager() {
         sort: 'createdAt',
         sortBy: 'desc',
         numberPhone: '',
-        states: ''
+        states: OrderStates.WAITING
     });
     const [showAlertCf, setShowAlertCf] = useState(false);
     const [states, setStates] = useState();
@@ -70,16 +70,10 @@ function BillManager() {
             setBillsDetail(id)
         }
     }
-    const handleOnclickState = (states, state1) => {
+    const handleOnclickState = (states) => {
         setBillsDetail(-1)
         let arr = []
-        if (state1 === OrderStates.DELIVERING) {
-            arr.push(states)
-            arr.push(state1)
-
-        } else {
-            arr.push(states)
-        }
+        arr.push(states)
         if (states == 'all') {
             setSearchBills({
                 ...searchBills,
@@ -242,26 +236,23 @@ function BillManager() {
                                 <div className='row mb-2'>
                                     <Nav justify variant="tabs" defaultActiveKey="/home">
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING, '')} eventKey="link-2">Chờ xác nhận</Nav.Link>
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED, '')} eventKey="link-3">Chờ lấy hàng</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.SHIPPING, OrderStates.DELIVERING)} eventKey="link-4">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERING)} eventKey="link-4">
                                                 Đang giao
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERED, '')} eventKey="link-5">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERED)} eventKey="link-5">
                                                 Đã giao
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.CANCEL, '')} eventKey="link-6">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.CANCEL)} eventKey="link-6">
                                                 Đã hủy
                                             </Nav.Link>
                                         </Nav.Item>
@@ -290,19 +281,19 @@ function BillManager() {
                                         <table className="table mb-0 table-danger tabelBill" id="table1">
                                             <thead>
                                                 <tr>
-                                                    <th width>Chọn</th>
-                                                    <th>Tên khách hàng</th>
-                                                    <th>Địa chỉ</th>
-                                                    <th>Số điện thoại</th>
-                                                    {states === 'waiting' || states === 'accepted'
-                                                        ? <th>Xác nhận</th>
+                                                    <th width="5%">ID</th>
+                                                    <th width="15%">Tên khách hàng</th>
+                                                    <th width="35%">Địa chỉ</th>
+                                                    <th width="15%">Số điện thoại</th>
+                                                    {states === 'waiting'
+                                                        ? <th width="25%">Xác nhận</th>
                                                         : ''
                                                     }
                                                     {states === 'all' ?
-                                                        <th>Trạng thái</th>
+                                                        <th width="25%">Trạng thái</th>
                                                         : ''
                                                     }
-                                                    <th>Chi tiết</th>
+                                                    <th width="5%">Chi tiết</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -324,7 +315,7 @@ function BillManager() {
                                                                         <td className='text-break'>{item.states}</td>
                                                                         : ''
                                                                     }
-                                                                    {states === 'waiting' || states === 'accepted' ? (
+                                                                    {states === 'waiting' ? (
                                                                         <td className='text-break'>
                                                                             <button onClick={() => showCf('accepted', item.id)} type="button" class="btn btn-success">Xác nhận</button>
                                                                             <span>  </span><button onClick={() => showdeleCf('accepted', item.id)} type="button" class="btn btn-danger ">Hủy</button>
