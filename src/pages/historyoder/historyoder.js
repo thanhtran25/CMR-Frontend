@@ -71,8 +71,8 @@ const HistoryOder = () => {
                 ...searchBills,
                 states: '',
                 page: 1,
-                sort: 'createdAt',
-                sortBy: 'desc',
+                sort: '',
+                sortBy: '',
                 numberPhone: '',
             })
         } else {
@@ -80,8 +80,8 @@ const HistoryOder = () => {
                 ...searchBills,
                 states: arr,
                 page: 1,
-                sort: 'createdAt',
-                sortBy: 'desc',
+                sort: '',
+                sortBy: '',
                 numberPhone: '',
             })
         }
