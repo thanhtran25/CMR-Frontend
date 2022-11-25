@@ -19,8 +19,8 @@ function ShipperNew() {
     const [searchBills, setSearchBills] = useState({
         page: 1,
         limit: limit,
-        sort: '',
-        sortBy: '',
+        sort: 'createdAt',
+        sortBy: 'desc',
         numberPhone: '',
         states: [OrderStates.ACCEPTED]
     });
@@ -73,8 +73,8 @@ function ShipperNew() {
             const data = res && res.data ? res.data : '';
             setSearchBills({
                 ...searchBills,
-                sort: '',
-                sortBy: '',
+                sort: 'createdAt',
+                sortBy: 'desc',
                 numberPhone: '',
             })
             handelNotify('success', 'Nhận đơn hàng thành công')

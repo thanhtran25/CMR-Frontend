@@ -135,7 +135,7 @@ function BillManager() {
         setShowAlertCf({
             open: true,
             variant: Notify.WARNING,
-            text: 'Bạn có muốn xác nhận đơn hàng này>',
+            text: 'Bạn có muốn xác nhận đơn hàng này không?',
             title: 'Xác nhận',
             backdrop: 'static',
             onClick: () => handleAccept(action, bill)
@@ -145,7 +145,7 @@ function BillManager() {
         setShowAlertCf({
             open: true,
             variant: Notify.WARNING,
-            text: 'Bạn có muốn huỷ đơn hàng này?',
+            text: 'Bạn có muốn huỷ đơn hàng này không?',
             title: 'Xác nhận',
             backdrop: 'static',
             onClick: () => handleCancel(action, bill)
