@@ -73,7 +73,7 @@ const Payment = () => {
     const handleClcikPayment = async () => {
         const pay = {
             customerName: userPay.customerName,
-            address: userPay.address + ' , Vietnam (' + shippingFee.distance + ')',
+            address: userPay.address + ' (' + shippingFee.distance + ' Km)',
             numberPhone: userPay.numberPhone,
             details: details,
             shippingFee: shippingFee.shippingFee

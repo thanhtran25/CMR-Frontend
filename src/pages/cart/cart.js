@@ -167,7 +167,7 @@ const Cart = () => {
             />
             <div className="container cartbody">
 
-                <div className="row" style={{ paddingTop: " 10%" }}>
+                <div className="row" style={{ paddingBlock: " 10%" }}>
                     <aside className="col-lg-9">
                         <div className="card rounded" >
                             <div className="">
