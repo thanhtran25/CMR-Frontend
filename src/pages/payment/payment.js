@@ -152,7 +152,6 @@ const Payment = () => {
             setLoading(true)
             const res = await shippingService(address, token)
             const data = res && res.data ? res.data : '';
-            handelNotify('success', 'Tính phí ship thành công')
             setShippingFee(data.result)
             dispatch(userPayment({ ...total, total: total.total + data.result.shippingFee - oldShip }))
             setOldShip(data.result.shippingFee)
@@ -234,10 +233,10 @@ const Payment = () => {
                         <img src={require('~/assets/images/thanks.jpg')} className="img-fluid" style={{ minHeight: '100%' }} alt='' />
                     </div>
                     <div className="col-md-6 bg-white p-5">
-                    <form onSubmit={handleshowCf}>
+                        <form onSubmit={handleshowCf}>
 
-                        <div className="form-style mb-4">
-                            <h4 className="pb-3 fw-bold">Thông tin thanh toán</h4>
+                            <div className="form-style mb-4">
+                                <h4 className="pb-3 fw-bold">Thông tin thanh toán</h4>
                                 <div className="form-group">
                                     <input type="text" onChange={handleChange} name='customerName' value={userPay.customerName} className="form-control" placeholder="Họ và tên" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.customerName}</p>
@@ -250,55 +249,64 @@ const Payment = () => {
                                     <input type="text" onChange={handleChange} name='numberPhone' value={userPay.numberPhone} className="form-control" id="address" placeholder="Số điện thoại" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.numberPhone}</p>
                                 </div>
-                            <div>
-                            </div>
-                        </div>
-                        <h4 className="pb-3 fw-bold">Hoá đơn</h4>
-                        <div>
-                            <ul className="list-group mb-3">
-                                {checked && checked.length > 0 &&
-                                    checked.map((item, index) => {
-                                        return (
-                                            <li key={index} className="list-group-item d-flex justify-content-between lh-condensed">
-                                                <div>
-                                                    <h6 className="my-0">{item.name}</h6>
-                                                    <small className="text-muted">{'x ' + item.count}</small>
-                                                </div>
-                                                <div className="box-item-content-2">
-                                                    <p>{VND((item.price * (100 - item.percent) / 100) * item.count)}</p>
-                                                    {item.percent > 0 && <del className="box-item-del">{VND(item.price * item.count)}</del>}
-                                                </div>
-                                            </li>
-                                        )
-                                    })
-                                }
-                                <li className="list-group-item d-flex justify-content-between bg-light">
-                                    <div className="text-success">
-                                        <h6 className="my-0">Tiết kiệm: </h6>
-                                        <small></small>
-                                    </div>
-                                    <span className="text-success">-{VND(total.totalSale)}</span>
-                                </li>
-                                <li className="list-group-item d-flex justify-content-between">
-                                    <span>Phí ship: </span>
-                                    <span>{shippingFee && shippingFee.shippingFee ? shippingFee.distance && VND(shippingFee.shippingFee)
-                                        + ' (' + shippingFee.distance + 'km)' : '0 đ'
-                                    }
-                                    </span>
-                                </li>
-                                <li className="list-group-item d-flex justify-content-between">
-                                    <span>Thành tiền: </span>
-                                    <strong>{VND(total.total)}</strong>
-                                </li>
-                            </ul>
-                        </div>
-                        </form>
-                        <div className="pb-2">
-                                    <button type="submit" disabled={isLoading} className="btn btn-primary w-100 font-weight-bold mt-2" >
-                                        {isLoading && <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
-                                        <span> {isLoading === false ? 'Thanh toán' : 'Đang tính phí ship' }</span>
-                                    </button>
+                                <div>
                                 </div>
+                            </div>
+                            <h4 className="pb-3 fw-bold">Hoá đơn</h4>
+                            <div>
+                                <ul className="list-group mb-3">
+                                    {checked && checked.length > 0 &&
+                                        checked.map((item, index) => {
+                                            return (
+                                                <li key={index} className="list-group-item d-flex justify-content-between lh-condensed">
+                                                    <div>
+                                                        <h6 className="my-0">{item.name}</h6>
+                                                        <small className="text-muted">{'x ' + item.count}</small>
+                                                    </div>
+                                                    <div className="box-item-content-2">
+                                                        <p>{VND((item.price * (100 - item.percent) / 100) * item.count)}</p>
+                                                        {item.percent > 0 && <del className="box-item-del">{VND(item.price * item.count)}</del>}
+                                                    </div>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                    <li className="list-group-item d-flex justify-content-between bg-light">
+                                        <div className="text-success">
+                                            <h6 className="my-0">Tiết kiệm: </h6>
+                                            <small></small>
+                                        </div>
+                                        <span className="text-success">-{VND(total.totalSale)}</span>
+                                    </li>
+                                    <li className="list-group-item d-flex justify-content-between">
+                                        <span>Phí ship: </span>
+                                        <span>{shippingFee && shippingFee.shippingFee ? shippingFee.distance && VND(shippingFee.shippingFee)
+                                            + ' (' + shippingFee.distance + 'km)' : '0 đ'
+                                        }
+                                        </span>
+                                    </li>
+                                    <li className="list-group-item d-flex justify-content-between">
+                                        <span>Thành tiền: </span>
+                                        <strong>{VND(total.total)}</strong>
+                                    </li>
+                                    <div className="form-group row pb-3">
+                                        <div className="col-sm-10 d-flex mt-3">
+                                            <div className="form-check form-check-inline">
+                                                <input className="form-check-input" type="radio" name="paymentMethod" id="inlineRadio1" value={1} defaultChecked />
+                                                <label className="form-check-label form-radio-label" htmlFor="inlineRadio1">Thanh toán khi nhận hàng</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div className="pb-2">
+                                <button type="submit" disabled={isLoading} className="btn btn-primary w-100 font-weight-bold mt-2" >
+                                    {isLoading && <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+                                    <span> {isLoading === false ? 'Thanh toán' : 'Đang tính phí ship'}</span>
+                                </button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
