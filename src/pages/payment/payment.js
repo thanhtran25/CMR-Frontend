@@ -29,6 +29,7 @@ const Payment = () => {
     const cart = useSelector(state => state.cart.cart);
     const total = useSelector(state => state.cart.total);
     const [showAlertCf, setShowAlertCf] = useState(false);
+    const [showAlertCf1, setShowAlertCf1] = useState(false);
     const [shippingFee, setShippingFee] = useState('');
     const [isReadonly, setIsReadonly] = useState({
         customerName: true,
@@ -81,6 +82,7 @@ const Payment = () => {
         try {
             const res = await paymentService(pay, token)
             const data = res && res.data ? res.data : '';
+            setShowAlertCf({ open: false })
             let array = [...cart]
             details.map((item, index) => {
                 cart.map((item1, index1) => {
@@ -89,10 +91,16 @@ const Payment = () => {
                     }
                 })
             })
-            alert('thanh toán thánh công')
+            setShowAlertCf1({
+                open: true,
+                variant: Notify.SUCCESS,
+                text: 'Thanh toán thành công',
+                title: 'Thành công',
+                backdrop: 'static',
+                onClick: () => handleSwitchCart()
+            })
             dispatch(changeCart(array))
             sessionStorage.setItem('cart', JSON.stringify(array))
-            navigate('/cart')
         } catch (error) {
 
         }
@@ -263,6 +271,23 @@ const Payment = () => {
                         Hủy
                     </Button>
                     <Button onClick={showAlertCf.onClick} variant="primary">OK</Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal
+                show={showAlertCf1.open}
+                onHide={handleSwitchCart}
+                backdrop={showAlertCf1.backdrop}
+                keyboard={false}
+            >
+                <Modal.Header style={{ backgroundColor: showAlertCf1.variant }} closeButton>
+                    <Modal.Title>{showAlertCf1.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {showAlertCf1.text}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={showAlertCf1.onClick} variant="primary">OK</Button>
                 </Modal.Footer>
             </Modal>
             <ToastContainer
