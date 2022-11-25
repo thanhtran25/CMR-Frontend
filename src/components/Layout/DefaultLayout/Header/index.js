@@ -60,9 +60,12 @@ function Header() {
 
     let path = <Button onClick={handleOnclickLogin} className='col-7 col-xl-4 btn btn-warning btn-sm my-1'>Đăng Nhập</Button>;
     if (user) {
-        let name = user.fullname
-        if (user.fullname.length > 10) {
-            name = user.fullname.substr(0, 6) + '...'
+        let name = "";
+        let arrName = user.fullname.split(' ');
+        if (arrName.length < 1) {
+            name = user.fullname
+        } else {
+            name += arrName[arrName.length - 1];
         }
         path = (<div onClick={() => showBox()} ref={wrapperRef}
             className='col-7 col-xl-3 profile-box btn btn-sm btn-warning my-1'>{name}
