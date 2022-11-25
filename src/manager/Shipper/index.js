@@ -78,9 +78,9 @@ function Shipper() {
                 sortBy: '',
                 numberPhone: '',
             })
-            if (state.DELIVERED)
+            if (state === OrderStates.DELIVERED)
                 handelNotify('success', 'Đã giao đơn hàng thành công')
-            else handelNotify('success', 'Hủy đơn hàng thành công')
+            else handelNotify('success', 'Đơn đã hủy')
             setShowAlertCf({
                 open: false
             })
