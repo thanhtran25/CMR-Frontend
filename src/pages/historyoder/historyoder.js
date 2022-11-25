@@ -62,7 +62,15 @@ const HistoryOder = () => {
     //         page: i
     //     })
     // }
-    const handleOnclickState = (states) => {
+    const handleOnclickState = (states, state1) => {
+        let arr = []
+        if (state1 === OrderStates.DELIVERING) {
+            arr.push(states)
+            arr.push(state1)
+
+        } else {
+            arr.push(states)
+        }
         if (states == 'all') {
             setSearchBills({
                 ...searchBills,
@@ -75,7 +83,7 @@ const HistoryOder = () => {
         } else {
             setSearchBills({
                 ...searchBills,
-                states: states,
+                states: arr,
                 page: 1,
                 sort: '',
                 sortBy: '',
@@ -121,18 +129,18 @@ const HistoryOder = () => {
                                                 <Nav.Link active={searchBills.states === '' ? true : false} className={`text-dark fw-bold`} onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.WAITING, '')} eventKey="link-2">Chờ xác nhận</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.ACCEPTED, '')} eventKey="link-3">Chờ lấy hàng</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.SHIPPING)} eventKey="link-4">
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.SHIPPING, OrderStates.DELIVERING)} eventKey="link-4">
                                                     Đang giao
                                                 </Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.DELIVERED)} eventKey="link-5">
+                                                <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.DELIVERED, '')} eventKey="link-5">
                                                     Đã giao
                                                 </Nav.Link>
                                             </Nav.Item>

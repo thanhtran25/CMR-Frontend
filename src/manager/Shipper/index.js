@@ -23,7 +23,7 @@ function Shipper() {
         sortBy: '',
         numberPhone: '',
         shipperId: user.id,
-        states: OrderStates.DELIVERING
+        states: [OrderStates.DELIVERING]
     });
     const [checked, setChecked] = useState([])
     const [showAlertCf, setShowAlertCf] = useState(false);

@@ -26,7 +26,9 @@ const getBillsService = async (bill, token) => {
         s += '&numberPhone=' + bill.numberPhone + '';
     }
     if (bill.states) {
-        s += '&states=' + bill.states + '';
+        bill.states.map((item, index) => {
+            s += '&states[]=' + item + '';
+        })
     }
 
 
