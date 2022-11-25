@@ -222,7 +222,7 @@ const ProductDetail = () => {
     }
     useEffect(() => {
         getProduct()
-    }, [])
+    }, [id])
     return (
         <>
             <ToastContainer
