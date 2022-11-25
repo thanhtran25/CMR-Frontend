@@ -25,8 +25,8 @@ function BillManager() {
     const [searchBills, setSearchBills] = useState({
         page: 1,
         limit: limit,
-        sort: '',
-        sortBy: '',
+        sort: 'createdAt',
+        sortBy: 'desc',
         numberPhone: '',
         states: ''
     });
@@ -70,24 +70,32 @@ function BillManager() {
             setBillsDetail(id)
         }
     }
-    const handleOnclickState = (states) => {
+    const handleOnclickState = (states, state1) => {
         setBillsDetail(-1)
+        let arr = []
+        if (state1 === OrderStates.DELIVERING) {
+            arr.push(states)
+            arr.push(state1)
+
+        } else {
+            arr.push(states)
+        }
         if (states == 'all') {
             setSearchBills({
                 ...searchBills,
                 states: '',
                 page: 1,
-                sort: '',
-                sortBy: '',
+                sort: 'createdAt',
+                sortBy: 'desc',
                 numberPhone: '',
             })
         } else {
             setSearchBills({
                 ...searchBills,
-                states: states,
+                states: arr,
                 page: 1,
-                sort: '',
-                sortBy: '',
+                sort: 'createdAt',
+                sortBy: 'desc',
                 numberPhone: '',
             })
         }
@@ -177,7 +185,6 @@ function BillManager() {
     let price = 0, total = 0
     useEffect(() => {
         getListBills(searchBills)
-        console.log(bills)
     }, [searchBills])
     return (
         <>
@@ -238,23 +245,23 @@ function BillManager() {
                                             <Nav.Link onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING, '')} eventKey="link-2">Chờ xác nhận</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED, '')} eventKey="link-3">Chờ lấy hàng</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.SHIPPING)} eventKey="link-4">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.SHIPPING, OrderStates.DELIVERING)} eventKey="link-4">
                                                 Đang giao
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERED)} eventKey="link-5">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.DELIVERED, '')} eventKey="link-5">
                                                 Đã giao
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.CANCEL)} eventKey="link-6">
+                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.CANCEL, '')} eventKey="link-6">
                                                 Đã hủy
                                             </Nav.Link>
                                         </Nav.Item>
