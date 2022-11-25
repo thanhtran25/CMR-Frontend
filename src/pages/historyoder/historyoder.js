@@ -17,8 +17,8 @@ const HistoryOder = () => {
     const [searchBills, setSearchBills] = useState({
         page: 1,
         limit: limit,
-        sort: '',
-        sortBy: '',
+        sort: 'createdAt',
+        sortBy: 'desc',
         numberPhone: '',
         states: '',
         history: action
@@ -71,8 +71,8 @@ const HistoryOder = () => {
                 ...searchBills,
                 states: '',
                 page: 1,
-                sort: '',
-                sortBy: '',
+                sort: 'createdAt',
+                sortBy: 'desc',
                 numberPhone: '',
             })
         } else {
@@ -80,8 +80,8 @@ const HistoryOder = () => {
                 ...searchBills,
                 states: arr,
                 page: 1,
-                sort: '',
-                sortBy: '',
+                sort: 'createdAt',
+                sortBy: 'desc',
                 numberPhone: '',
             })
         }
