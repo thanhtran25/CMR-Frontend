@@ -130,7 +130,12 @@ function BrandManager() {
             setShowAdd(false);
             handelNotify('success', 'Thêm thương hiệu thành công')
             setBrand(prevState => [...prevState, data.data]);
-
+            setBrandSearch({
+                ...brandSearch,
+                sort: '',
+                sortBy: '',
+                name: '',
+            })
         } catch (error) {
             const req = handleError(error.request)
             handelNotify('success', req)

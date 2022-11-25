@@ -26,7 +26,38 @@ import {
 
 function UserAdmin() {
     const token = cookies.load('Tokenadmin');
-    const limit = 10;
+    const limit = 20;
+    const optionsSearch = [
+        { value: 'fullname', label: 'Họ và tên' },
+        { value: 'address', label: 'Địa chỉ' },
+    ]
+
+    const [search, setSearch] = useState('fullname')
+
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setSearchUser({
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: '',
+        });
+    }
+    const handelUserSearch = (e) => {
+        const value = e.target.value
+        let tmp = search
+        setSearchUser({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: '',
+            sortBy: ''
+        });
+
+    }
     const [showAdd, setshowAdd] = useState(false);
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setshowDetail] = useState(false);
@@ -47,12 +78,7 @@ function UserAdmin() {
         { value: Roles.CUSTOMER, label: Roles.CUSTOMER },
         { value: Roles.SHIPPER, label: Roles.SHIPPER },
     ]
-    const optionsSearch = [
-        { value: '', label: 'Tất cả' },
-        { value: 'fullname', label: 'Tên' },
-        { value: 'address', label: 'Địa chỉ' },
-        { value: 'gender', label: 'Giới tính' }
-    ]
+
     const [users, setUsers] = useState();
     const [adduser, setAdduser] = useState({
         email: '',
@@ -111,15 +137,7 @@ function UserAdmin() {
         })
     }
 
-    const handelChangeSearch = (e) => {
-        const value = e.target.value
-        console.log(e)
-        setSearchInput({
-            ...searchInput,
-            role: e.value
-        });
-        console.log(adduser)
-    }
+
 
     const handleChangeRole = (e) => {
         setAdduser({
@@ -376,10 +394,9 @@ function UserAdmin() {
                         <div className="col-sm-6">
                             <h6>Tìm Kiếm</h6>
                             <div id="search-user-form" name="search-user-form">
-                                <div className="form-group position-relative has-icon-right">
-                                    <input id="serch-user-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                    <div className="form-control-icon">
-                                        <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSearch} className='fa-icon' />
+                                <div className="form-group position-relative has-icon-right row">
+                                    <div className="form-group position-relative has-icon-right col-9">
+                                        <input onChange={handelUserSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
                                     </div>
                                 </div>
                             </div>
@@ -390,8 +407,15 @@ function UserAdmin() {
                                     <label>
                                         <h6 style={{ marginLeft: '20px', marginRight: '10px' }}> Lọc Theo:</h6>
                                     </label>
-                                    <select options={optionsSearch} defaultValue={optionsSearch[0]} onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
-
+                                    <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                        {
+                                            optionsSearch && optionsSearch.length > 0 &&
+                                            optionsSearch.map(item => {
+                                                return (
+                                                    <option value={item.value}>{item.label}</option>
+                                                )
+                                            })
+                                        }
                                     </select>
                                     <div className='row'>
                                         <label>
