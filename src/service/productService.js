@@ -1,5 +1,4 @@
 import request from '~/core/utils/axios';
-import cookies from 'react-cookies';
 
 
 const getProductService = (product) => {
@@ -50,7 +49,7 @@ const getProductsService = (product) => {
         s += '&page=' + product.page + '';
     }
 
-
+    console.log(s);
     return request.get(
         'products' + sale + s,
     )

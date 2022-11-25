@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { getProductsService, getProductByIdService } from '~/service/productService';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
-import { choseCategories } from '~/store/action/productAction';
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { changeCart } from '~/store/action/cartAction';
 import { getBrandsService } from '~/service/brandService';
+import { useLocation } from 'react-router-dom';
 
 import Tooltip from 'react-bootstrap/Tooltip';
 import Badge from 'react-bootstrap/Badge';
@@ -19,41 +19,64 @@ import Form from 'react-bootstrap/Form';
 const ProductBody = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const categoryId = useSelector(state => state.product.categoryId);
+    let [searchParams, setSearchParams] = useSearchParams();
+    const categoryMap = {
+        '/camera': 1,
+        '/videocam': 2,
+        '/accessory': 3,
+    }
+    const location = useLocation()
+    console.log('🚀 ~ ProductBody ~ location', location);
+
+    const [filter, setFilter] = useState({
+        limit: 2,
+        page: searchParams.get('page') || 1,
+        name: '',
+        brandId: searchParams.get('brandId') || '',
+        categoryId: categoryMap[location.pathname],
+        description: '',
+        sortBy: searchParams.get('sortBy') || '',
+        sort: searchParams.get('sort') || ''
+    })
+
     const cart = useSelector(state => state.cart.cart);
+
     const [products, setProducts] = useState('')
     const [brand, setBrand] = useState('')
-    const [pagination, SetPagination] = useState('')
-    const limit = 24
-    const selectPagination = (page) => {
-        let content = [];
-        for (let i = 1; i <= page; i++) {
-            content.push({
-                pageNumber: i,
-            });
-        }
+    const [pagination, setPagination] = useState(1)
 
-        return content
-    }
-    const handelChange = (i) => {
-        const searchPdt = {
-            ...categoryId,
-            page: i
-        }
-        dispatch(choseCategories(searchPdt));
+    const handelChangePage = (i) => {
+        setFilter({ ...filter, page: i })
+        setSearchParams({ page: i })
     }
     const getListProducts = async (list) => {
         try {
             const res = await getProductsService(list)
             const data = (res && res.data) ? res.data : [];
-            SetPagination(selectPagination(data.totalPage))
+            setPagination([...Array(data.totalPage).keys()].map(key => key + 1))
             setProducts(data.products)
         } catch (error) {
             console.log(error)
         }
     }
+
+    useEffect(()=> {
+        setFilter({
+            ...filter,
+            limit: 2,
+            page: searchParams.get('page') || 1,
+            brandId: searchParams.get('brandId') || '',
+            categoryId: categoryMap[location.pathname],
+            description: '',
+            sortBy: searchParams.get('sortBy') || '',
+            sort: searchParams.get('sort') || ''
+        })
+    }, [location, searchParams])
+
+
     const getBrands = async () => {
         try {
+            const limit = 24
             const resBrand = await getBrandsService(limit)
             const data1 = (resBrand && resBrand.data) ? resBrand.data : [];
             setBrand(data1)
@@ -62,57 +85,57 @@ const ProductBody = () => {
         }
     }
     const handleChangeBrand = (e) => {
-        const searchPdt = {
-            ...categoryId,
-            brandId: e.value,
-            name: ''
+        const currentParams = Object.fromEntries([...searchParams]);
+
+        const update = { ...currentParams, brandId: e.value, page: 1 }
+        if (!e.value) {
+            delete update.brandId
         }
-        dispatch(choseCategories(searchPdt));
+        setSearchParams({ ...update })
     }
     const handleSwitchDetail = (id) => {
         navigate('/product/' + id)
     }
     const handleSortByPrice = (e) => {
-        const value = e.value
-        const sort = {
-            ...categoryId,
-            sort: 'price',
-            sortBy: value,
-            name: ''
+        const currentParams = Object.fromEntries([...searchParams]);
+
+        const update = { ...currentParams, sortBy: e.value, sort: 'price', page: 1 }
+        if (!e.value) {
+            delete update.sort
+            delete update.sortby
         }
-        dispatch(choseCategories(sort));
+        setSearchParams({ ...update })
+
     }
-    const handleFiter = (e) => {
+    const handleFilter = (e) => {
         let fill = {}
         if (e.value === 'all') {
             fill = {
-                limit: 24,
+                ...filter,
                 page: 1,
-                name: '',
-                brandId: '',
-                categoryId: '',
-                description: '',
-                sortBy: '',
-                sort: '',
+                sale: ''
             }
         }
         if (e.value === 'new') {
             fill = {
-                ...categoryId,
+                ...filter,
+                page: 1,
                 sort: 'createdAt',
                 sortBy: 'desc',
-                sale: '',
-                name: ''
+                sale: ''
             }
         }
         if (e.value === 'sale') {
             fill = {
-                ...categoryId,
-                sale: 'sale',
-                name: ''
+                ...filter,
+                page: 1,
+                sale: 'sale'
             }
         }
-        dispatch(choseCategories(fill));
+        setFilter(fill)
+        const currentParams = Object.fromEntries([...searchParams]);
+        setSearchParams({ ...currentParams, page: 1 })
+
     }
     const handleAddcart = async (product, amount, type) => {
         const cartss = JSON.parse(sessionStorage.getItem('cart'))
@@ -183,18 +206,13 @@ const ProductBody = () => {
         const value = e.target.value;
         setSearchPdt(value);
     }
-    const handeClickSearch = () => {
-        const name = {
-            limit: 12,
+    const handelSearch = (e) => {
+        e.preventDefault();
+        setFilter({
+            ...filter,
             page: 1,
             name: searchPdt,
-            brandId: '',
-            categoryId: '',
-            description: '',
-            sortBy: '',
-            sort: '',
-        }
-        dispatch(choseCategories(name))
+        })
     }
     const optionsfiter = [
         { value: 'all', label: 'Tất cả' },
@@ -207,10 +225,11 @@ const ProductBody = () => {
         { value: 'asc', label: 'Tăng dần' }
     ]
     const [optionsbrands, setOptionsbrands] = useState([{ value: '', label: 'Thượng hiệu' },])
+    
     useEffect(() => {
-        console.log(products)
-        getListProducts(categoryId)
-    }, [categoryId])
+        getListProducts(filter)
+    }, [filter])
+
     useEffect(() => {
         setOptionsbrands([{ value: '', label: 'Thượng hiệu' },])
         if (brand) {
@@ -222,6 +241,7 @@ const ProductBody = () => {
     useEffect(() => {
         getBrands()
     }, [])
+
     return (
         <>
             <img
@@ -242,7 +262,7 @@ const ProductBody = () => {
                                         </div>
                                         <div className='col-4 col-md-2'>
                                             <Select
-                                                onChange={handleFiter}
+                                                onChange={handleFilter}
                                                 defaultValue={optionsfiter[0]}
                                                 options={optionsfiter}
                                             />
@@ -252,6 +272,7 @@ const ProductBody = () => {
                                                 onChange={handleSortByPrice}
                                                 defaultValue={optionsprice[0]}
                                                 options={optionsprice}
+                                                value={optionsprice.find(item => item.value === filter.sortBy)}
 
                                             />
                                         </div>
@@ -260,20 +281,21 @@ const ProductBody = () => {
                                                 onChange={handleChangeBrand}
                                                 defaultValue={optionsbrands[0]}
                                                 options={optionsbrands}
+                                                value={optionsbrands.find(item => item.value === filter.brandId)}
 
                                             />
                                         </div>
                                         <div className='col-7 offset-1 col-xl-5 offset-xl-0'>
                                             <div className='search-bar '>
-                                                <Form className="d-flex">
+                                                <Form className="d-flex" onSubmit={handelSearch}>
                                                     <Form.Control
                                                         type="search"
-                                                        placeholder="...Search"
+                                                        placeholder="Tìm kiếm"
                                                         className="me-2"
                                                         aria-label="Search"
                                                         onChange={handleChangeSearchPdt}
                                                     />
-                                                    <Button onClick={handeClickSearch} variant="warning">Search</Button>
+                                                    <Button type='submit' variant="warning">Tìm</Button>
                                                 </Form>
                                             </div>
                                         </div>
@@ -291,7 +313,7 @@ const ProductBody = () => {
                             products && products.length > 0 &&
                             products.map((item, index) => {
                                 return (
-                                    <div className="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={item.id}>
                                         <div className="wsk-cp-product" role="button" onClick={() => handleSwitchDetail(item.id)}>
                                             <div className="wsk-cp-img">
                                                 <img className="img-responsive" src={process.env.REACT_APP_URL_IMG + item.img1} alt="Product" />
@@ -335,11 +357,11 @@ const ProductBody = () => {
                             })}
                     </div>
                     <nav className="mb-3">
-                        <ul id="pagination" className="pagination justify-content-center">
+                        <ul id="pagination" className="pagination pagination-sm justify-content-center">
                             {
                                 pagination && pagination.length > 0 &&
                                 pagination.map((item, index) => {
-                                    return (<li className="page-item" active><button onClick={e => handelChange(item.pageNumber)} className="page-link">{item.pageNumber}</button></li>)
+                                    return (<li className={`page-item ${item === +filter.page ? 'active' :''}`}  key={item}><button onClick={e => handelChangePage(item)} className="page-link">{item}</button></li>)
                                 })
                             }
 
