@@ -28,10 +28,10 @@ function BillManager() {
         sort: 'createdAt',
         sortBy: 'desc',
         numberPhone: '',
-        states: OrderStates.WAITING
+        states: [OrderStates.WAITING]
     });
     const [showAlertCf, setShowAlertCf] = useState(false);
-    const [states, setStates] = useState();
+    const [states, setStates] = useState(OrderStates.WAITING);
     const [billsDetail, setBillsDetail] = useState(-1);
     const [bills, setBills] = useState('')
     const [pagination, SetPagination] = useState('')
@@ -236,7 +236,7 @@ function BillManager() {
                                 <div className='row mb-2'>
                                     <Nav justify variant="tabs" defaultActiveKey="/home">
                                         <Nav.Item>
-                                            <Nav.Link onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
+                                            <Nav.Link active={states && states === OrderStates.WAITING ? true : false} onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link onClick={() => handleOnclickState(OrderStates.ACCEPTED)} eventKey="link-3">Chờ lấy hàng</Nav.Link>
