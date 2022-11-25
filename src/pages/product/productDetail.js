@@ -72,6 +72,62 @@ const ProductDetail = () => {
     const handleClickDetail = (item) => {
         navigate('/product/' + item)
     }
+    const handleAddcart = async (product, amount, type) => {
+        const cartss = JSON.parse(sessionStorage.getItem('cart'))
+        if (sessionStorage.getItem('amount')) {
+            sessionStorage.setItem('amount', parseInt(sessionStorage.getItem('amount')) + parseInt(amount))
+        } else {
+            sessionStorage.setItem('amount', parseInt(parseInt(amount)))
+        }
+        try {
+            const res = await getProductByIdService(product)
+            const data = res && res.data ? res.data : ''
+            const datafill = {
+                img1: data.img1,
+                name: data.name,
+                percent: data.percent,
+                price: data.price,
+                saleCodeId: data.saleCodeId,
+                count: amount,
+                productId: data.id,
+                total: data.price * amount - (data.price * amount - (data.price * (100 - data.percent) / 100))
+
+            }
+            let check = false
+            const newCart = cart && cart.length > 0 && cart.map(obj => {
+                if (obj.productId === product) {
+                    check = true
+                    return {
+                        ...obj,
+                        count: parseInt(obj.count + amount),
+                        total: parseInt(obj.price * (100 - obj.percent) / 100) * (obj.count + amount)
+                    };
+                }
+
+                return obj;
+            });
+            if (!cartss) {
+                sessionStorage.setItem('cart', JSON.stringify([datafill]))
+                dispatch(changeCart([datafill]))
+            }
+            if (check) {
+                sessionStorage.setItem('cart', JSON.stringify(newCart))
+                dispatch(changeCart(newCart))
+            } else if (cartss && !check) {
+                sessionStorage.setItem('cart', JSON.stringify([...cart, datafill]))
+                dispatch(changeCart([...cart, datafill]))
+            }
+            if (type === 'addcart') {
+                handelNotify('success', 'Thêm vào giỏ hàng thành công')
+            }
+            if (type === 'buy') {
+                navigate('/cart')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const handleAddcart2 = async (product, amount, type) => {
         const cartss = JSON.parse(sessionStorage.getItem('cart'))
         if (sessionStorage.getItem('amount')) {
@@ -91,7 +147,7 @@ const ProductDetail = () => {
                 saleCodeId: data.saleCodeId,
                 count: amount,
                 productId: data.id,
-                total: data.price * amount
+                total: data.price * amount - ((data.price * amount) - (data.price * (100 - data.percent) / 100))
 
             }
             let check = false
@@ -101,7 +157,7 @@ const ProductDetail = () => {
                     return {
                         ...obj,
                         count: obj.count + amount,
-                        total: parseInt(obj.price * (obj.count + amount))
+                        total: parseInt(obj.price * (100 - obj.percent) / 100) * (obj.count + amount)
                     };
                 }
 
@@ -147,62 +203,6 @@ const ProductDetail = () => {
         }
         else {
             setCount(count + value)
-        }
-    }
-    const handleAddcart = async (product, amount, type) => {
-        const cartss = JSON.parse(sessionStorage.getItem('cart'))
-        if (sessionStorage.getItem('amount')) {
-            sessionStorage.setItem('amount', parseInt(sessionStorage.getItem('amount')) + parseInt(amount))
-        } else {
-            sessionStorage.setItem('amount', parseInt(parseInt(amount)))
-        }
-        try {
-            const res = await getProductByIdService(product)
-            const data = res && res.data ? res.data : ''
-            const datafill = {
-                img1: data.img1,
-                name: data.name,
-                percent: data.percent,
-                price: data.price,
-                saleCodeId: data.saleCodeId,
-                count: amount,
-                productId: data.id,
-                total: parseInt(data.price * amount)
-
-            }
-            let check = false
-            const newCart = cart && cart.length > 0 && cart.map(obj => {
-                if (obj.productId === product) {
-                    check = true
-                    return {
-                        ...obj,
-                        count: parseInt(obj.count + amount),
-                        total: parseInt(obj.price * (obj.count + amount))
-                    };
-                }
-
-                return obj;
-            });
-            if (!cartss) {
-                sessionStorage.setItem('cart', JSON.stringify([datafill]))
-                dispatch(changeCart([datafill]))
-            }
-            if (check) {
-                sessionStorage.setItem('cart', JSON.stringify(newCart))
-                dispatch(changeCart(newCart))
-            } else if (cartss && !check) {
-                sessionStorage.setItem('cart', JSON.stringify([...cart, datafill]))
-                dispatch(changeCart([...cart, datafill]))
-            }
-            if (type === 'addcart') {
-                handelNotify('success', 'Thêm vào giỏ hàng thành công')
-            }
-            if (type === 'buy') {
-                navigate('/cart')
-            }
-
-        } catch (error) {
-            console.log(error)
         }
     }
     const handleClickImage = (img) => {

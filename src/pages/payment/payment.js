@@ -36,6 +36,7 @@ const Payment = () => {
         address: false,
         numberPhone: true
     });
+    const [oldShip, setOldShip] = useState(0)
     const [validate, setValiday] = useState('')
     const [details, setDetails] = useState()
     // const handleRepairAddress = async () => {
@@ -55,10 +56,6 @@ const Payment = () => {
             const isval = validateFull(userPay)
             setValiday(isval)
             if (Object.keys(isval).length > 0) return
-            if (!isReadonly.address || !isReadonly.customerName || !isReadonly.numberPhone) {
-                handelNotify('warn', 'Lưu tất cả trước khi thanh toán')
-                return
-            }
             setShowAlertCf({
                 open: true,
                 variant: Notify.WARNING,
@@ -134,33 +131,6 @@ const Payment = () => {
                 }
                 details.push(product)
             })
-        if (cookies.load('user')) {
-            if (user.fullname == '') {
-                setIsReadonly({
-                    ...isReadonly,
-                    customerName: false
-                })
-            }
-            if (user.address == '') {
-                setIsReadonly({
-                    ...isReadonly,
-                    address: false
-                })
-            }
-            if (user.numberPhone == '') {
-                setIsReadonly({
-                    ...isReadonly,
-                    numberPhone: false
-                })
-            }
-        }
-        else {
-            setIsReadonly({
-                customerName: false,
-                address: false,
-                numberPhone: false
-            })
-        }
         if (user) {
             setUserPay({
                 customerName: user.fullname,
@@ -202,53 +172,34 @@ const Payment = () => {
         }
         // let pathbtnName = <button type="button" class="btn btn-success">Success</button>
     }
-    const handleClickNotFocus = async (e) => {
-        const type = e.target.value
-        if (type === 'name') {
-            setIsReadonly({
-                ...isReadonly,
-                customerName: true
-            })
+    const handleClickAddress = async () => {
+        const address = {
+            address: userPay.address
         }
-        if (type === 'address') {
-            const address = {
-                address: userPay.address
-            }
-            try {
-                const res = await shippingService(address, token)
-                const data = res && res.data ? res.data : '';
-                handelNotify('success', 'Tính phí ship thành công')
-                setShippingFee(data.result)
-                dispatch(userPayment({ ...total, total: total.total + data.result.shippingFee }))
-                setIsReadonly({
-                    ...isReadonly,
-                    address: true
-                })
-            } catch (error) {
-                console.log(error)
-                handelNotify('warn', 'Tính phí ship thất bại')
-            }
+        try {
+            const res = await shippingService(address, token)
+            const data = res && res.data ? res.data : '';
+            handelNotify('success', 'Tính phí ship thành công')
+            setShippingFee(data.result)
+            dispatch(userPayment({ ...total, total: total.total + data.result.shippingFee - oldShip }))
+            setOldShip(data.result.shippingFee)
+        } catch (error) {
+            handelNotify('warn', 'Tính phí ship thất bại')
         }
-        if (type === 'phone') {
-            setIsReadonly({
-                ...isReadonly,
-                numberPhone: true
-            })
-        }
-        // let pathbtnName = <button type="button" class="btn btn-success">Success</button>
     }
-    let pathName = <button onClick={handleClickFocus} value='name' type="button" className="btn btn-secondary btnSua">Sửa</button>
-    let pathAdress = <button onClick={handleClickFocus} value='address' type="button" className="btn btn-secondary btnSua">Sửa</button>
-    let pathPhone = <button onClick={handleClickFocus} value='phone' type="button" className="btn btn-secondary btnSua">Sửa</button>
-    if (!isReadonly.address) {
-        pathAdress = <button onClick={handleClickNotFocus} value='address' type="button" class="btn btn-success">Lưu</button>
-    }
-    if (!isReadonly.customerName) {
-        pathName = <button onClick={handleClickNotFocus} value='name' type="button" class="btn btn-success">Lưu</button>
-    }
-    if (!isReadonly.numberPhone) {
-        pathPhone = <button onClick={handleClickNotFocus} value='phone' type="button" class="btn btn-success">Lưu</button>
-    }
+    // let pathName = <button onClick={handleClickFocus} value='name' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    // let pathAdress = <button onClick={handleClickFocus} value='address' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    // let pathPhone = <button onClick={handleClickFocus} value='phone' type="button" className="btn btn-secondary btnSua">Sửa</button>
+    // if (!isReadonly.address) {
+    //     pathAdress = <button onClick={handleClickNotFocus} value='address' type="button" class="btn btn-success">Lưu</button>
+    // }
+    // if (!isReadonly.customerName) {
+    //     pathName = <button onClick={handleClickNotFocus} value='name' type="button" class="btn btn-success">Lưu</button>
+    // }
+    // if (!isReadonly.numberPhone) {
+    //     pathPhone = <button onClick={handleClickNotFocus} value='phone' type="button" class="btn btn-success">Lưu</button>
+    // }
+    let save = 0
     return (
         <>
             <Modal
@@ -302,113 +253,86 @@ const Payment = () => {
                 pauseOnHover
                 theme="colored"
             />
-            <div className="container">
-                <div className='row'>
-                    <h4 className='switchpage'><FontAwesomeIcon icon={faHouse} className='fa-icon' /> Trang Chủ / <span>Giỏ Hàng / </span><span className='paymentText'>Thanh Toán</span></h4>
+            <div className="container mt-5">
+                <div className="py-5 text-center">
+                    <h2>Chi tiết thanh toán</h2>
                 </div>
-                <div className='row'>
-                    <h3 className='titleGiohang'>Chi tiết thanh toán</h3>
-                </div>
-                <div className="container paymentbody">
-                    <div className='row w-100 p-3 infor'>
-                        <div className='col-12'>
-                            <div className='row mt-2'>
-                                <div className='col-10'>
-                                    <input readOnly={isReadonly.customerName} onChange={handleChange} name="customerName" ref={refname} type="text" value={userPay.customerName} className="form-control" placeholder="Họ và tên" />
+
+                <div className="row">
+                    <div className="col-md-4 order-md-2 mb-4">
+                        <h4 className="d-flex justify-content-between align-items-center mb-3">
+                            <span className="text-muted">Giỏ hàng</span>
+                            <span className="">{total.amount}</span>
+                        </h4>
+                        <ul className="list-group mb-3">
+                            {checked && checked.length > 0 &&
+                                checked.map((item, index) => {
+                                    save += (item.price / (100) * item.percent) * item.count
+                                    return (
+                                        <li className="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div>
+                                                <h6 className="my-0">{item.name}</h6>
+                                                <small className="text-muted">{'x ' + item.count}</small>
+                                            </div>
+                                            <div className="box-item-content-2">
+                                                <p>{VND((item.price * (100 - item.percent) / 100) * item.count)}</p>
+                                                {item.percent > 0 && <del className="box-item-del">{VND(item.price * item.count)}</del>}
+                                            </div>
+                                        </li>
+                                    )
+                                })
+                            }
+                            <li className="list-group-item d-flex justify-content-between bg-light">
+                                <div className="text-success">
+                                    <h6 className="my-0">Tiết kiệm: </h6>
+                                    <small></small>
+                                </div>
+                                <span className="text-success">-{VND(total.totalSale)}</span>
+                            </li>
+                            <li className="list-group-item d-flex justify-content-between">
+                                <span>Phí ship: </span>
+                                <span>{shippingFee && shippingFee.shippingFee ? shippingFee.distance && VND(shippingFee.shippingFee)
+                                    + ' (' + shippingFee.distance + 'km)' : '0 đ'
+                                }
+                                </span>
+                            </li>
+                            <li className="list-group-item d-flex justify-content-between">
+                                <span>Thành tiền: </span>
+                                <strong>{VND(total.total)}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="col-md-8 order-md-1">
+                        <h4 className="mb-3">Thông tin</h4>
+                        <form className="needs-validation" novalidate>
+                            <div className="row">
+                                <div className="col-md-12 mb-6">
+                                    <label htmlFor="lastName">Họ và tên</label>
+                                    <input type="text" onChange={handleChange} name='customerName' value={userPay.customerName} className="form-control" id="lastName" placeholder="Họ và tên" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.customerName}</p>
                                 </div>
-                                <div className='col-2'>
-                                    {pathName}
-                                </div>
                             </div>
-                            <div className='row mt-4'>
-                                <div className='col-10'>
-                                    <input readOnly={isReadonly.address} name="address" onChange={handleChange} ref={refaddress} type="text" value={userPay.address} className="form-control" placeholder="Địa chỉ" />
+                            <div className="row">
+                                <div className="mb-3 col-11">
+                                    <label htmlFor="email">Địa chỉ</label>
+                                    <input type="text" onChange={handleChange} name='address' value={userPay.address} className="form-control" id="email" placeholder="Địa chỉ" />
                                     <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.address}</p>
                                 </div>
-                                <div className='col-2'>
-                                    {pathAdress}
+                                <div className="mb-3 mt-3 col-1">
+                                    <button onClick={handleClickAddress} type="button" class="btn btn-success">sửa</button>
                                 </div>
                             </div>
-                            <div className='row mt-4 pb-2'>
-                                <div className='col-10'>
-                                    <input readOnly={isReadonly.numberPhone} name="numberPhone" onChange={handleChange} ref={refphone} type="text" value={userPay.numberPhone} className="form-control" placeholder="Số điện thoại" />
-                                    <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.numberPhone}</p>
-                                </div>
-                                <div className='col-2'>
-                                    {pathPhone}
-                                </div>
+                            <div className="mb-3">
+                                <label htmlFor="address">Số điện thoại</label>
+                                <input type="text" onChange={handleChange} name='numberPhone' value={userPay.numberPhone} className="form-control" id="address" placeholder="Số điện thoại" />
+                                <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.numberPhone}</p>
                             </div>
-                            <hr className='my-hr-line' />
-                            <div className='row totalItem'>
-                                <div className='col-10'>Đơn hàng ({total.amount})</div>
-                                <div className='col-2'><button onClick={handleSwitchCart} type="button" className="btn btn-secondary btnSua">Sửa</button></div>
-                            </div>
-                            <hr />
-                            <div className='row'>
-                                {checked && checked.length > 0 &&
-                                    checked.map((item, index) => {
-                                        return (
-                                            <>
-                                                <div className='col-8 mt-3'>{item.count + ' x ' + item.name}</div>
-                                                <div className='col-4 mt-3'>{total && VND(item.total)}</div>
-                                            </>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <hr className='mt-4' />
-                            <div className='row'>
-                                <div className='col-8'>
-                                    Tạm tính
-                                </div>
-                                <div className='col-4'>
-                                    {total && VND(total.totalPrice)}
-                                </div>
-                                <div className='col-8 mt-2' style={{
-                                    color: 'red',
-                                    fontStyle: 'italic'
-                                }}>
-                                    Khuyến mãi
-                                </div>
-                                <div className='col-4 mt-2' style={{
-                                    color: 'red',
-                                    fontStyle: 'italic'
-                                }}>
-                                    {total && VND(total.totalSale)}
-                                </div>
-                                <div className='col-8 mt-2'>
-                                    Phí vận chuyển
-                                </div>
-                                <div className='col-4 mt-2'>
-                                    {shippingFee && shippingFee.shippingFee && shippingFee.distance && VND(shippingFee.shippingFee)
-                                        + ' (' + shippingFee.distance + 'km)'
-                                    }
-                                </div>
-                            </div>
-                            <hr className='mt-3' />
-                            <div className='row'>
-                                <div className='col-8 mt-2' style={{ fontWeight: 'bold' }}>
-                                    Thành tiền
-                                </div>
-                                <div className='col-4 mt-2' style={{ fontWeight: 'bold' }}>
-                                    {total && VND(total.total)}
-                                    <div className='mt-2' style={{
-                                        fontStyle: 'italic',
-                                        color: 'gray'
-                                    }}>
-                                        (Đã bao gồm thuế VAT)
-                                    </div>
-                                </div>
-                            </div>
-                            <hr className='mt-3 my-hr-line' />
-                            <div className='row'>
-                                <button onClick={handleshowCf} type="button" className="btn btn-danger w-20">Thanh Toán</button>
-                            </div>
-                        </div>
+                            <hr className="mb-4" />
+                            <button onClick={handleshowCf} className="btn btn-primary btn-lg btn-block mb-3" type="button">Thanh toán</button>
+                        </form>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     )
 }

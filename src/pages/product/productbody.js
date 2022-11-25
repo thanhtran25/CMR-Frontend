@@ -156,7 +156,7 @@ const ProductBody = () => {
                 saleCodeId: data.saleCodeId,
                 count: amount,
                 productId: data.id,
-                total: data.price * amount
+                total: data.price * amount - (data.price * amount - (data.price * (100 - data.percent) / 100))
 
             }
             let check = false
@@ -166,7 +166,7 @@ const ProductBody = () => {
                     return {
                         ...obj,
                         count: obj.count + amount,
-                        total: parseInt(obj.price * (obj.count + amount))
+                        total: parseInt(obj.price * (100 - obj.percent) / 100) * (obj.count + amount)
                     };
                 }
 
