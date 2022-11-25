@@ -30,9 +30,7 @@ function UserManager() {
     const limit = 20;
     const optionsSearch = [
         { value: 'fullname', label: 'Họ và tên' },
-        { value: 'gender', label: 'Giới tính' },
         { value: 'address', label: 'Địa chỉ' },
-        { value: 'role', label: 'Vai trò' },
     ]
 
     const [search, setSearch] = useState('fullname')

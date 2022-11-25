@@ -18,7 +18,41 @@ import Button from 'react-bootstrap/Button';
 import { Notify } from '~/core/constant';
 
 function BillManager() {
-    const limit = 10
+    const limit = 10;
+    const optionsSearch = [
+        { value: 'numberPhone', label: 'Số điện thoại' },
+    ]
+
+    const [search, setSearch] = useState('numberPhone')
+
+    const handelChangeSearch = (e) => {
+        const value = e.target.value
+        setSearch(value);
+        console.log(value)
+        document.getElementById('search-product-text').value = '';
+        setSearchBills({
+            page: 1,
+            limit: limit,
+            sort: 'createdAt',
+            sortBy: 'desc',
+            numberPhone: '',
+        });
+    }
+    const handelBillsSearch = (e) => {
+
+        const value = e.target.value
+        let tmp = search
+        console.log(value)
+        setSearchBills({
+            [tmp]: value,
+            limit: limit,
+            page: 1,
+            sort: 'createdAt',
+            sortBy: 'desc',
+        });
+
+    }
+
     const token = cookies.load('Tokenadmin');
     const [showRepair, setShowRepair] = useState(false);
     const [showDetail, setShowDetail] = useState(false);
@@ -221,6 +255,19 @@ function BillManager() {
                 <div id="main-content">
                     <div className="page-heading">
                         <div className="page-title">
+                            <div className="row">
+                                <div className='col-11'>
+                                    <h6>Tìm Kiếm</h6>
+                                    <div id="search-bill-form" name="search-bill-form">
+                                        <div className="form-group position-relative has-icon-right row">
+                                            <div className="form-group position-relative has-icon-right col-9">
+                                                <input onChange={handelBillsSearch} id="search-product-text" type="text" className="form-control" placeholder="Tìm kiếm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div className="col-12 col-md-7 order-md-1 order-last">
                                 <label>
                                     <h3>Danh sách hóa đơn</h3>
@@ -228,8 +275,15 @@ function BillManager() {
                                 <label>
                                     <h5 style={{ marginLeft: '50px', marginRight: '10px' }}> Lọc Theo:</h5>
                                 </label>
-                                <select className="btn btn btn-primary" name="search-cbb" id="cars-search">
-                                    <option>Tất Cả</option>
+                                <select onChange={handelChangeSearch} className="btn btn btn-primary" name="search-cbb" id="cars-search">
+                                    {
+                                        optionsSearch && optionsSearch.length > 0 &&
+                                        optionsSearch.map(item => {
+                                            return (
+                                                <option value={item.value}>{item.label}</option>
+                                            )
+                                        })
+                                    }
                                 </select>
                             </div>
                             <div className="row">
@@ -260,19 +314,7 @@ function BillManager() {
 
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className='col-11'>
-                                    <div id="search-bill-form" name="search-bill-form">
-                                        <div className="form-group position-relative has-icon-right">
-                                            <input id="serch-bill-text" type="text" className="form-control" placeholder="Tìm kiếm" />
-                                            <div className="form-control-icon">
-                                                <i className="bi bi-search"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-1"><button type="button" class="btn btn-warning">Tìm</button></div>
-                            </div>
+
                         </div>
                         <section className="section">
                             <div className="card">
