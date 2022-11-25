@@ -8,7 +8,7 @@ import loginAdmin from '~/admin/Login';
 import userAdmin from '~/admin/UserAdmin';
 import cart from '~/pages/cart/cart';
 import UserProfile from '~/pages/userprofile/userprofile';
-import { LayoutLogin, AdminLayout, ManagerLayout } from '~/components/Layout';
+import { AdminLayout, ManagerLayout } from '~/components/Layout';
 import BillManager from '~/manager/BillManager';
 import BrandManager from '~/manager/BrandManager';
 import CategoriesManager from '~/manager/CategoriesManager';

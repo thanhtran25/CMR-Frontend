@@ -54,7 +54,7 @@ const Login = () => {
         }
     }
     const handleSwitchLogin = () => {
-        navigate('/Login')
+        navigate('/login')
     }
     const validateAll = () => {
         const msg = {}

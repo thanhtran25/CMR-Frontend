@@ -27,7 +27,7 @@ function App() {
             } else if (route.layout === null) {
               Layout = Fragment;
             }
-            return <Route exact key={index} path={route.path} element={<Layout><Page /></Layout>} />
+            return <Route key={index} path={route.path} element={<Layout><Page /></Layout>} />
 
           })}
 

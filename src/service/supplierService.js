@@ -1,5 +1,4 @@
 import request from '~/core/utils/axios';
-import cookies from 'react-cookies';
 
 const getSuppliersService = (supplier, token) => {
     const config = {

@@ -23,7 +23,7 @@ function Header() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleOnclickLogin = () => {
-        navigate('/Login');
+        navigate('/login');
     }
 
     const wrapperRef = useRef();
@@ -252,10 +252,10 @@ function Header() {
 
                     <div className='col-4 col-xl-3'>
                         <div className='row'>
-                            <Link className='shop-card offset-6 col-xl-1'>
+                            <div className='shop-card offset-6 col-xl-1'>
                                 <Cartbox></Cartbox>
                                 <span className='cart-count'>{amount}</span>
-                            </Link>
+                            </div>
                             <div className='col-1'></div>
                             {path}
                         </div>
