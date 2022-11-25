@@ -20,7 +20,7 @@ const HistoryOder = () => {
         sort: '',
         sortBy: '',
         numberPhone: '',
-        states: 'accepted',
+        states: '',
         history: action
     });
     function VND(x) {
@@ -40,28 +40,28 @@ const HistoryOder = () => {
         try {
             const res = await getBillsService(list, token)
             const data = (res && res.data) ? res.data : [];
-            SetPagination(selectPagination(data.totalPage))
+            // SetPagination(selectPagination(data.totalPage))
 
             setBills(data.bills)
         } catch (error) {
         }
     }
-    const selectPagination = (page) => {
-        let content = [];
-        for (let i = 1; i <= page; i++) {
-            content.push({
-                pageNumber: i,
-            });
-        }
+    // const selectPagination = (page) => {
+    //     let content = [];
+    //     for (let i = 1; i <= page; i++) {
+    //         content.push({
+    //             pageNumber: i,
+    //         });
+    //     }
 
-        return content
-    }
-    const handelChange = (i) => {
-        setSearchBills({
-            ...searchBills,
-            page: i
-        })
-    }
+    //     return content
+    // }
+    // const handelChange = (i) => {
+    //     setSearchBills({
+    //         ...searchBills,
+    //         page: i
+    //     })
+    // }
     const handleOnclickState = (states) => {
         if (states == 'all') {
             setSearchBills({
@@ -118,7 +118,7 @@ const HistoryOder = () => {
                                     <div className='col-12'>
                                         <Nav variant="tabs" defaultActiveKey="/home" className='nav nav-tabs card-header-tabs m-0'>
                                             <Nav.Item className='nav-item'>
-                                                <Nav.Link className={`text-dark fw-bold`} onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
+                                                <Nav.Link active={searchBills.states === '' ? true : false} className={`text-dark fw-bold`} onClick={() => handleOnclickState('all')} eventKey="link-1">Tất cả</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
                                                 <Nav.Link className='text-dark fw-bold' onClick={() => handleOnclickState(OrderStates.WAITING)} eventKey="link-2">Chờ xác nhận</Nav.Link>

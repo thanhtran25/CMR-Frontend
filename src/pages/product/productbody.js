@@ -208,12 +208,13 @@ const ProductBody = () => {
     ]
     const [optionsbrands, setOptionsbrands] = useState([{ value: '', label: 'Thượng hiệu' },])
     useEffect(() => {
+        console.log(products)
         getListProducts(categoryId)
     }, [categoryId])
     useEffect(() => {
         setOptionsbrands([{ value: '', label: 'Thượng hiệu' },])
         if (brand) {
-            brand.brands.map((item, index) => 
+            brand.brands.map((item, index) =>
                 setOptionsbrands(current => [...current, { value: item.id, label: item.name }])
             )
         }
