@@ -36,10 +36,6 @@ import HistoryOder from '~/pages/historyoder/historyoder';
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/Home', component: Home },
-    { path: '/login', component: Login },
-    { path: '/signup', component: Signup },
-    { path: '/forgotpassword', component: Forgotpassword },
-    { path: '/password-reset/:uid/:token', component: changePassword },
     { path: '/Payment', component: Payment },
     { path: '/Cart', component: cart },
     { path: '/admin/login', component: loginAdmin, layout: null },
@@ -50,6 +46,10 @@ const publicRoutes = [
     { path: '/accessory', component: ProductBody },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
+    { path: '/login', component: Login },
+    { path: '/signup', component: Signup },
+    { path: '/forgotpassword', component: Forgotpassword },
+    { path: '/password-reset/:uid/:token', component: changePassword },
     { path: '/signup/otp/:emailurl', component: RequestOTP },
     { path: '/productdetail', component: productDetail },
     { path: '*', component: Error404, layout: null },
@@ -114,6 +114,11 @@ const privateRoutesU = [
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/history', component: HistoryOder },
+    { path: '/login', component: Login },
+    { path: '/signup', component: Signup },
+    { path: '/forgotpassword', component: Forgotpassword },
+    { path: '/password-reset/:uid/:token', component: changePassword },
+    { path: '/signup/otp/:emailurl', component: RequestOTP },
     { path: '*', component: Error404, layout: null },
 ]
 
