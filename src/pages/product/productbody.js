@@ -29,7 +29,7 @@ const ProductBody = () => {
     console.log('🚀 ~ ProductBody ~ location', location);
 
     const [filter, setFilter] = useState({
-        limit: 2,
+        limit: 8,
         page: searchParams.get('page') || 1,
         name: '',
         brandId: searchParams.get('brandId') || '',
@@ -60,10 +60,10 @@ const ProductBody = () => {
         }
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         setFilter({
             ...filter,
-            limit: 2,
+            limit: 8,
             page: searchParams.get('page') || 1,
             brandId: searchParams.get('brandId') || '',
             categoryId: categoryMap[location.pathname],
@@ -225,7 +225,7 @@ const ProductBody = () => {
         { value: 'asc', label: 'Tăng dần' }
     ]
     const [optionsbrands, setOptionsbrands] = useState([{ value: '', label: 'Thượng hiệu' },])
-    
+
     useEffect(() => {
         getListProducts(filter)
     }, [filter])
@@ -361,7 +361,7 @@ const ProductBody = () => {
                             {
                                 pagination && pagination.length > 0 &&
                                 pagination.map((item, index) => {
-                                    return (<li className={`page-item ${item === +filter.page ? 'active' :''}`}  key={item}><button onClick={e => handelChangePage(item)} className="page-link">{item}</button></li>)
+                                    return (<li className={`page-item ${item === +filter.page ? 'active' : ''}`} key={item}><button onClick={e => handelChangePage(item)} className="page-link">{item}</button></li>)
                                 })
                             }
 

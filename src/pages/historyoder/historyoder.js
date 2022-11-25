@@ -167,7 +167,7 @@ const HistoryOder = () => {
                                                                     </div>
                                                                     <div className='col-6'>
                                                                         <p className="card-text">Địa chỉ: {item1.address}</p>
-                                                                        <p className="card-text">{statesMessage[item1.states]}</p>
+                                                                        <p className="card-text text-success">{statesMessage[item1.states]}</p>
                                                                     </div>
                                                                     <div className='col-2'>
                                                                         {item1.billDetails.length > 0 &&
@@ -182,14 +182,14 @@ const HistoryOder = () => {
                                                                                     {total === item1.price && <hr></hr>}
                                                                                     <div className="row">
                                                                                         <div className="col-1 offset-1"><img src={process.env.REACT_APP_URL_IMG + item1.product.img1} /></div>
-                                                                                        <div className='col-8'>
+                                                                                        <div className='col-7'>
                                                                                             <p className="text-product-detail">{item1.product.name}
                                                                                             </p>
                                                                                             <p className="text-count-product">X{item1.count}
                                                                                             </p>
                                                                                         </div>
                                                                                         <div className="price-wrap col-2">
-                                                                                            <p className="text-danger">{VND(item1.price)}</p></div>
+                                                                                            <p className="text-danger text-end">{VND(item1.price)}</p></div>
                                                                                     </div>
                                                                                     <hr></hr>
                                                                                 </>
@@ -199,7 +199,7 @@ const HistoryOder = () => {
                                                                         }
                                                                         {total > 0 && <div className='row'>
 
-                                                                            <div className='col-3 offset-9 text-danger fw-bold'>Tổng cộng: {VND(total)}</div>
+                                                                            <div className='col-4 offset-7 text-danger text-end fw-bold'>Tổng cộng: {VND(total)}</div>
                                                                         </div>
                                                                         }
 
