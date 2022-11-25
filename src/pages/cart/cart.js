@@ -17,6 +17,8 @@ const Cart = () => {
     const cart = useSelector(state => state.cart.cart);
     const amount1 = useSelector(state => state.cart.amount)
     const [total, setTotal] = useState()
+
+    
     const [checked, setChecked] = useState([]);
     const handleAddcart = async (product, amount) => {
         const cartss = JSON.parse(sessionStorage.getItem('cart'))
@@ -94,6 +96,8 @@ const Cart = () => {
     const handleCheck = (event) => {
         const value = JSON.parse(event.target.value)
         var updatedList = [...checked];
+        console.log('🚀 ~ handleCheck ~ event.target.checked', event.target.checked);
+
         if (event.target.checked) {
             updatedList = [...checked, value];
         } else {
@@ -187,14 +191,14 @@ const Cart = () => {
                                         {cart && cart.length > 0 &&
                                             cart.map((item, index) => {
                                                 return (
-                                                    <tr>
+                                                    <tr key={item.productId}>
                                                         <td>
                                                             <div className="form-check">
                                                                 <input onChange={handleCheck} value={JSON.stringify(item)} className="form-check-input" type="checkbox" id="check1" name="option1" />
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <div className="aside"><img src={process.env.REACT_APP_URL_IMG + item.img1} width={'90%'} /></div>
+                                                            <div className="aside"><img src={process.env.REACT_APP_URL_IMG + item.img1} width={'90%'} alt="" /></div>
 
                                                         </td>
                                                         <td><p className="text-break mb-0">{item.name}</p></td>
@@ -217,7 +221,7 @@ const Cart = () => {
 
                                                         </td>
                                                         <td><div className="price-wrap"><p className=" mb-0">{VND(item.total)}</p></div></td>
-                                                        <td><FontAwesomeIcon button onClick={() => deleteCart(item.productId)} icon={faTrashCan} className='fa-trash' /></td>
+                                                        <td><FontAwesomeIcon onClick={() => deleteCart(item.productId)} icon={faTrashCan} className='fa-trash' /></td>
                                                     </tr>
                                                 )
                                             })
@@ -244,8 +248,8 @@ const Cart = () => {
                                     <dd className="text-right text-dark b ml-3"><strong>{total && VND(total.total)}</strong></dd>
                                 </dl>
                                 <hr />
-                                <a onClick={handleSwitchPaymet} className="btn btn-out btn-success btn-main" data-abc="true"> Tiến hành thanh toán </a>
-                                <a onClick={handleSwitchShopping} className="btn btn-out btn-outline-secondary btn-main mt-2" data-abc="true">Tiếp tục mua hàng</a>
+                                <button onClick={handleSwitchPaymet} className="btn btn-primary btn-main" data-abc="true"> Tiến hành thanh toán </button>
+                                <button onClick={handleSwitchShopping} className="btn btn-out btn-outline-secondary btn-main mt-2" data-abc="true">Tiếp tục mua hàng</button>
                             </div>
                         </div>
                     </aside>
