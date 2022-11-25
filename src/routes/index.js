@@ -32,13 +32,6 @@ import Error404 from '~/pages/404/B404';
 import UserManager from '~/manager/UserManager';
 import HistoryOder from '~/pages/historyoder/historyoder';
 
-import Camera from '~/pages/product/camera';
-
-import Videocam from '~/pages/product/videocam';
-
-import Accessory from '~/pages/product/accessory';
-
-
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -52,9 +45,9 @@ const publicRoutes = [
     { path: '/admin/login', component: loginAdmin, layout: null },
     { path: '/admin/*', component: loginAdmin, layout: null },
     { path: '/product/:id', component: productDetail },
-    { path: '/camera', component: Camera },
-    { path: '/videocam', component: Videocam },
-    { path: '/accessory', component: Accessory },
+    { path: '/camera', component: ProductBody },
+    { path: '/videocam', component: ProductBody },
+    { path: '/accessory', component: ProductBody },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/signup/otp/:emailurl', component: RequestOTP },
@@ -115,9 +108,9 @@ const privateRoutesU = [
     { path: '/Payment', component: Payment },
     { path: '/Cart', component: cart },
     { path: '/product/:id', component: productDetail },
-    { path: '/camera', component: Camera },
-    { path: '/videocam', component: Videocam },
-    { path: '/accessory', component: Accessory },
+    { path: '/camera', component: ProductBody },
+    { path: '/videocam', component: ProductBody },
+    { path: '/accessory', component: ProductBody },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/history', component: HistoryOder },
@@ -138,9 +131,9 @@ const publicRoutesMASS = [
     { path: '/Payment', component: Payment },
     { path: '/Cart', component: cart },
     { path: '/product/:id', component: productDetail },
-    { path: '/camera', component: Camera },
-    { path: '/videocam', component: Videocam },
-    { path: '/accessory', component: Accessory },
+    { path: '/camera', component: ProductBody },
+    { path: '/videocam', component: ProductBody },
+    { path: '/accessory', component: ProductBody },
     { path: '/contact', component: Contact },
     { path: '/guarantee', component: Guarantee },
     { path: '/signup/otp/:emailurl', component: RequestOTP },

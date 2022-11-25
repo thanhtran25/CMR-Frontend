@@ -62,7 +62,7 @@ function Header() {
     if (user) {
         let name = user.fullname
         if (user.fullname.length > 10) {
-            name = user.fullname.substr(0, 5) + '...'
+            name = user.fullname.substr(0, 6) + '...'
         }
         path = (<div onClick={() => showBox()} ref={wrapperRef}
             className='col-7 col-xl-3 profile-box btn btn-sm btn-warning my-1'>{name}

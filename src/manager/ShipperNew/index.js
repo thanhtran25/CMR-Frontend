@@ -136,7 +136,7 @@ function ShipperNew() {
                                 total = 0
                                 return (
                                     <>
-                                        <div className="card border-success mb-3 col-8 offset-2">
+                                        <div className="card border-success mb-3 mt-5 col-8 offset-2">
                                             <div className="card-header">
                                                 <div onClick={() => handleUpdateStates('ship', item.id, OrderStates.DELIVERING)} className='btn btn-success'>
                                                     Nhận đơn

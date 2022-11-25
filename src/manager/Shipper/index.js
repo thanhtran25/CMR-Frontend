@@ -121,6 +121,7 @@ function Shipper() {
             <div id="main" className="layout-navbar">
                 <Header />
                 <div id="main-content">
+
                     <div className="page-heading">
 
                         <div className="page-title">
@@ -138,7 +139,7 @@ function Shipper() {
                                 total = 0
                                 return (
                                     <>
-                                        <div className="card border-success mb-3 col-8 offset-2">
+                                        <div className="card border-success mt-5 mb-3 col-8 offset-2">
                                             <div className="card-header">
                                                 <div onClick={() => handleUpdateStates('ship', item.id, OrderStates.DELIVERED)} className='btn btn-success'>
                                                     Đã giao
@@ -171,7 +172,6 @@ function Shipper() {
                                     </>
                                 )
                             })}
-
                     </div>
                 </div>
             </div >
