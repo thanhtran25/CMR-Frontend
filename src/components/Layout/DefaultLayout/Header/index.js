@@ -13,6 +13,9 @@ import { userLogout } from '~/store/action/userAction';
 import validator from 'validator';
 import { ChangePasswordUserService } from '~/service/userService';
 import Cartbox from '~/pages/cartbox.js/Cartbox';
+import { handelNotify } from '~/core/utils/req';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Header() {
     const user = useSelector(state => state.user.user);
@@ -38,7 +41,17 @@ function Header() {
     const [show, setShow] = useState(false);
     const [validate, setValidate] = useState('')
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setChange({
+            currentPassword: "",
+            newPassword: ""
+        })
+        setConfirmPass({
+            repass: "",
+        })
+        setValidate('')
+        setShow(true)
+    }
 
     const handleOnclickProfile = () => {
         navigate('/Profile');
@@ -108,7 +121,6 @@ function Header() {
             ...confirmPass,
             [e.target.name]: value
         });
-        console.log(confirmPass)
     }
     const handeClickChangePassword = async (e) => {
         e.preventDefault();
@@ -117,34 +129,39 @@ function Header() {
         try {
             let token = cookies.load('Token');
             await ChangePasswordUserService(change, token);
+            setShow(false)
+            handelNotify('success', 'Đổi mật khẩu thành công')
+
         } catch (e) {
-            console.log(e);
+            if (e.response && e.response.data.error) {
+                handelNotify('error', 'Mật khẩu hiện tại không đúng')
+            }
         }
 
     }
     const validateAll = () => {
         const msg = {}
         if (validator.isEmpty(change.currentPassword)) {
-            msg.passwordcCurrent = "Please input your Current Password"
+            msg.passwordcCurrent = "Vui lòng nhập mật khẩu hiện tại của bạn"
         } else {
             if (change.currentPassword < 8) {
-                msg.passwordcCurrent = '"password" length must be at least 8 characters'
+                msg.passwordcCurrent = '"Độ dài ít nhất 8 ký tự'
             }
         }
 
         if (validator.isEmpty(change.newPassword)) {
-            msg.passwordNew = "Please input your New Password"
+            msg.passwordNew = "Vui lòng nhập mật khẩu mới của bạn"
         }
         else {
             if (change.newPassword < 8) {
-                msg.passwordNew = '"password" length must be at least 8 characters'
+                msg.passwordNew = '"Độ dài ít nhất 8 ký tự'
             }
         }
         if (validator.isEmpty(confirmPass.repass)) {
-            msg.passwordConfirm = "Please input your Confirm Password"
+            msg.passwordConfirm = "Vui lòng nhập xác nhận mật khẩu"
         } else {
             if (confirmPass.repass !== change.newPassword) {
-                msg.passwordConfirm = "Confirm password is incorect"
+                msg.passwordConfirm = "Xác nhận mật khẩu không chính xác"
             }
         }
         setValidate(msg)
@@ -154,6 +171,18 @@ function Header() {
 
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
             <Modal className='ModalResetpass' show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Cập nhật lại mật khẩu</Modal.Title>
@@ -180,7 +209,6 @@ function Header() {
                                 name="newPassword"
                                 onChange={handleChangePassword}
                                 defaultValue={change.newPassword}
-                                autoFocus
                             />
                             <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.passwordNew}</p>
                         </Form.Group>
@@ -195,7 +223,6 @@ function Header() {
                                 name="repass"
                                 defaultValue={confirmPass.repass}
                                 onChange={RePassword}
-                                autoFocus
                             />
                             <p style={{ color: 'red' }} className='text-red-400 text-xs italic'>{validate.passwordConfirm}</p>
                         </Form.Group>
